@@ -627,7 +627,29 @@ public function dashboard()
 
         return $this->output->set_content_type('application/json')->set_output(json_encode($response));
     }
+public function load_relationship_form($base_id) {
+    $data['base_id'] = $base_id;
+    $html = $this->load->view('front_office/relationship_form', $data, true);
+     return $this->output->set_content_type('application/json')->set_output(json_encode(['html' => $html]));
+     
+}
 
+public function save_relationship() {
+    $this->form_validation->set_rules('target_id', 'Related Correspondence', 'required');
+    
+    if ($this->form_validation->run() == FALSE) {
+        echo json_encode(['result' => false, 'validationErrors' => $this->form_validation->error_array()]);
+    } else {
+        $saveData = [
+            'parent_id' => $this->input->post('base_id'),
+            'child_id'  => $this->input->post('target_id'),
+            'type'      => $this->input->post('rel_type'),
+            'remarks'   => $this->input->post('remarks')
+        ];
+        $this->db->insert('correspondence_links', $saveData);
+        echo json_encode(['result' => true]);
+    }
+}
     /**
      * Send a notification email when the status of a correspondence is updated
      * @param array $params

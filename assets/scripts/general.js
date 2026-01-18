@@ -15434,6 +15434,80 @@ function onCorrespondenceAddresseeTypeChange(events, data, container) {
         }
     }
 }
+/**
+ * Load the Relationship Form
+ */
+function loadRelationshipForm(baseId) {
+    jQuery.ajax({
+        url: getBaseURL() + 'front_office/load_relationship_form/' + baseId,
+        dataType: 'JSON',
+        beforeSend: function () { showLoader(true); },
+        success: function (response) {
+            jQuery('#relationship-dialog-container').remove();
+            if (response.html) {
+                var dialogId = '#relationship-dialog-container';
+                jQuery('<div id="relationship-dialog-container"></div>').appendTo("body");
+                var container = jQuery(dialogId);
+
+                container.html(response.html);
+                
+                // Initialize UI Elements
+                jQuery('.select-picker', container).selectpicker();
+                commonModalDialogEvents(container);
+                initializeModalSize(container);
+
+                // Initialize the Autocomplete for finding the OTHER correspondence
+                initializeAutocompleteField({
+                    inputSelector: '#target_lookup',
+                    hidden_idSelector: '#target_id',
+                    controller: 'front_office',  
+                    nameProperty: 'subject'      
+                });
+
+                // Submit Event
+                jQuery("#relationship-form-submit", container).click(function () {
+                    relationshipFormSubmit(container);
+                });
+            }
+        },
+        complete: function () { showLoader(false); },
+        error: defaultAjaxJSONErrorsHandler
+    });
+}
+
+/**
+ * Submit Relationship Form
+ */
+function relationshipFormSubmit(container) {
+    var rawForm = jQuery("form#relationship-link-form", container)[0];
+    var formData = new FormData(rawForm);
+
+    jQuery.ajax({
+        url: getBaseURL() + 'front_office/save_relationship',
+        type: 'POST',
+        data: formData,
+        dataType: 'JSON',
+        processData: false,
+        contentType: false,
+        beforeSend: function () {
+            jQuery('.modal-save-btn', container).attr('disabled', 'disabled').text('Linking...');
+        },
+        success: function (response) {
+            if (response.result) {
+                jQuery(".modal", container).modal("hide");
+                pinesMessage({ ty: 'success', m: 'Relationship created successfully.' });
+                // Optional: Refresh a list or tab
+                if(typeof refreshRelationshipsTab === 'function') refreshRelationshipsTab();
+            } else if (response.validationErrors) {
+                displayValidationErrors(response.validationErrors, container);
+            }
+        },
+        complete: function () {
+            jQuery('.modal-save-btn', container).removeAttr('disabled').text('Save Link');
+        },
+        error: defaultAjaxJSONErrorsHandler
+    });
+}
 
 function suretyForm(contractId, suretyId,mode,withinContract) {
    

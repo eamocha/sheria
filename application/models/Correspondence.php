@@ -669,28 +669,31 @@ to search terms in the correspondence table.
  * it searches using reference number/serial number, subject,id and body.
 */
 public function lookup($search_term) {
-        $_original_table = $this->_table; // Store original table name
-        $this->_table = "correspondences as c"; // Temporarily set alias
+    $_original_table = $this->_table; 
+    $this->_table = "correspondences as c"; 
 
-        $query = [];
-        $query["select"] = ["c.id", "c.subject", "c.reference_number"];
-        $query["join"] = [
-            ["correspondence_types ct", "ct.id = c.correspondence_type_id", "left"],
-            ["correspondence_statuses cs", "cs.id = c.status_id", "left"],
-            ["contacts sender_contact", "sender_contact.id = c.sender", "left"],
-            ["contacts recipient_contact", "recipient_contact.id = c.recipient", "left"],
-            ["user_profiles assignee", "assignee.user_id = c.assigned_to", "left"]
-        ];
-        $query["where"] = [
-            "(c.subject LIKE ? OR c.body LIKE ? OR c.reference_number LIKE ? OR c.id LIKE ?)",
-            "%" . $search_term . "%", "%" . $search_term . "%", "%" . $search_term . "%", "%" . $search_term . "%"
-        ];
-        $query["order_by"] = ["c.createdOn DESC"];
+     
 
-        $result = $this->load_all($query);
-        $this->_table = $_original_table; // Revert to original table name
-        return $result;
-    }   
+    $query = [];
+    $query["select"] = ["c.id", "c.subject", "c.reference_number"];
+    $query["join"] = [
+        ["correspondence_types ct", "ct.id = c.correspondence_type_id", "left"],
+        ["correspondence_statuses cs", "cs.id = c.status_id", "left"],
+        ["contacts sender_contact", "sender_contact.id = c.sender", "left"],
+        ["contacts recipient_contact", "recipient_contact.id = c.recipient", "left"],
+        ["user_profiles assignee", "assignee.user_id = c.assigned_to", "left"]
+    ];
+
+     $safe_term = $this->ci->db->escape_like_str($search_term);
+     $query["where"] = ["(c.subject LIKE '%$safe_term%' OR c.body LIKE '%$safe_term%' OR c.reference_number LIKE '%$safe_term%' OR CAST(c.id AS VARCHAR) LIKE '%$safe_term%')"];
+
+    
+    $query["order_by"] = ["c.createdOn DESC"];
+
+    $result = $this->load_all($query);
+    $this->_table = $_original_table; 
+    return $result;
+}
     
 
    

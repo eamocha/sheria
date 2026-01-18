@@ -252,7 +252,7 @@
                 </div>
                 <div class="card-body">
                     <div class="text-center ">
-                        <button class="btn btn-sm btn-primary" id="<?php echo $correspondence["id"]; ?>" onclick="addTaskForm(<?php echo $correspondence["id"]; ?>)">
+                        <button class="btn btn-sm btn-primary" id="<?php echo $correspondence["id"]; ?>" onclick="loadRelationshipForm(<?php echo $correspondence['id']; ?>)">
                             Link To Correspondence
                         </button>
                     </div>
@@ -371,9 +371,7 @@
     });
 }
 
-// Usage example (call after DOM ready and when correspondenceId is available):
-// fetchAndDisplayCorrespondenceDocuments(correspondenceId);
-
+ 
 
 </script>
 
