@@ -1,0 +1,22 @@
+LOG	-	2026-01-16 01:01:48		::1	admin@infosysta.com		Successful login
+LOG	-	2026-01-16 01:01:55		::1	admin@infosysta.com		Successful login
+LOG	-	2026-01-16 01:01:56		::1	admin@infosysta.com		Successful login
+LOG	-	2026-01-16 01:16:12		::1	admin		Failed to login
+LOG	-	2026-01-16 01:17:57		::1	admin		Failed to login
+LOG	-	2026-01-16 01:18:47		::1	admin		Failed to login
+LOG	-	2026-01-16 01:18:52		::1	admin		Failed to login
+LOG	-	2026-01-16 01:18:57		::1	admin		Failed to login
+LOG	-	2026-01-16 01:19:07		::1	eatinga@yahoo.com		Failed to login
+LOG	-	2026-01-16 01:19:10		::1	eatinga@yahoo.com		Failed to login
+LOG	-	2026-01-16 01:19:11		::1	eatinga@yahoo.com		Failed to login
+LOG	-	2026-01-16 01:19:13		::1	eatinga@yahoo.com		Failed to login
+LOG	-	2026-01-16 01:19:14		::1	eatinga@yahoo.com		Failed to login
+LOG	-	2026-01-16 01:19:15		::1	eatinga@yahoo.com		Failed to login
+LOG	-	2026-01-16 01:19:17		::1	eatinga@yahoo.com		Failed to login
+LOG	-	2026-01-16 01:19:18		::1	eatinga@yahoo.com		Failed to login
+LOG	-	2026-01-16 01:19:19		::1	eatinga@yahoo.com		Failed to login
+LOG	-	2026-01-16 01:19:20		::1	eatinga@yahoo.com		Failed to login
+LOG	-	2026-01-16 01:19:21		::1	eatinga@yahoo.com		Failed to login
+LOG	-	2026-01-16 09:03:56		::1	admin@infosysta.com		Successful login
+LOG	-	2026-01-16 09:05:44		::1	admin@infosysta.com		Successful login
+LOG	-	2026-01-16 14:20:58		::1	admin@infosysta.com		Successful login

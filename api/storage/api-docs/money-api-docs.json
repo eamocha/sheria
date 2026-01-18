@@ -1,0 +1,2378 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "A4L Money API",
+        "description": "A4L Money API Documentation",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "2.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/app4legal/api/v2/money",
+            "description": "A4L Money API"
+        }
+    ],
+    "paths": {
+        "/accounts": {
+            "get": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "List accounts",
+                "description": "List all accounts",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Search accounts by name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "organization_id",
+                        "in": "query",
+                        "description": "Search accounts by organization Id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "model_type",
+                        "in": "query",
+                        "description": "Search accounts by model type",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter accounts by the above query parameters. <br />\r\n              <b>Example:</b> { \"name[eq]\" : \"My Account\" } which will search for accounts with name = \"My Account\".",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "sort[asc]",
+                        "in": "query",
+                        "description": "Sort accounts in ascending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name",
+                                "organization_id"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sort[desc]",
+                        "in": "query",
+                        "description": "Sort accounts in descending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name",
+                                "organization_id"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/accounts/{id}": {
+            "get": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Get account",
+                "description": "Get account",
+                "operationId": "view",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/credit_notes": {
+            "get": {
+                "tags": [
+                    "CreditNotes"
+                ],
+                "summary": "List credit notes",
+                "description": "List all credit notes",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "query",
+                        "description": "Search Credit Notes by account Id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "account_name",
+                        "in": "query",
+                        "description": "Search Credit Notes by account name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "account_number",
+                        "in": "query",
+                        "description": "Search Credit Notes by account number",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "balance_due",
+                        "in": "query",
+                        "description": "Search Credit Notes by balance due",
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    },
+                    {
+                        "name": "credit_note_date",
+                        "in": "query",
+                        "description": "Search Credit Notes by credit note date",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "credit_note_number",
+                        "in": "query",
+                        "description": "Search Credit Notes by credit note number",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "non_taxable",
+                        "in": "query",
+                        "description": "Search for non taxable credit notes",
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    },
+                    {
+                        "name": "organization_id",
+                        "in": "query",
+                        "description": "Search Credit Notes by organization id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "refunds_made",
+                        "in": "query",
+                        "description": "Search Credit Notes by refunds made",
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Search Credit Notes by status",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sub_total",
+                        "in": "query",
+                        "description": "Search Credit Notes by sub-total",
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    },
+                    {
+                        "name": "sub_total_after_discount",
+                        "in": "query",
+                        "description": "Search Credit Notes by sub-total after discount",
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    },
+                    {
+                        "name": "total",
+                        "in": "query",
+                        "description": "Search Credit Notes by total",
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    },
+                    {
+                        "name": "total_discount",
+                        "in": "query",
+                        "description": "Search Credit Notes by total discount",
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    },
+                    {
+                        "name": "total_tax",
+                        "in": "query",
+                        "description": "Search Credit Notes by total tax",
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    },
+                    {
+                        "name": "voucher_header_id",
+                        "in": "query",
+                        "description": "Search Credit Notes by voucher header id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter Credit Notes by the above query parameters. <br />\r\n              <b>Example:</b> { \"total[gt]\" : 6000 } which will search for credit notes that have a total greater than \"6000\".",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "sort[asc]",
+                        "in": "query",
+                        "description": "Sort Credit Notes in ascending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "balance_due",
+                                "credit_note_date",
+                                "credit_note_number",
+                                "refunds_made",
+                                "total"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sort[desc]",
+                        "in": "query",
+                        "description": "Sort Credit Notes in descending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "balance_due",
+                                "credit_note_date",
+                                "credit_note_number",
+                                "refunds_made",
+                                "total"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "CreditNotes"
+                ],
+                "summary": "Create Credit Notes",
+                "description": "Create New Credit Notes",
+                "operationId": "create",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateInvoiceRequestBody"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/credit_notes/{id}": {
+            "get": {
+                "tags": [
+                    "CreditNotes"
+                ],
+                "summary": "Get Credit Note",
+                "description": "Get Credit Note by id",
+                "operationId": "view",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "CreditNotes"
+                ],
+                "summary": "Update Credit Note",
+                "description": "Update Credit Note",
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Credit Note Id to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/UpdateInvoiceRequestBody"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "CreditNotes"
+                ],
+                "summary": "Delete Credit Note",
+                "description": "Delete Credit Note",
+                "operationId": "delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Credit Note Id to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/credit_notes/{id}/status/draft": {
+            "patch": {
+                "tags": [
+                    "CreditNotes"
+                ],
+                "summary": "Mark Credit Note as draft",
+                "description": "Mark Credit Note as draft",
+                "operationId": "markCreditNoteAsDraft",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Credit Note Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/credit_notes/{id}/status/cancelled": {
+            "patch": {
+                "tags": [
+                    "Credit Notes"
+                ],
+                "summary": "Mark Credit Note as cancelled",
+                "description": "Mark Credit Note as cancelled",
+                "operationId": "markCreditNoteAsCancelled",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Credit Note Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/credit_notes/{id}/status/open": {
+            "patch": {
+                "tags": [
+                    "CreditNotes"
+                ],
+                "summary": "Mark Credit Note as open",
+                "description": "Mark Credit Note as open",
+                "operationId": "markAsOpen",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Credit Note Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/discounts": {
+            "get": {
+                "tags": [
+                    "Discounts"
+                ],
+                "summary": "List discounts",
+                "description": "List all discounts",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Search discounts by name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter terms by the above query parameters. <br />\r\n              <b>Example:</b> { \"name[eq]\" : \"My Discount\" } which will search for discounts with name = \"My Discount\".",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "sort[asc]",
+                        "in": "query",
+                        "description": "Sort discounts in ascending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name",
+                                "percentage"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sort[desc]",
+                        "in": "query",
+                        "description": "Sort discounts in descending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name",
+                                "percentage"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/discounts/{id}": {
+            "get": {
+                "tags": [
+                    "Discounts"
+                ],
+                "summary": "Get discount",
+                "description": "Get discount",
+                "operationId": "view",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/exchangerate/{id}": {
+            "put": {
+                "tags": [
+                    "exchangerate"
+                ],
+                "summary": "Update Exchange Rate",
+                "description": "Update Exchange Rate",
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Exchange rate Id to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/UpdateExchangerateRequestBody"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/invoices": {
+            "get": {
+                "tags": [
+                    "Invoices"
+                ],
+                "summary": "List invoices",
+                "description": "List all invoices",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "account_id",
+                        "in": "query",
+                        "description": "Search Invoices by account Id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "account_name",
+                        "in": "query",
+                        "description": "Search Invoices by account name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "account_number",
+                        "in": "query",
+                        "description": "Search Invoices by account number",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "balance_due",
+                        "in": "query",
+                        "description": "Search Invoices by balance due",
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    },
+                    {
+                        "name": "invoice_date",
+                        "in": "query",
+                        "description": "Search Invoices by invoice date",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "invoice_number",
+                        "in": "query",
+                        "description": "Search Invoices by invoice number",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "non_taxable",
+                        "in": "query",
+                        "description": "Search for non taxable invoices",
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    },
+                    {
+                        "name": "organization_id",
+                        "in": "query",
+                        "description": "Search Invoices by organization id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "payment_made",
+                        "in": "query",
+                        "description": "Search Invoices by payments made",
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Search Invoices by status",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "sub_total",
+                        "in": "query",
+                        "description": "Search Invoices by sub-total",
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    },
+                    {
+                        "name": "sub_total_after_discount",
+                        "in": "query",
+                        "description": "Search Invoices by sub-total after discount",
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    },
+                    {
+                        "name": "total",
+                        "in": "query",
+                        "description": "Search Invoices by total",
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    },
+                    {
+                        "name": "total_discount",
+                        "in": "query",
+                        "description": "Search Invoices by total discount",
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    },
+                    {
+                        "name": "total_tax",
+                        "in": "query",
+                        "description": "Search Invoices by total tax",
+                        "schema": {
+                            "type": "decimal"
+                        }
+                    },
+                    {
+                        "name": "voucher_header_id",
+                        "in": "query",
+                        "description": "Search Invoices by voucher header id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter invoices by the above query parameters. <br />\r\n              <b>Example:</b> { \"total[gt]\" : 6000 } which will search for invoices that have a total greater than \"6000\".",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "sort[asc]",
+                        "in": "query",
+                        "description": "Sort invoices in ascending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "balance_due",
+                                "invoice_date",
+                                "invoice_number",
+                                "payment_made",
+                                "total"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sort[desc]",
+                        "in": "query",
+                        "description": "Sort invoices in descending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "balance_due",
+                                "invoice_date",
+                                "invoice_number",
+                                "payment_made",
+                                "total"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Invoices"
+                ],
+                "summary": "Create invoice",
+                "description": "Create invoice",
+                "operationId": "create",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateInvoiceRequestBody"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/invoices/{id}": {
+            "get": {
+                "tags": [
+                    "Invoices"
+                ],
+                "summary": "Get invoice",
+                "description": "Get invoice",
+                "operationId": "view",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Invoices"
+                ],
+                "summary": "Update invoice",
+                "description": "Update invoice",
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Invoice Id to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/UpdateInvoiceRequestBody"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Invoices"
+                ],
+                "summary": "Delete invoice",
+                "description": "Delete invoice",
+                "operationId": "delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Invoice Id to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/invoices/{id}/status/draft": {
+            "patch": {
+                "tags": [
+                    "Invoices"
+                ],
+                "summary": "Mark invoice as draft",
+                "description": "Mark invoice as draft",
+                "operationId": "markInvoiceAsDraft",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Invoice Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/invoices/{id}/status/cancelled": {
+            "patch": {
+                "tags": [
+                    "Invoices"
+                ],
+                "summary": "Mark invoice as cancelled",
+                "description": "Mark invoice as cancelled",
+                "operationId": "markInvoiceAsCancelled",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Invoice Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/invoices/{id}/status/open": {
+            "patch": {
+                "tags": [
+                    "Invoices"
+                ],
+                "summary": "Mark invoice as open",
+                "description": "Mark invoice as open",
+                "operationId": "markAsOpen",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Invoice Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/invoices/{id}/payments": {
+            "get": {
+                "tags": [
+                    "Invoice Payments"
+                ],
+                "summary": "List invoice payments",
+                "description": "List all invoice payments",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "payment_method",
+                        "in": "query",
+                        "description": "Search Invoice Payments by payment method",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "payment_total",
+                        "in": "query",
+                        "description": "Search Invoice Payments by account name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "payment_voucher_id",
+                        "in": "query",
+                        "description": "Search Invoice Payments by voucher id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter invoice payments by the above query parameters. <br />\r\n              <b>Example:</b> { \"payment_total[gt]\" : 6000 } which will search for invoice payments that have a payment total greater than \"6000\".",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "sort[asc]",
+                        "in": "query",
+                        "description": "Sort invoice payments in ascending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "payment_method",
+                                "payment_total"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sort[desc]",
+                        "in": "query",
+                        "description": "Sort invoice payments in descending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "payment_method",
+                                "payment_total"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Invoice Payments"
+                ],
+                "summary": "Create invoice payment",
+                "description": "Create invoice payment",
+                "operationId": "create",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Invoice Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateInvoicePaymentRequestBody"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/invoices/{id}/payments/{payment_id}": {
+            "get": {
+                "tags": [
+                    "Invoice Payments"
+                ],
+                "summary": "Get Invoice payment",
+                "description": "Get invoice payment",
+                "operationId": "view",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "payment_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/invoices/{id}/payments/{payment_voucher_id}": {
+            "put": {
+                "tags": [
+                    "Invoice Payments"
+                ],
+                "summary": "Update invoice payment",
+                "description": "Update invoice payment",
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Invoice Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "payment_voucher_id",
+                        "in": "path",
+                        "description": "Payment Voucher Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/UpdateInvoicePaymentRequestBody"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Invoice Payments"
+                ],
+                "summary": "Delete invoice payment",
+                "description": "Delete invoice payment",
+                "operationId": "delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Invoice Id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "payment_voucher_id",
+                        "in": "path",
+                        "description": "Payment Voucher Id to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/items": {
+            "get": {
+                "tags": [
+                    "Items"
+                ],
+                "summary": "List items",
+                "description": "List all items",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Search items by name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "organization_id",
+                        "in": "query",
+                        "description": "Search items by organization Id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "price",
+                        "in": "query",
+                        "description": "Search items by price",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter items by the above query parameters. <br />\r\n              <b>Example:</b> { \"price[gt]\" : 500 } which will search for items with price greater than 500.",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "sort[asc]",
+                        "in": "query",
+                        "description": "Sort items in ascending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "unit_name",
+                                "unit_price"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sort[desc]",
+                        "in": "query",
+                        "description": "Sort items in descending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "unit_name",
+                                "unit_price"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Items"
+                ],
+                "summary": "Create Item",
+                "description": "Create Item",
+                "operationId": "create",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateItemRequestBody"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/items/{id}": {
+            "get": {
+                "tags": [
+                    "Items"
+                ],
+                "summary": "Get item",
+                "description": "Get item",
+                "operationId": "view",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/items/{id}/subitems": {
+            "get": {
+                "tags": [
+                    "Items"
+                ],
+                "summary": "List sub items",
+                "description": "List all sub items",
+                "operationId": "getSubItemsList",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Search sub items by name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "organization_id",
+                        "in": "query",
+                        "description": "Search sub items by organization Id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "price",
+                        "in": "query",
+                        "description": "Search sub items by price",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter sub items by the above query parameters. <br />\r\n              <b>Example:</b> { \"price[gt]\" : 500 } which will search for sub items with price greater than 500.",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "sort[asc]",
+                        "in": "query",
+                        "description": "Sort sub items in ascending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "unit_name",
+                                "unit_price"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sort[desc]",
+                        "in": "query",
+                        "description": "Sort sub items in descending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "unit_name",
+                                "unit_price"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/items/{id}/subitems/{sub_item_id}": {
+            "get": {
+                "tags": [
+                    "Items"
+                ],
+                "summary": "Get sub item",
+                "description": "Get sub item",
+                "operationId": "viewSubItem",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sub_item_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/organizations": {
+            "get": {
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "List organizations",
+                "description": "List all organizations/entities",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Search organizations by name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter organizations by the above query parameters.<br />\r\n              <b>Example:</b> { \"name[eq]\" : \"My Organization\" } which will search for organization with name = \"My Organization\".",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "sort[asc]",
+                        "in": "query",
+                        "description": "Sort organizations in ascending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sort[desc]",
+                        "in": "query",
+                        "description": "Sort organizations in descending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/organizations/{id}": {
+            "get": {
+                "tags": [
+                    "Organizations"
+                ],
+                "summary": "Get organization",
+                "description": "Get organization/entity",
+                "operationId": "view",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/taxes": {
+            "get": {
+                "tags": [
+                    "Taxes"
+                ],
+                "summary": "List taxes",
+                "description": "List all taxes",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Search taxes by name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "organization_id",
+                        "in": "query",
+                        "description": "Search taxes by organization Id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter taxes by the above query parameters. <br />\r\n              <b>Example:</b> { \"name[eq]\" : \"VAT\" } which will search for taxes with name = \"VAT\".",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "sort[asc]",
+                        "in": "query",
+                        "description": "Sort taxes in ascending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name",
+                                "percentage"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sort[desc]",
+                        "in": "query",
+                        "description": "Sort taxes in descending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name",
+                                "percentage"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Taxes"
+                ],
+                "summary": "Create Tax",
+                "description": "Create Tax",
+                "operationId": "create",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateTaxRequestBody"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/taxes/{id}": {
+            "get": {
+                "tags": [
+                    "Taxes"
+                ],
+                "summary": "Get tax",
+                "description": "Get tax",
+                "operationId": "view",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/terms": {
+            "get": {
+                "tags": [
+                    "Terms"
+                ],
+                "summary": "List terms",
+                "description": "List all terms",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Search terms by name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter terms by the above query parameters. <br />\r\n              <b>Example:</b> { \"name[eq]\" : \"15 Days\" } which will search for terms with name = \"15 Days\".",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "sort[asc]",
+                        "in": "query",
+                        "description": "Sort terms in ascending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sort[desc]",
+                        "in": "query",
+                        "description": "Sort terms in descending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "name"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/terms/{id}": {
+            "get": {
+                "tags": [
+                    "Terms"
+                ],
+                "summary": "Get term",
+                "description": "Get term",
+                "operationId": "view",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Invoice": {
+                "title": "Invoice model",
+                "description": "Invoice model",
+                "properties": {
+                    "organization_id": {
+                        "title": "organization_id",
+                        "description": "organization_id",
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "requestBodies": {
+            "CreateInvoicePaymentRequestBody": {
+                "description": "Create Invoice Payment",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": {
+                            "organization_id": "1",
+                            "paid_on": "2021-11-02",
+                            "deposit_account_id": 31,
+                            "deposit_amount": 400,
+                            "payment_method": "Cash",
+                            "comments": "Cash",
+                            "payment_reference": "Cash",
+                            "deposit_other_account_id": 33,
+                            "deposit_other_amount": 50,
+                            "other_payment_method": "Bank Transfer"
+                        }
+                    }
+                }
+            },
+            "UpdateInvoicePaymentRequestBody": {
+                "description": "Update Invoice Payment",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": {
+                            "paid_on": "2021-11-02",
+                            "deposit_account_id": 31,
+                            "deposit_amount": 400,
+                            "payment_method": "Cash",
+                            "comments": "Cash",
+                            "payment_reference": "Cash",
+                            "deposit_other_account_id": 33,
+                            "deposit_other_amount": 20,
+                            "other_payment_method": "Bank Transfer"
+                        }
+                    }
+                }
+            },
+            "CreateInvoiceRequestBody": {
+                "description": "Create Invoice",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": {
+                            "organization_id": "1",
+                            "user_id": "1",
+                            "account_id": 22,
+                            "prefix": "INV-",
+                            "reference_number": "0000009",
+                            "suffix": "",
+                            "purchase_order": "1234",
+                            "invoice_reference": "9191",
+                            "bill_to": "App4Legal, Dubai",
+                            "invoice_date": "2021-06-15",
+                            "due_on": "2021-06-25",
+                            "term_id": 3,
+                            "notes": "",
+                            "paid_status": "open",
+                            "invoice_reminder": {
+                                "reminder_time": 5,
+                                "reminder_time_type": "day",
+                                "reminder_type": "popup"
+                            },
+                            "invoice_details": [
+                                {
+                                    "account_id": 14,
+                                    "item_id": 1,
+                                    "sub_item_id": null,
+                                    "tax_id": 1,
+                                    "discount_id": null,
+                                    "item": "Annual Legal Mgt.",
+                                    "unit_price": 6000,
+                                    "quantity": 2,
+                                    "discount_percentage": 5,
+                                    "tax_percentage": 11,
+                                    "item_description": "Annual Fees",
+                                    "item_date": null,
+                                    "partner_shares": [
+                                        {
+                                            "partner_account_id": 54,
+                                            "partner_name": "InfoSysta",
+                                            "partner_commission": 5
+                                        }
+                                    ]
+                                },
+                                {
+                                    "account_id": 15,
+                                    "item_id": 2,
+                                    "sub_item_id": null,
+                                    "tax_id": null,
+                                    "discount_id": null,
+                                    "item": "Consultancy",
+                                    "unit_price": 500,
+                                    "quantity": 2,
+                                    "discount_percentage": null,
+                                    "item_description": "Annual Fees",
+                                    "item_date": null
+                                }
+                            ],
+                            "invoice_expenses": [
+                                {
+                                    "account_id": 17,
+                                    "tax_id": null,
+                                    "discount_id": null,
+                                    "expense_id": 5,
+                                    "item": "BBA Fee",
+                                    "unit_price": 400,
+                                    "quantity": 1,
+                                    "discount_percentage": null,
+                                    "item_description": "2021-06-15",
+                                    "item_date": null,
+                                    "partner_shares": [
+                                        {
+                                            "partner_account_id": 54,
+                                            "partner_name": "InfoSysta",
+                                            "partner_commission": 6
+                                        }
+                                    ]
+                                }
+                            ],
+                            "invoice_time_logs": [
+                                {
+                                    "account_id": 14,
+                                    "tax_id": null,
+                                    "discount_id": null,
+                                    "time_log_id": 12,
+                                    "item": "UC0",
+                                    "user_id": "0000000001",
+                                    "unit_price": 300,
+                                    "quantity": 1,
+                                    "discount_amount": 25,
+                                    "item_description": "2021-06-02 - 1",
+                                    "item_date": null
+                                }
+                            ],
+                            "related_matters": [
+                                {
+                                    "matter_id": "00000001"
+                                },
+                                {
+                                    "matter_id": "00000020"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "UpdateInvoiceRequestBody": {
+                "description": "Update Invoice",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": {
+                            "user_id": "1",
+                            "account_id": 22,
+                            "prefix": "INV-",
+                            "reference_number": "0000009",
+                            "suffix": "",
+                            "purchase_order": "1234",
+                            "invoice_reference": "9191",
+                            "bill_to": "App4Legal, Dubai",
+                            "invoice_date": "2021-06-15",
+                            "due_on": "2021-06-25",
+                            "term_id": 3,
+                            "notes": "",
+                            "paid_status": "open",
+                            "invoice_reminder": {
+                                "reminder_time": 5,
+                                "reminder_time_type": "day",
+                                "reminder_type": "popup"
+                            },
+                            "invoice_details": [
+                                {
+                                    "account_id": 14,
+                                    "item_id": 1,
+                                    "sub_item_id": null,
+                                    "tax_id": 1,
+                                    "discount_id": null,
+                                    "item": "Annual Legal Mgt.",
+                                    "unit_price": 6000,
+                                    "quantity": 2,
+                                    "discount_percentage": 5,
+                                    "tax_percentage": 11,
+                                    "item_description": "Annual Fees",
+                                    "item_date": null,
+                                    "partner_shares": [
+                                        {
+                                            "partner_account_id": 54,
+                                            "partner_name": "InfoSysta",
+                                            "partner_commission": 5
+                                        }
+                                    ]
+                                },
+                                {
+                                    "account_id": 15,
+                                    "item_id": 2,
+                                    "sub_item_id": null,
+                                    "tax_id": null,
+                                    "discount_id": null,
+                                    "item": "Consultancy",
+                                    "unit_price": 500,
+                                    "quantity": 2,
+                                    "discount_percentage": null,
+                                    "item_description": "Annual Fees",
+                                    "item_date": null
+                                }
+                            ],
+                            "invoice_expenses": [
+                                {
+                                    "account_id": 17,
+                                    "tax_id": null,
+                                    "discount_id": null,
+                                    "expense_id": 5,
+                                    "item": "BBA Fee",
+                                    "unit_price": 400,
+                                    "quantity": 1,
+                                    "discount_percentage": null,
+                                    "item_description": "2021-06-15",
+                                    "item_date": null,
+                                    "partner_shares": [
+                                        {
+                                            "partner_account_id": 54,
+                                            "partner_name": "InfoSysta",
+                                            "partner_commission": 6
+                                        }
+                                    ]
+                                }
+                            ],
+                            "invoice_time_logs": [
+                                {
+                                    "account_id": 14,
+                                    "tax_id": null,
+                                    "discount_id": null,
+                                    "time_log_id": 12,
+                                    "item": "UC0",
+                                    "user_id": "0000000001",
+                                    "unit_price": 300,
+                                    "quantity": 1,
+                                    "discount_amount": 25,
+                                    "item_description": "2021-06-02 - 1",
+                                    "item_date": null
+                                }
+                            ],
+                            "related_matters": [
+                                {
+                                    "matter_id": "00000001"
+                                },
+                                {
+                                    "matter_id": "00000020"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "passport": {
+                "type": "oauth2",
+                "description": "Laravel passport oauth2 security.",
+                "in": "header",
+                "scheme": "https",
+                "flows": {
+                    "password": {
+                        "authorizationUrl": "http://localhost/app4legal/api/oauth/authorize",
+                        "tokenUrl": "http://localhost/app4legal/api/oauth/token",
+                        "refreshUrl": "http://localhost/app4legal/api/token/refresh",
+                        "scopes": []
+                    }
+                }
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}

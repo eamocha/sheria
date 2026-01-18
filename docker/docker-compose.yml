@@ -1,0 +1,43 @@
+version: '3'
+services:
+  app4legal-web:
+    build: .
+    image: app4legal
+    container_name: app4legal-web
+    ports:
+      - 80:80
+    volumes:
+      - "../:/var/www/html:Z"
+    links:
+      - mysql
+    environment:
+      - APP4LEGAL_DB_HOST=mysql
+      - APP4LEGAL_DB_USER=root
+      - APP4LEGAL_DB_PASSWORD=root
+      - APP4LEGAL_DB_NAME=app4legal
+  mysql:
+    image: mysql:5.6
+    container_name: app4legal-db
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=app4legal
+    volumes:
+      - mysql_data:/var/lib/mysql
+  sql-server:
+    image: mcr.microsoft.com/mssql/server
+    container_name: sql-server
+    ports:
+      - 1433:1433
+    environment:
+      SA_PASSWORD: "SQLServer123?"
+      ACCEPT_EULA: "Y"
+  adminer:
+    container_name: app4legal-db-viewer
+    image: adminer
+    ports:
+      - 8080:8080
+volumes:
+  esdata:
+    driver: local
+  mysql_data:
+    driver: local

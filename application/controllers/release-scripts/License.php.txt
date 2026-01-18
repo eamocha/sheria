@@ -1,0 +1,176 @@
+<?php
+
+if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
+
+include APPPATH.'libraries/traits/MigrationLogTrait.php';
+
+class License extends CI_Controller
+{
+
+    use MigrationLogTrait;
+
+    public $log_path = null;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->hooks->enabled = false;
+        $this->log_path = 'release-scripts' . DIRECTORY_SEPARATOR . get_class($this);
+        $this->load->database();
+        $this->write_log($this->log_path, 'start migration script');
+    }
+
+    public function index()
+    {
+        $this->fix_customer_licenses();
+        $this->write_log($this->log_path, 'done from migration script');
+    }
+    
+    public function fix_customer_licenses(){
+        $this->write_log($this->log_path, 'fix customer licenses');
+        $this->load->model('instance_data');
+        $instance_data_array = $this->instance_data->get_values();
+        $cloud_installation_type = $instance_data_array['installationType'] == "on-cloud";
+        if ($cloud_installation_type) { //cloud installation
+            $this->write_log($this->log_path, 'get core license content');
+            $fibonacciStr = file_get_contents(COREPATH. 'config/license.php');
+            $this->write_log($this->log_path, 'decode license string');
+            $b64_license = $this->license_decode($fibonacciStr);
+            if ($b64_license) {
+                $this->write_log($this->log_path, 'unserialize decoded string');
+                @eval(@unserialize($b64_license));
+                if (isset($config)) {
+                    $this->write_log($this->log_path, 'load installation type');
+                    $instanceId = $instance_data_array['instanceID'];
+                    if ($instance_data_array['clientType'] === 'customer' && !in_array($instanceId, ['5890', '3687'])) { // exclude enterprise customers
+                        $this->write_log($this->log_path, 'update cloud plan');
+                        $config['App4Legal']['plan'] = 'cloud-business';
+                        $config['App4Legal']['plan_excluded_features'] = 'In-Document-Search,Advanced-Workflows-&-Approvals,LDAP-User-Management-Integration,Azure-User-Management-Integration,Third-Party-Integration-(APIs),Service-Level-Agreement';
+                        $this->write_log($this->log_path, 'encode license');
+                        $encoded = $this->license_encode($config['App4Legal'], 'App4Legal');
+                        $this->write_log($this->log_path, 'write license file');
+                        @file_put_contents(COREPATH . 'config/license.php', $encoded);
+                        $this->write_log($this->log_path, 'update license is done');
+                    }
+                }
+            }
+        }
+    }
+    
+    private function license_encode($licenseVars, $product)
+    {
+        $license = "";
+        if (!empty($licenseVars)) {
+            foreach ($licenseVars as $licenseVar => $licenseVal) {
+                $license .= " \$config['{$product}']['{$licenseVar}'] = '{$licenseVal}';";
+            }
+            $slicense = serialize($license);
+            $str = base64_encode($slicense);
+            if (empty($str)) {
+                return '';
+            }
+            $lastPos = strlen($str) - 1;
+            $newStr = '';
+            if ($lastPos == 0) {
+                $newStr = $str . $str;
+            } elseif ($lastPos == 1) {
+                $newStr = $str[1] . $str[0] . $str[0] . $str[1] . $str[1];
+            } elseif ($lastPos == 2) {
+                $newStr = $str[1] . $str[0] . $str[2] . $str[0] . $str[1] . $str[0] . $str[2];
+            } elseif ($lastPos == 3) {
+                $newStr = $str[1] . $str[0] . $str[2] . $str[0] . $str[1] . $str[0] . $str[2] . $str[2] . $str[3];
+            } elseif ($lastPos == 4) {
+                $newStr = $str[2] . $str[0] . $str[1] . $str[3] . $str[1] . $str[0] . $str[2] . $str[2] . $str[3] . $str[4];
+            }
+            if ($lastPos < 5) {
+                die($newStr);
+            }
+            $newStr = $str[2] . $str[0] . $str[1] . $str[3] . $str[1] . $str[0] . $str[2] . $str[2] . $str[3] . $str[4];
+            $lastStopPos = 5;
+            $n = 5;
+            $Un2 = 2;
+            $Un1 = 3;
+            $Un = $Un1 + $Un2;
+            do {
+                $Un2 = $Un1;
+                $Un1 = $Un;
+                while ($Un > $lastStopPos) {
+                    $newStr .= $str[$lastStopPos];
+                    $lastStopPos++;
+                }
+                $newStr .= $str[rand(1, $lastPos)];
+            } while (($Un = $Un + $Un2) <= $lastPos);
+            while ($lastStopPos <= $lastPos) {
+                $newStr .= $str[$lastStopPos];
+                $lastStopPos++;
+            }
+            $a4l_encoded = base64_encode('INFOSYSTA-LICENSE-KEYWORD');
+            return $newStr.$a4l_encoded;
+        }
+    }
+
+    private function license_decode($str)
+    {
+        $a4l_encoded = base64_encode('INFOSYSTA-LICENSE-KEYWORD');
+        $key_length = strlen($a4l_encoded);
+        if (empty($str) || (!empty($str) && substr($str, -$key_length) !== $a4l_encoded)) {
+            return false;
+        } else {
+            $str = substr($str, 0, -$key_length);
+        }
+        $length = strlen($str);
+        $newStr = '';
+        $fibonacciPositions = array();
+        $i = 0;
+        $Un2 = -1;
+        $Un1 = 1;
+        while ($i < $length) {
+            $Un = $Un1 + $Un2;
+            $Un2 = $Un1;
+            $Un1 = $Un;
+            $fibonacciPositions[] = $Un + $i;
+            if (!in_array($i, $fibonacciPositions)) {
+                $newStr .= $str[$i];
+            }
+            $i++;
+        }
+        return base64_decode($newStr);
+    }
+	//generate
+	public function generate(){
+		//core
+		/*
+		$config['App4Legal']['clientName'] = 'Communications Authority of Kenya'; $config['App4Legal']['maxActiveUsers'] = '21'; $config['App4Legal']['expiry'] = '2030-12-31'; $config['App4Legal']['plan'] = 'self-enterprise'; $config['App4Legal']['plan_interval'] = 'annually';
+					$encoded = $this->license_encode($config['App4Legal'], 'App4Legal');
+                        
+                        @file_put_contents(COREPATH . 'config/licenses/core-ca.isl', $encoded);
+                     */	
+			/*			//contracts
+		$config['App4Legal::Contract']['clientName'] = 'Communications Authority of Kenya'; $config['App4Legal::Contract']['maxActiveUsers'] = '21'; $config['App4Legal::Contract']['expiry'] = '2030-12-31'; $config['App4Legal::Contract']['plan'] = 'self-enterprise'; $config['App4Legal::Contract']['plan_interval'] = ''; $config['App4Legal::Contract']['nbOfCollaborators'] = '10';
+		 $encoded = $this->license_encode($config['App4Legal::Contract'], 'Contract');
+                       
+                        @file_put_contents(COREPATH . 'config/licenses/contract-ca.isl', $encoded);
+                        */
+		/*$config['App4Legal::Customer-portal']['clientName'] = 'Communications Authority of Kenya'; $config['App4Legal::Customer-portal']['maxActiveUsers'] = '101'; $config['App4Legal::Customer-portal']['expiry'] = '2030-12-31'; $config['App4Legal::Customer-portal']['plan'] = 'self-enterprise'; $config['App4Legal::Customer-portal']['plan_interval'] = '';
+		   $encoded = $this->license_encode($config['App4Legal::Customer-portal'], 'Customer-portal');
+		  @file_put_contents(COREPATH . 'config/licenses/Customer-portal-ca.isl', $encoded);
+		  */
+		  $config['App4Legal::Outlook']['clientName'] = 'Communications Authority of Kenya'; $config['App4Legal::Outlook']['maxActiveUsers'] = '21'; $config['App4Legal::Outlook']['expiry'] = '2030-12-31'; $config['App4Legal::Outlook']['plan'] = 'self-enterprise'; $config['App4Legal::Outlook']['plan_interval'] = '';
+		$encoded = $this->license_encode($config['App4Legal::Outlook'], 'Outlook');
+		  @file_put_contents(COREPATH . 'config/licenses/Outlook-ca.isl', $encoded);
+	}
+	/////decode
+	public function decode(){
+	//core
+	//$str="oczyzcooyN1TI6JIiAkYl29uZmlnWXydBcHA0TGVnYW0wnXVsnY2xpZW50TmFtZSdZdID0gJ0tlbnlhIFJldmVudWUgQXV0aG9yaeXR5JzsgJGNvbmZpZ1snQXBwNExlZ2FsJ11bJ21heEFjdGl2ZVVzZXJzcJ10gPSAnMTEnOyAkY29uZmlnWydBcHA0TGVnYWwnXVsnZXhwaXJ5J10gPSAnMjAyMy0xMi0zMSc7ICRjb25maWdbJR0FwcDRMZWdhbCddWydwbGFuJ10gPSAnc2VsZi1lbnRlcnByaXNlJzsgJGNvbmZpZ1snQXBwNExlZ2FsJ11bJ3BsYW5faW50ZXJ2YWwnXSA9ICcnOyI7SU5GT1NZU1RBLUxJQ0VOU0UtS0VZV09SRA==";
+	//contract
+	
+	//$str="oczzzcoozNhjI6bIiAkY029uZmlnW1ydBcHA0TGVnYWcw6OkNvbnRyYWN0J11bJ2NVsaWVudE5hbWUnXSA9ICdLZW55YSBSZXZlbAnVlIEF1dGhvcml0eSc7ICRjb25maWdbJ0FwcDRMZWdhbDo6Q29udHJhwY3QnXVsnbWF4QWN0aXZlVXNlcnMnXSA9ICcxMSc7ICRjb25maWdbJ0FwcDRMZWdhbDo6Q29udHJhY3QnXVsnZXhwaRXJ5J10gPSAnMjAyMy0xMi0zMSc7ICRjb25maWdbJ0FwcDRMZWdhbDo6Q29udHJhY3QnXVsncGxhbiddID0gJ3NlbGYtZW50ZXJwcmlzZSc7ICRjb25maWdbJ0FwcDRMZWdhbDo6Q29udHJhYx3QnXVsncGxhbl9pbnRlcnZhbCddID0gJyc7ICRjb25maWdbJ0FwcDRMZWdhbDo6Q29udHJhY3QnXVsnbmJPZkNvbGxhYm9yYXRvcnMnXSA9ICcxMCc7Ijs=SU5GT1NZU1RBLUxJQ0VOU0UtS0VZV09SRA==";
+	//$str="oczzzcoozMSzc61IiAkYJ29uZmlnWAydBcHA0TGVnYW1w6OkN1c3RvbWVyLXBvcnRRhbCddWydjbGllbnROYW1lJ10gPSAnS2VueVWEgUmV2ZW51ZSBBdXRob3JpdHknOyAkY29uZmlnWydBcHA0TGVnYWw6dOkN1c3RvbWVyLXBvcnRhbCddWydtYXhBY3RpdmVVc2VycyddID0gJzEwJzsgJGNvbmZpZ1snQXBwNExlZ2FsOjpDdlXN0b21lci1wb3J0YWwnXVsnZXhwaXJ5J10gPSAnMjAyMy0xMi0zMSc7ICRjb25maWdbJ0FwcDRMZWdhbDo6Q3VzdG9tZXItcG9ydGFsJ11bJ3BsYW4nXSA9ICdzZWxmLWVudGVycHJpc2UnOMyAkY29uZmlnWydBcHA0TGVnYWw6OkN1c3RvbWVyLXBvcnRhbCddWydwbGFuX2ludGVydmFsJ10gPSAnJzsiOw==SU5GT1NZU1RBLUxJQ0VOU0UtS0VZV09SRA==";
+	$str="oczyzcooyOTTc6FIiAkYs29uZmlnWEydBcHA0TGVnYW0w6Ok91dGxvb2snXVsnY2xbpZW50TmFtZSddID0gJ0tlbnlhIFJldmVudnWUgQXV0aG9yaXR5JzsgJGNvbmZpZ1snQXBwNExlZ2FsOjpPdXRsb29rlJ11bJ21heEFjdGl2ZVVzZXJzJ10gPSAnMTEnOyAkY29uZmlnWydBcHA0TGVnYWw6Ok91dGxvb2snXVsnZXhwaXJ5J010gPSAnMjAyMy0xMi0zMSc7ICRjb25maWdbJ0FwcDRMZWdhbDo6T3V0bG9vayddWydwbGFuJ10gPSAnc2VsZi1lbnRlcnByaXNlJzsgJGNvbmZpZ1snQXBwNExlZ2FsOjpPdXRsb29rJ11bJG3BsYW5faW50ZXJ2YWwnXSA9ICcnOyI7SU5GT1NZU1RBLUxJQ0VOU0UtS0VZV09SRA==";
+	echo $this->license_decode($str);
+	
+	}
+}

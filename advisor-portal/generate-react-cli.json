@@ -1,0 +1,28 @@
+{
+    "usesTypeScript": false,
+    "usesCssModule": false,
+    "cssPreprocessor": "scss",
+    "testLibrary": "None",
+    "component": {
+        "default": {
+            "path": "src/components",
+            "withStyle": true,
+            "withTest": true,
+            "withStory": false,
+            "withLazy": true,
+            "customTemplates": {
+                "component": "./templates/component/component.js"
+            }
+        },
+        "page": {
+            "path": "src/pages",
+            "withStyle": true,
+            "withTest": true,
+            "withStory": false,
+            "withLazy": true,
+            "customTemplates": {
+                "component": "./templates/page/page.js"
+            }
+        }
+    }
+}

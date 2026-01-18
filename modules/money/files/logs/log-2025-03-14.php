@@ -1,0 +1,16 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2025-03-14 09:30:03 --> Could not find the language line "voucher_header_id"
+ERROR - 2025-03-14 09:30:03 --> Could not find the language line "local_amount"
+ERROR - 2025-03-14 09:30:03 --> Could not find the language line "foreign_amount"
+ERROR - 2025-03-14 09:30:03 --> Could not find the language line "voucher_header_id"
+ERROR - 2025-03-14 09:30:03 --> Could not find the language line "vouchers"
+ERROR - 2025-03-14 12:30:03 --> Could not find the language line "voucher_header_id"
+ERROR - 2025-03-14 12:30:03 --> Could not find the language line "client_account_id"
+ERROR - 2025-03-14 12:30:03 --> Could not find the language line "fl1name"
+ERROR - 2025-03-14 12:30:03 --> Could not find the language line "fl2name"
+ERROR - 2025-03-14 09:30:04 --> Could not find the language line "voucher_header_id"
+ERROR - 2025-03-14 09:30:05 --> Could not find the language line "local_amount"
+ERROR - 2025-03-14 09:30:05 --> Could not find the language line "foreign_amount"
+ERROR - 2025-03-14 09:30:05 --> Could not find the language line "voucher_header_id"
+ERROR - 2025-03-14 09:30:05 --> Could not find the language line "vouchers"

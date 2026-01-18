@@ -1,0 +1,83 @@
+@import './../../../../assets/styles/colors';
+
+#advisor-task-details-slide-view {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 0px 10px;
+    padding-right: 0px;
+    margin: 0px;
+    height: 100vh;
+    width: 25%;
+    max-width: 400px;
+    z-index: 10;
+
+    &.rtl{
+        padding-right: unset;
+        right: unset;
+
+        padding-left: 0px;
+        left: 0;
+    }
+
+    .details-container {
+        background-color: #fff;
+        height: 100%;
+        padding: 0px;
+        margin: 0px;
+        border-left: 1px solid #c8c8c8;
+        box-shadow: 1px 0px 15px 0px rgba(0,0,0,0.55);
+
+        .slide-view-header {
+            border-bottom: 1px solid #c8c8c8;
+            padding-left: 15px;
+            padding-right: 15px;
+            position: relative;
+            margin-bottom: 20px;
+
+            &.border-blue {
+                border-left-color: $textBlue
+            }
+            
+            &.border-yellow {
+                border-left-color: $textYellow
+            }
+            
+            &.border-green {
+                border-left-color: $textGreen
+            }
+
+            .close {
+                position: absolute;
+                right: 0;
+                top: 0;
+                margin: 5px;
+
+                &.rtl{
+                    right: unset;
+                    left: 0;
+                }
+            }
+
+            .task-type {
+                font-size: 14px;
+                color: #777;
+            }
+
+            .title-container {
+                margin-top: 0px;
+                margin-bottom: 20px;
+                padding: 20px 0px 5px;
+            }
+        }
+
+        .slide-view-body {
+            padding-right: 10px;
+            padding-left: 10px;
+        }
+
+        .details-title {
+            margin: 10px 0px 20px;
+        }
+    }
+}

@@ -1,0 +1,1 @@
+alter table contract add effective_date date null;

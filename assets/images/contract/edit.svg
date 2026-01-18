@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="14.953" height="14.952" viewBox="0 0 14.953 14.952">
+    <defs>
+        <style>
+            .cls-1{fill:#8697ba}
+        </style>
+    </defs>
+    <g id="edit" transform="translate(.001)">
+        <g id="Group_561" transform="translate(-.001)">
+            <g id="Group_560">
+                <path id="Path_530" d="M0 77.086V80.2h3.116l9.193-9.193-3.116-3.114z" class="cls-1" transform="translate(0 -65.249)"/>
+                <path id="Path_531" d="M263.3 2.183l-1.94-1.94a.832.832 0 0 0-1.176 0l-1.52 1.52 3.116 3.115 1.52-1.52a.832.832 0 0 0 0-1.175z" class="cls-1" transform="translate(-248.592)"/>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,17 @@
+<?php
+define("LARAVEL_START", microtime(true));
+define("CLOUD", false);
+define("INSTANCE_PATH", "../");
+$core_fcpath = INSTANCE_PATH;
+define("CORE_FCPATH", $core_fcpath);
+define("VENDOR_PATH", INSTANCE_PATH . "../vendor/");
+define("API_FCPATH", CORE_FCPATH . "api/");
+$loader = (require VENDOR_PATH . "autoload.php");
+$loader->setPsr4("App\\", API_FCPATH . "app");
+$app = (require_once API_FCPATH . "bootstrap/app.php");
+$kernel = $app->make("Illuminate\\Contracts\\Http\\Kernel");
+$response = $kernel->handle($request = Illuminate\Http\Request::capture());
+$response->send();
+$kernel->terminate($request, $response);
+
+?>

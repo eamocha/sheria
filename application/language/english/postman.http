@@ -1,0 +1,437 @@
+{
+	"info": {
+
+		"name": "Legal Opinions",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	 	},
+
+    "item": [
+        {
+            "name": "Load New Legal Opinion Form Data",
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "x-api-key",
+                        "value": "{{x-api-key}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": []
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/legal_opinions/add/",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "legal_opinions",
+                        "add",
+                        ""
+                    ]
+                },
+                "description": "### Action: Load legal opinion form data\n\n#### Parameters: None\n\n#### Response (success data):\n```json\n{\n    \"error\": \"\",\n    \"success\": {\n        \"data\": {\n            \"formData\": {\n                \"opinion_types\": [\n                    {\n                        \"id\": \"1\",\n                        \"name\": \"Contract Review\"\n                    },\n                    {\n                        \"id\": \"2\",\n                        \"name\": \"Compliance Analysis\"\n                    },\n                    {\n                        \"id\": \"3\",\n                        \"name\": \"Regulatory Opinion\"\n                    }\n                ],\n                \"priorities\": {\n                    \"critical\": \"Critical\",\n                    \"high\": \"High\",\n                    \"medium\": \"Medium\",\n                    \"low\": \"Low\"\n                },\n                \"statuses\": {\n                    \"draft\": \"Draft\",\n                    \"in_review\": \"In Review\",\n                    \"final\": \"Final\",\n                    \"issued\": \"Issued\"\n                }\n            }\n        },\n        \"msg\": \"\"\n    }\n}\n```\n\n#### Permission: Core access"
+            },
+            "response": []
+        },
+        {
+            "name": "Add New Legal Opinion",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "x-api-key",
+                        "value": "{{x-api-key}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "title",
+                            "value": "Legal Opinion on Contract Validity",
+                            "type": "text"
+                        },
+                        {
+                            "key": "opinion_type_id",
+                            "value": "1",
+                            "type": "text"
+                        },
+                        {
+                            "key": "description",
+                            "value": "Detailed analysis of contract validity under current legislation",
+                            "type": "text"
+                        },
+                        {
+                            "key": "legal_issue",
+                            "value": "Contract validity and enforceability",
+                            "type": "text"
+                        },
+                        {
+                            "key": "analysis",
+                            "value": "Comprehensive legal analysis of the matter",
+                            "type": "text"
+                        },
+                        {
+                            "key": "conclusion",
+                            "value": "The contract is valid and enforceable",
+                            "type": "text"
+                        },
+                        {
+                            "key": "recommendations",
+                            "value": "Proceed with execution after minor amendments",
+                            "type": "text"
+                        },
+                        {
+                            "key": "priority",
+                            "value": "high",
+                            "type": "text"
+                        },
+                        {
+                            "key": "due_date",
+                            "value": "2025-12-31",
+                            "type": "text"
+                        },
+                        {
+                            "key": "legal_case_id",
+                            "value": "",
+                            "type": "text"
+                        },
+                        {
+                            "key": "client_id",
+                            "value": "",
+                            "type": "text"
+                        },
+                        {
+                            "key": "client_type",
+                            "value": "company",
+                            "type": "text"
+                        },
+                        {
+                            "key": "is_confidential",
+                            "value": "yes",
+                            "type": "text"
+                        },
+                        {
+                            "key": "Legal_Opinion_Watchers_Users",
+                            "value": "",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/legal_opinions/add/",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "legal_opinions",
+                        "add",
+                        ""
+                    ]
+                },
+                "description": "### Action: Add new Legal Opinion\n\n#### Parameters:\n\n- title (R) => (type: String, Rules: (maxLength: 255))\n- opinion_type_id (R) => (type: Integer)\n- description (O) => (type: String, Rules: (minLength: 3))\n- legal_issue (R) => (type: String, Rules: (maxLength: 500))\n- analysis (R) => (type: String, Rules: (minLength: 10))\n- conclusion (R) => (type: String, Rules: (minLength: 10))\n- recommendations (O) => (type: String)\n- priority (O) => (type: String, Values: ('critical', 'high', 'medium', 'low'), Default: 'medium')\n- due_date (O) => (type: date, format: 'Y-m-d')\n- legal_case_id (O) => (type: Integer)\n- client_id (O) => (type: Integer)\n- client_type (O) => (type: String, Values: ('company', 'contact'))\n- is_confidential (O) => (type: String, Values: ('yes', 'no'), Default: 'no')\n- Legal_Opinion_Watchers_Users (O) => (type: Array of users ID, format: Legal_Opinion_Watchers_Users[]=integer Value)\n\n#### Response (success data):\n```json\n{\n    \"error\": \"\",\n    \"success\": {\n        \"data\": {\n            \"opinion_id\": \"123\"\n        },\n        \"msg\": \"Legal opinion created successfully\"\n    }\n}\n```\n\n#### Permission: Core access"
+            },
+            "response": []
+        },
+        {
+            "name": "Get Legal Opinion Details",
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "x-api-key",
+                        "value": "{{x-api-key}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": []
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/legal_opinions/edit/?id=1",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "legal_opinions",
+                        "edit",
+                        ""
+                    ],
+                    "query": [
+                        {
+                            "key": "id",
+                            "value": "1"
+                        }
+                    ]
+                },
+                "description": "### Action: Load legal opinion data\n\n#### Parameters:\n- id (R) => (type: Integer)\n\n#### Response (success data):\n```json\n{\n    \"error\": \"\",\n    \"success\": {\n        \"data\": {\n            \"formData\": {\n                \"opinion_types\": [],\n                \"priorities\": {},\n                \"statuses\": {}\n            },\n            \"opinionValues\": {\n                \"id\": \"1\",\n                \"title\": \"Legal Opinion on Contract Validity\",\n                \"opinion_type_id\": \"1\",\n                \"description\": \"Detailed analysis...\",\n                \"legal_issue\": \"Contract validity and enforceability\",\n                \"analysis\": \"Comprehensive legal analysis...\",\n                \"conclusion\": \"The contract is valid and enforceable\",\n                \"recommendations\": \"Proceed with execution...\",\n                \"priority\": \"high\",\n                \"status\": \"draft\",\n                \"due_date\": \"2025-12-31\",\n                \"legal_case_id\": null,\n                \"client_id\": \"5\",\n                \"client_type\": \"company\",\n                \"is_confidential\": \"yes\",\n                \"createdOn\": \"2025-09-03 14:30:00\",\n                \"createdBy\": \"7\",\n                \"modifiedOn\": \"2025-09-03 14:30:00\",\n                \"modifiedBy\": \"7\",\n                \"created_by_name\": \"Robert Sheria\",\n                \"client_name\": \"ABC Corporation\"\n            }\n        },\n        \"msg\": \"\"\n    }\n}\n```\n\n#### Permission: Core access"
+            },
+            "response": []
+        },
+        {
+            "name": "Edit Legal Opinion",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "x-api-key",
+                        "value": "{{x-api-key}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "id",
+                            "value": "1",
+                            "type": "text"
+                        },
+                        {
+                            "key": "title",
+                            "value": "Updated Legal Opinion Title",
+                            "type": "text"
+                        },
+                        {
+                            "key": "opinion_type_id",
+                            "value": "2",
+                            "type": "text"
+                        },
+                        {
+                            "key": "description",
+                            "value": "Updated description",
+                            "type": "text"
+                        },
+                        {
+                            "key": "legal_issue",
+                            "value": "Updated legal issue",
+                            "type": "text"
+                        },
+                        {
+                            "key": "analysis",
+                            "value": "Updated analysis content",
+                            "type": "text"
+                        },
+                        {
+                            "key": "conclusion",
+                            "value": "Updated conclusion",
+                            "type": "text"
+                        },
+                        {
+                            "key": "status",
+                            "value": "final",
+                            "type": "text"
+                        },
+                        {
+                            "key": "is_confidential",
+                            "value": "no",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/legal_opinions/edit/",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "legal_opinions",
+                        "edit",
+                        ""
+                    ]
+                },
+                "description": "### Action: Edit Legal Opinion\n\n#### Parameters:\n- id (R) => (type: Integer)\n- title (R) => (type: String, Rules: (maxLength: 255))\n- opinion_type_id (R) => (type: Integer)\n- description (O) => (type: String, Rules: (minLength: 3))\n- legal_issue (R) => (type: String, Rules: (maxLength: 500))\n- analysis (R) => (type: String, Rules: (minLength: 10))\n- conclusion (R) => (type: String, Rules: (minLength: 10))\n- recommendations (O) => (type: String)\n- priority (O) => (type: String, Values: ('critical', 'high', 'medium', 'low'))\n- status (O) => (type: String, Values: ('draft', 'in_review', 'final', 'issued'))\n- due_date (O) => (type: date, format: 'Y-m-d')\n- is_confidential (O) => (type: String, Values: ('yes', 'no'))\n- Legal_Opinion_Watchers_Users (O) => (type: Array of users ID)\n\n#### Permission: Core access"
+            },
+            "response": []
+        },
+        {
+            "name": "List Legal Opinions",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "x-api-key",
+                        "value": "{{x-api-key}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "pageSize",
+                            "value": "20",
+                            "type": "text"
+                        },
+                        {
+                            "key": "pageNb",
+                            "value": "1",
+                            "type": "text"
+                        },
+                        {
+                            "key": "term",
+                            "value": "",
+                            "type": "text"
+                        },
+                        {
+                            "key": "filters[status]",
+                            "value": "draft",
+                            "type": "text"
+                        },
+                        {
+                            "key": "filters[priority]",
+                            "value": "high",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/legal_opinions/list_opinions/",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "legal_opinions",
+                        "list_opinions",
+                        ""
+                    ]
+                },
+                "description": "### Action: Retrieves all legal opinions\n\n#### Parameters:\n- pageSize (O) => (type: Integer)\n- pageNb (O) => (type: Integer)\n- term (O) => (type: String)\n- filters (O) => (type: Array)\n  - status => (type: String)\n  - priority => (type: String)\n  - opinion_type_id => (type: Integer)\n  - client_id => (type: Integer)\n  - created_by => (type: Integer)\n  - due_date => (type: Array with operator and date)\n\n#### Response (success data):\n```json\n{\n    \"error\": \"\",\n    \"success\": {\n        \"totalRows\": 15,\n        \"data\": [\n            {\n                \"id\": \"1\",\n                \"title\": \"Legal Opinion on Contract Validity\",\n                \"opinion_type\": \"Contract Review\",\n                \"priority\": \"high\",\n                \"status\": \"draft\",\n                \"due_date\": \"2025-12-31\",\n                \"client_name\": \"ABC Corporation\",\n                \"created_by_name\": \"Robert Sheria\",\n                \"createdOn\": \"2025-09-03 14:30:00\",\n                \"is_confidential\": \"yes\"\n            }\n        ],\n        \"dbDriver\": \"MYSQL\"\n    }\n}\n```\n\n#### Permission: Core access"
+            },
+            "response": []
+        },
+        {
+            "name": "Add Legal Opinion Attachment",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "x-api-key",
+                        "value": "{{x-api-key}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "legal_opinion_id",
+                            "value": "1",
+                            "type": "text"
+                        },
+                        {
+                            "key": "file",
+                            "value": "",
+                            "type": "file"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/legal_opinions/attachment_add/",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "legal_opinions",
+                        "attachment_add",
+                        ""
+                    ]
+                },
+                "description": "### Action: Attach documents to legal opinion\n\n#### Parameters:\n- legal_opinion_id (R) => (type: Integer)\n- FILES: (R) => (type: FILE)\n\n#### Permission: Core Access"
+            },
+            "response": []
+        },
+        {
+            "name": "Delete Legal Opinion",
+            "protocolProfileBehavior": {
+                "disableBodyPruning": true
+            },
+            "request": {
+                "method": "GET",
+                "header": [
+                    {
+                        "key": "x-api-key",
+                        "value": "{{x-api-key}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": []
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/legal_opinions/delete/?id=1",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "legal_opinions",
+                        "delete",
+                        ""
+                    ],
+                    "query": [
+                        {
+                            "key": "id",
+                            "value": "1"
+                        }
+                    ]
+                },
+                "description": "### Action: Delete legal opinion\n\n#### Parameters:\n- id (R) => (type: Integer)\n\n#### Response (success data):\n```json\n{\n    \"error\": \"\",\n    \"success\": {\n        \"data\": [],\n        \"msg\": \"Legal opinion deleted successfully\"\n    }\n}\n```\n\n#### Permission: Core Access"
+            },
+            "response": []
+        },
+        {
+            "name": "Search Legal Opinions",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "x-api-key",
+                        "value": "{{x-api-key}}",
+                        "type": "text"
+                    }
+                ],
+                "body": {
+                    "mode": "formdata",
+                    "formdata": [
+                        {
+                            "key": "search_term",
+                            "value": "contract validity",
+                            "type": "text"
+                        },
+                        {
+                            "key": "search_in[]",
+                            "value": "title,analysis,conclusion",
+                            "type": "text"
+                        }
+                    ]
+                },
+                "url": {
+                    "raw": "{{baseUrl}}/legal_opinions/search/",
+                    "host": [
+                        "{{baseUrl}}"
+                    ],
+                    "path": [
+                        "legal_opinions",
+                        "search",
+                        ""
+                    ]
+                },
+                "description": "### Action: Search legal opinions by content\n\n#### Parameters:\n- search_term (R) => (type: String)\n- search_in[] (O) => (type: Array, Values: ['title', 'description', 'legal_issue', 'analysis', 'conclusion', 'recommendations'])\n\n#### Permission: Core access"
+            },
+            "response": []
+        }
+    ],
+    "description": "This folder contains APIs related to Sheria360 Legal Opinions management."
+}

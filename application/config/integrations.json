@@ -1,0 +1,25 @@
+
+{
+    "Dropbox":
+        {
+            "client_id": "",
+            "client_secret": ""
+        },
+    "Google-Calendar":
+        {
+            "project_id":"",
+            "client_id":"",
+            "client_secret":""
+        },
+    "MS-Office-Calendar-365":
+        {
+            "clientId":"5504a6a1-28cf-4229-adfd-7a28c1ef33d9",
+            "clientSecret":"sdz8Q~xL8BCF20Uz~B.6oVsyh8kMjdYQUtoKXb8o",
+            "redirectUri": "https://lexnet.ca.go.ke/calendar_integrations/oauth"
+        },
+    "Zoom-Meetings":
+        {
+            "client_id":"",
+            "client_secret":""
+        }
+}

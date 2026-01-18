@@ -1,0 +1,17 @@
+.litigation-case-page-stages-panel-actions-toolbar {
+
+    .current-stage-name-label {
+        font-size: 1rem;
+        font-weight: 400;
+    }
+
+    .current-stage-name {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-right: 30px;
+        &.rtl{
+            margin-right: unset;
+            margin-left: 30px;
+        }
+    }
+}

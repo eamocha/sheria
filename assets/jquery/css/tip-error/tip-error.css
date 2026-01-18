@@ -1,0 +1,24 @@
+.tip-error { -moz-border-radius:4px; -webkit-border-radius:4px; background-color:#FFDFD3; border:1px solid #f00; border-radius:4px; opacity:0.95; max-width:200px; padding:8px 8px; text-align:left; z-index:1000;}
+.tip-error .tip-inner {color:#9F0251; font-family: Arial,sans-serif; font-size: 13px;}
+
+/* Configure an arrow image - the script will automatically position it on the correct side of the tip */
+.tip-error .tip-arrow-top {background:url(tip-error_arrows.png) no-repeat; height:5px; left:50%; margin-top:-5px; margin-left:-5px; /* approx. half the width to center it */ top:0; width:9px;}
+.tip-error .tip-arrow-right { background:url(tip-error_arrows.png) no-repeat -9px 0; height:9px; left:100%; margin-top:-4px; /* approx. half the height to center it */ margin-left:0; top:50%; width:5px;}
+.tip-error .tip-arrow-bottom {
+	margin-top:0;
+	margin-left:-5px; /* approx. half the width to center it */
+	top:100%;
+	left:50%;
+	width:9px;
+	height:5px;
+	background:url(tip-error_arrows.png) no-repeat -18px 0;
+}
+.tip-error .tip-arrow-left {
+	margin-top:-4px; /* approx. half the height to center it */
+	margin-left:-5px;
+	top:50%;
+	left:0;
+	width:5px;
+	height:9px;
+	background:url(tip-error_arrows.png) no-repeat -27px 0;
+}

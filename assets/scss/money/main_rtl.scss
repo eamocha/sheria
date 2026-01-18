@@ -1,0 +1,103 @@
+#invoice-template-customization{
+  input[type=radio], input[type=checkbox] {
+    margin-left: 5px;
+    margin-right: 0px;
+}
+  label {
+    font-size: 14px !important;
+    text-align: right;
+}
+    .list-header{
+        left: 15px;
+        right: 0;
+    }
+    input[type="checkbox"] {
+        margin-right: 0px;
+        margin-left: 10px;
+    }
+}
+.statuses-options{
+    left: 0 !important;
+    right: 15px !important;
+}
+#invoice-app{
+    .lbl-top-corner{
+        right: auto;
+        left:20px
+    }
+}
+.p-dropdown-panel{
+    .p-dropdown-header{
+        .p-dropdown-filter{
+            margin-right: -0.75rem !important;
+        }
+        .p-dropdown-filter-icon{
+            right:unset !important;
+            left:1.75rem !important;
+        }
+    }
+}
+.p-inputgroup > .p-component + .p-inputgroup-addon, .p-inputgroup > .p-inputwrapper > .p-inputtext + .p-inputgroup-addon, .p-inputgroup > .p-float-label > .p-component + .p-inputgroup-addon{
+    border-right: 0 none;
+}
+.p-inputgroup-addon:last-child, .p-inputgroup button:last-child, .p-inputgroup input:last-child, .p-inputgroup > .p-inputwrapper:last-child, .p-inputgroup > .p-inputwrapper:last-child > .p-inputtext{
+    border-top-left-radius: 4px !important;
+    border-bottom-left-radius: 4px !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+.p-dropdown {
+    .p-dropdown-clear-icon{
+        right: unset !important;
+        left: 2.357rem;
+    }
+}
+
+.p-component,
+.p-card-content,
+.p-inputtext {
+  font-family: "Tajawal", tahoma, verdana, arial, sans-serif !important;
+}
+
+.p-button .p-button-icon-left,
+.p-menuitem-icon, .p-checkbox,
+.p-fieldset.p-fieldset-toggleable .p-fieldset-legend a .p-fieldset-toggler {
+  margin-left: 0.5rem !important;
+}
+
+.p-sortable-column-icon {
+  margin-right: 0.5rem !important;
+  margin-left: unset !important;
+}
+
+#credit-note-app #breadcrumb-container .menu-container {
+  right: unset;
+  left: 30px;
+}
+
+.pi-chevron-right:before {
+  content: "\e900" !important;
+}
+
+.p-toast-message-icon {
+  margin-left: 8px;
+}
+
+.exchange-rate-input {
+  direction: ltr;
+  text-align: right;
+}
+
+.select-button-currency, .p-selectbutton {
+  direction: ltr;
+}
+
+#credit-note-grid-app {
+  .p-paginator {
+      direction: ltr;
+  }
+
+  .p-datatable .p-datatable-thead > tr > th {
+      text-align: right;
+  }
+}

@@ -1,0 +1,93 @@
+#AP-main-menu {
+
+    .AP-main-menu-drawer {
+        background-color: #205081;
+        box-shadow: 1px 0px 15px 0px rgba(0,0,0,0.55);
+        border-right: none;
+        width: 100%;
+        max-width: 180px;
+
+        .AP-main-menu-list {
+            height: 100%;
+            min-height: 600px;
+
+            .AP-main-menu-list-item {
+                padding-right: 10px;
+                padding-left: 8px;
+
+                &.active {
+                    padding-right: 10px;
+                    padding-left: 8px;
+                    background-color: #fff;
+                    color: #000;
+                }
+
+                .AP-main-menu-list-item-icon {
+                    width: 18px;
+                    height: 18px;
+                    margin-right: 10px;
+                    vertical-align: middle;
+                    
+                    &.rtl{
+                        margin-left: 10px;
+                        margin-right: unset;
+                    }
+                }
+
+                .AP-main-menu-list-item-icon-btn {
+                    color: #fff;
+                    margin: auto;
+                    width: 100%;
+                    padding: 0;
+                    
+                    &:hover {
+                        background-color: transparent;
+                    }
+                }
+
+                .AP-main-menu-list-item-icon-label {
+                    text-align: left;
+                    justify-content: start;
+                    font-size: 14px;
+                }
+
+                .AP-main-menu-list-item-link {
+                    display: flex;
+                }
+            }
+
+            .AP-main-menu-logo {
+                padding-right: 10px;
+                padding-left: 10px;
+                margin-bottom: 20px;
+
+                .AP-main-menu-logo-btn {
+                    width: 100%;
+                    margin: auto;
+                    
+                    &:hover {
+                        background-color: transparent;
+                    }
+                }
+
+                .AP-main-menu-logo-img {
+                    margin-top: 5px;
+                    vertical-align: middle;
+                    max-width: 100%;
+                }
+            }
+
+            .AP-main-menu-divider {
+                margin-bottom: 20px;
+                background-color: #eee;
+            }
+
+            .AP-main-menu-bottom-items {
+                position: absolute;
+                bottom: 10px;
+                right: 0;
+                left: 0;
+            }
+        }
+    }
+}

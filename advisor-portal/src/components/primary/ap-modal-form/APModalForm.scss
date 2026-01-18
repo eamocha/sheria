@@ -1,0 +1,8 @@
+.APModalForm {
+    .MuiIconButton-root{
+        &.rtl{
+            left: 10px;
+            right: unset;
+        }
+    }
+}

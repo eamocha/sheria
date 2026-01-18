@@ -1,0 +1,32 @@
+@import './../../../assets/styles/colors';
+
+.badge {
+    padding: 6px;
+    color: $mainWhite;
+    border-radius: 5px;
+    font-weight: 700;
+
+    &.badge-blue {
+        background-color: $textBlue;
+    }
+    
+    &.badge-yellow {
+        background-color: $textYellow;
+    }
+    
+    &.badge-green {
+        background-color: $textGreen;
+    }
+}
+
+.legal-case-stage-status {
+    font-size: 13px;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    padding: 6px;
+    border-radius: 5px;
+    font-weight: 700;
+}

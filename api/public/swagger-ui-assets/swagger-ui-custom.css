@@ -1,0 +1,19 @@
+.swagger-ui .topbar {
+    background-color: #205081 !important;
+}
+
+.topbar-wrapper>a>img {
+    content: url(../../public/swagger-ui-assets/app4legal-logo.png) !important;
+}
+
+.swagger-ui .topbar .download-url-wrapper input[type=text] {
+    border: none !important;
+}
+
+.swagger-ui .topbar .download-url-wrapper .download-url-button {
+    background: #148c75 !important;
+}
+
+.swagger-ui .topbar .download-url-wrapper {
+    /* display: none; */
+}

@@ -1,0 +1,137 @@
+<?php
+
+require realpath(__DIR__ . "/../.." . "/application/config/database.php");
+
+
+$baseurlpath = "https://lexnet.ca.go.ke/saml/www/";
+
+
+/*
+$whitelist = ["127.0.0.1", "::1"];
+if(!in_array($_SERVER["REMOTE_ADDR"], $whitelist)) {
+    $baseurlpath = explode("/", $_SERVER["PHP_SELF"]);
+    $baseurlpath = $baseurlpath[1] . "/" . $baseurlpath[2] . "/saml/www/";
+}
+*/
+
+$config = [
+    "baseurlpath" => $baseurlpath,
+
+    "certdir" => "cert/",
+    "loggingdir" => "log/",
+    "datadir" => "data/",
+    "tempdir" => "/tmp/simplesaml",
+    "technicalcontact_name" => "Administrator",
+    "technicalcontact_email" => "eric.atinga@sheria360.com",
+    "timezone" => "Africa/Nairobi",
+    "secretsalt" => "sheria360@l_secre|Salt",
+    "auth.adminpassword" => "sheria360@l_admin{Password}",
+    "admin.protectindexpage" => false,
+    "admin.protectmetadata" => false,
+    "admin.checkforupdates" => true,
+    "trusted.url.domains" => [],
+    "trusted.url.regex" => false,
+    "enable.http_post" => false,
+    "assertion.allowed_clock_skew" => 180,
+    "debug" => [
+        "saml" => false,
+        "backtraces" => true,
+        "validatexml" => false
+    ],
+    "showerrors" => true,
+    "errorreporting" => true,
+    "logging.level" => SimpleSAML\Logger::NOTICE,
+    "logging.handler" => "syslog",
+    "logging.facility" => defined("LOG_LOCAL5") ? constant("LOG_LOCAL5") : LOG_USER,
+    "logging.processname" => "simplesamlphp",
+    "logging.logfile" => "simplesamlphp.log",
+    "statistics.out" => [],
+    "proxy" => NULL,
+    "database.prefix" => "saml_",
+    "database.driver_options" => [],
+    "database.persistent" => false,
+    "database.slaves" => [],
+    "enable.saml20-idp" => false,
+    "enable.shib13-idp" => false,
+    "enable.adfs-idp" => false,
+    "enable.wsfed-sp" => false,
+    "enable.authmemcookie" => false,
+    "default-wsfed-idp" => "urn:federation:pingfederate:localhost",
+    "shib13.signresponse" => true,
+    "session.duration" => 28800,
+    "session.datastore.timeout" => 14400,
+    "session.state.timeout" => 3600,
+    "session.cookie.name" => "SimpleSAMLSessionID5",
+    "session.cookie.lifetime" => 0,
+    "session.cookie.path" => "/",
+    "session.cookie.domain" => NULL,
+    "session.cookie.secure" => false,
+    "session.cookie.samesite" => NULL,
+    "session.phpsession.cookiename" => "SimpleSAML5",
+    "session.phpsession.savepath" => NULL,
+    "session.phpsession.httponly" => true,
+    "session.authtoken.cookiename" => "SimpleSAMLAuthToken5",
+    "session.rememberme.enable" => false,
+    "session.rememberme.checked" => false,
+    "session.rememberme.lifetime" => 1209600,
+    "memcache_store.servers" => [[["hostname" => "localhost"]]],
+    "memcache_store.prefix" => "",
+    "memcache_store.expires" => 129600,
+    "language" => [
+        "priorities" => [
+            "no" => ["nb", "nn", "en", "se"],
+            "nb" => ["no", "nn", "en", "se"],
+            "nn" => ["no", "nb", "en", "se"],
+            "se" => ["nb", "no", "nn", "en"],
+            "nr" => ["zu", "en"],
+            "nd" => ["zu", "en"]
+        ]
+    ],
+    "language.available" => ["en", "no", "nn", "se", "da", "de", "sv", "fi", "es", "ca", "fr", "it", "nl", "lb", "cs", "sl", "lt", "hr", "hu", "pl", "pt", "pt-br", "tr", "ja", "zh", "zh-tw", "ru", "et", "he", "id", "sr", "lv", "ro", "eu", "el", "af", "zu", "xh"],
+    "language.rtl" => ["ar", "dv", "fa", "ur", "he"],
+    "language.default" => "en",
+    "language.parameter.name" => "language",
+    "language.parameter.setcookie" => true,
+    "language.cookie.name" => "language",
+    "language.cookie.domain" => NULL,
+    "language.cookie.path" => "/",
+    "language.cookie.secure" => false,
+    "language.cookie.httponly" => false,
+    "language.cookie.lifetime" => 77760000,
+    "language.cookie.samesite" => NULL,
+    "attributes.extradictionary" => NULL,
+    "theme.use" => "default",
+    "template.auto_reload" => false,
+    "production" => true,
+    "idpdisco.enableremember" => true,
+    "idpdisco.rememberchecked" => true,
+    "idpdisco.validate" => true,
+    "idpdisco.extDiscoveryStorage" => NULL,
+    "idpdisco.layout" => "dropdown",
+    "authproc.idp" => [
+        "30" => "core:LanguageAdaptor",
+        "45" => ["class" => "core:StatisticsWithAttribute", "attributename" => "realm", "type" => "saml20-idp-SSO"],
+        "50" => "core:AttributeLimit",
+        "99" => "core:LanguageAdaptor"
+    ],
+    "authproc.sp" => [
+        "90" => "core:LanguageAdaptor"
+    ],
+    "metadatadir" => "metadata",
+    "metadata.sources" => [
+        ["type" => "xml", "file" => "metadata/federationmetadata.xml"]
+    ],
+    "metadata.sign.enable" => false,
+    "metadata.sign.privatekey" => NULL,
+    "metadata.sign.privatekey_pass" => NULL,
+    "metadata.sign.certificate" => NULL,
+    "metadata.sign.algorithm" => NULL,
+    "store.type" => "sql",
+    "store.sql.dsn" => $active_group === "sqlsrv" ? "sqlsrv:Server=" . $db[$active_group]["hostname"] . ";Database=" . $db[$active_group]["database"] : "mysql:host=" . $db[$active_group]["hostname"] . ";dbname=" . $db[$active_group]["database"],
+    "store.sql.username" => $db[$active_group]["username"],
+    "store.sql.password" => $db[$active_group]["password"],
+    "store.sql.prefix" => "saml_",
+    "store.redis.host" => "localhost",
+    "store.redis.port" => 6379,
+    "store.redis.prefix" => "SimpleSAMLphp"
+];

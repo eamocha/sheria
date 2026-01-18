@@ -1,0 +1,12 @@
+#APNotificationBar {
+    .close-notification{
+        top: 10px;
+        position: absolute;
+        right: 5px;
+
+        &.rtl{
+            right: unset;
+            left: 5px;
+        }
+    }
+}

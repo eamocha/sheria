@@ -1,0 +1,22 @@
+Header always set Access-Control-Allow-Headers "x-api-key,x-api-channel,x-api-token,x-api-token-id"
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /app4legal/modules/api
+
+    #RewriteCond %{HTTPS} !on
+    #RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L]
+
+    RewriteCond %{REQUEST_URI} ^system.*
+    RewriteRule ^(.*)$ /index.php?/$1 [L]
+    RewriteCond %{REQUEST_URI} ^application.*
+    RewriteRule ^(.*)$ /index.php?/$1 [L]
+    RewriteCond %{REQUEST_URI} ^files.*
+    RewriteRule ^(.*)$ /index.php?/$1 [L]
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php?/$1 [L]
+</IfModule>
+<If '%{THE_REQUEST} =~ m#/modules/api/contacts/bulk_add#'> 
+   php_value max_input_vars 15000 
+</If>

@@ -1,0 +1,1 @@
+insert into system_preferences (groupName,keyName,keyValue) values('ContractDefaultValues','createNewContractOnAmendment','no')

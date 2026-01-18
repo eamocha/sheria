@@ -1,0 +1,1 @@
+ALTER TABLE contract ALTER COLUMN status NVARCHAR(10);

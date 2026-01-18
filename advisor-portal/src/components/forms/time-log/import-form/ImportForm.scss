@@ -1,0 +1,49 @@
+@import './../../../../assets/styles/colors';
+#advisor-time-log-import-form {
+
+    .inputfile{
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .inputfile + label, .download-button{
+        color: white;
+        background-color: #205081;
+        display: inline-block;
+        padding: 5px;
+        border-radius: 5px;
+        width: 100%;
+
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .primary-link{
+        margin-top: 20px;
+        margin-bottom: 20px;
+        width: 100%;
+        text-align: center;
+        color: $textBlue;
+    }
+
+    .error-messages {
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-bottom: 30px;
+    }
+
+    .error-messages-title {
+        font-weight: bold;
+        font-size: 20px;
+    }
+    
+    .inputfile:focus + label,
+    .inputfile + label:hover, .download-button:hover {
+        background-color: rgb(22, 56, 90);
+    }
+
+}

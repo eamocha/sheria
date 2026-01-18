@@ -1,0 +1,79 @@
+.navbar.navbar-default{
+    
+    background-color: $customer_portal_menu_background_color !important;
+    background: $customer_portal_menu_background_color !important;
+    
+    ul.navbar-nav{
+        
+        > li{
+            
+            > a{
+                
+                color: $customer_portal_menu_text_color !important;
+                background-color: $customer_portal_menu_button_background_color !important;
+                background: $customer_portal_menu_button_background_color !important;
+                
+                &:hover{
+                    
+                    color: $customer_portal_menu_text_hover_color !important;
+                }
+            }
+            
+            &.active{
+                
+                > a{
+                    
+                    color: $customer_portal_menu_text_hover_color !important;
+                    background-color: $customer_portal_menu_background_hover_color !important;
+                    background: $customer_portal_menu_background_hover_color !important;
+                }
+            }
+        }
+    }
+    
+    .btn:not(.btn-link){
+        
+        color: $customer_portal_menu_text_color !important;
+        background-color: $customer_portal_menu_background_hover_color !important;
+        background: $customer_portal_menu_background_hover_color !important;
+        
+        &:hover{
+                    
+            color: $customer_portal_menu_text_color !important;
+            background-color: $customer_portal_menu_background_hover_color !important;
+            background: $customer_portal_menu_background_hover_color !important;
+        }
+    }
+}
+
+.btn:not(.btn-link):not(.btn-sm):not(.cp-customizable-link):not(.dropdown-toggle),
+.btn.btn-default:not(#addMoreAttachment):not(.btn-sm):not(.cp-customizable-link):not(.dropdown-toggle),
+.dataTables_paginate ul.pagination li.active a:not(.cp-customizable-link){
+    
+    background-color: $customer_portal_buttons_background_color !important;
+    background: $customer_portal_buttons_background_color !important;
+    color: $customer_portal_buttons_text_color !important;
+    
+    &:hover{
+        
+        background-color: $customer_portal_buttons_hover_background_color !important;
+        background: $customer_portal_buttons_hover_background_color !important;
+        color: $customer_portal_buttons_hover_text_color !important;
+    }
+}
+
+#files_attachment button.btn.btn-default.btn-sm{
+    background-color: inherit;
+    background: inherit;
+}
+
+.cp-customizable-link{
+    
+    color: $customer_portal_links_text_color !important;
+    
+    &:hover,
+    &:active{
+        
+        color: $customer_portal_links_text_hover_color !important;
+    }
+}

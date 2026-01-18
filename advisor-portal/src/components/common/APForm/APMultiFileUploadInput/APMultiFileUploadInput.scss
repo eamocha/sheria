@@ -1,0 +1,46 @@
+.AP-multi-file-upload-input {
+    margin-top: 15px;
+
+    .AP-multi-file-upload-input-row {
+        margin-top: 15px;
+    }
+
+    .AP-multi-file-upload-input-add-more-btn {
+        margin-top: 20px;
+    }
+
+    .attach-file-icon {
+        vertical-align: text-top;
+    }
+
+    .inputfile{
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .inputfile + label {
+        color: white;
+        background-color: #205081;
+        padding: 5px;
+        border-radius: 5px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+    
+    .inputfile:focus + label,
+    .inputfile + label:hover {
+        background-color: rgb(22, 56, 90);
+    }
+
+    .remove-btn {
+        max-width: 100%;
+        min-width: 20px;
+        width: 100%;
+    }
+}

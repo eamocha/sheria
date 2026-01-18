@@ -1,0 +1,24 @@
+<?php $config = array (
+  'admin' => 
+  array (
+    0 => 'core:AdminPassword',
+  ),
+  'app4legal-azure_ad' => 
+  array (
+    0 => 'saml:SP',
+    'entityID' => 'spn:ed59ef7c-f34c-4d48-81bd-30edbda453a8',
+    'idp' => 'https://sts.windows.net/3680159c-7d8a-495f-ab38-4153fa10fbba/',
+    'discoURL' => NULL,
+    'NameIDFormat' => 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent',
+    'simplesaml.nameidattribute' => 'eduPersonTargetedID',
+  ),
+  'app4legal-onelogin' => 
+  array (
+    0 => 'saml:SP',
+    'entityID' => NULL,
+    'idp' => '',
+    'discoURL' => NULL,
+    'NameIDFormat' => 'urn:oasis:names:tc:SAML:2.0:nameid-format:persistent',
+    'simplesaml.nameidattribute' => 'eduPersonTargetedID',
+  ),
+);

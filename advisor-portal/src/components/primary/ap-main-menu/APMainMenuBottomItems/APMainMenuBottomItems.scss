@@ -1,0 +1,46 @@
+.AP-main-menu-bottom-items {
+
+    .MuiFormGroup-root{
+        margin: 0px;
+        color: white;
+        padding-bottom: 5px;
+        .MuiInputBase-root{
+            color: white;
+            height: 35px;
+            padding-bottom: 5px;
+            select{
+                option{
+                    color: black;
+                }
+                padding-top: 5px;
+                padding-bottom: 5px;
+                height: 25px;
+            }
+        }
+        
+    }
+    
+    .MuiOutlinedInput-input{
+        padding: 18.5px 7px;
+    }
+
+    .MuiSelect-icon{
+        color: rgba(255, 255, 255, 0.54);
+    }
+
+    .MuiOutlinedInput-notchedOutline{
+        border:none;
+    }
+
+    .MuiOutlinedInput-root:hover{
+        .MuiOutlinedInput-notchedOutline{
+            border-color: rgba(255, 255, 255, 0.87);
+        }
+
+        .MuiSelect-icon{
+            color: rgba(255, 255, 255, 0.87);
+        }
+    }
+
+}
+

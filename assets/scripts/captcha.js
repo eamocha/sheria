@@ -1,0 +1,2 @@
+function checkCaptcha(){if(jQuery(".captchaImgRow").hasClass('d-none')){jQuery(".captchaImgRow").removeClass('d-none');reload_captcha();jQuery('input#captcha').focus();return false;}return true;}
+function reload_captcha(){jQuery.ajax({url:getBaseURL()+'pages/reload_captcha',type:'POST',dataType:'JSON',data:{},beforeSend:function(){jQuery('img','#captchaImg').fadeOut('fast');},success:function(response){if(response.status==500){jQuery('#captchaImg').html(response.image);jQuery('input#captcha').val('').focus();}}});}

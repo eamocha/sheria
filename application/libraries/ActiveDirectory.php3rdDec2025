@@ -1,0 +1,422 @@
+<?php
+include APPPATH . "libraries/traits/ActiveDirectoryLogTrait.php";
+class ActiveDirectory
+{
+    use ActiveDirectoryLogTrait;
+    private $ci = NULL;
+    private $host = NULL;
+    private $domain = NULL;
+    private $adminUser = NULL;
+    private $adminPassword = NULL;
+    private $connection = NULL;
+    private $base_dn = NULL;
+    private $port = NULL;
+
+    public function __construct()
+    {
+        $this->ci =& get_instance();
+        $this->ci->load->library("encryption");
+        $this->ci->load->model("system_preference");
+        $systemPreferences = $this->ci->system_preference->get_values();
+
+        // Ensure all preferences exist before assigning
+        $this->host = $systemPreferences["host"] ?? null;
+        $this->adminUser = $systemPreferences["username"] ?? null;
+        $this->adminPassword = $this->ci->encryption->decrypt($systemPreferences["password"]) ?? null;
+        $this->domain = $systemPreferences["domain"] ?? null;
+        $this->port = $systemPreferences["port"] ?? null;
+        $this->mail_option = $systemPreferences["emailMappingOption"] ?? 'mail'; // Default to 'mail'
+        
+        $this->base_dn = "DC=ca,DC=go,DC=ke";
+
+        // Initial connection check. The real connection happens in bindAdmin()
+        if (!function_exists("ldap_connect")) {
+            $this->write_log("Could not connect to Active Directory Server", "LDAP extension is disabled", "ERROR");
+        }
+    }
+
+    /**
+     * This method is no longer needed as a separate public function.
+     * The actual connection happens inside bindAdmin().
+     * public function connect() { ... }
+     */
+
+    public function bindAdmin()
+    {
+        $this->write_log("Connecting to AD server using Admin account (secure mode)", "info");
+        
+        // Use ldap_connect with ldaps:// for a secure connection
+        $connection = ldap_connect("ldaps://{$this->host}", 636);
+
+        if (!$connection) {
+            $this->write_log("Secure connection failed. Could not create connection resource.", "error");
+            return false;
+        }
+
+        // Set options before binding, including TLS certificate handling
+        ldap_set_option($connection, LDAP_OPT_PROTOCOL_VERSION, 3);
+        ldap_set_option($connection, LDAP_OPT_REFERRALS, 0);
+        ldap_set_option($connection, LDAP_OPT_X_TLS_REQUIRE_CERT, LDAP_OPT_X_TLS_NEVER);
+
+        // --- Use User Principal Name (UPN) for binding ---
+        $bind_user = "{$this->adminUser}@{$this->domain}";
+        
+        $this->write_log("Attempting secure bind for: {$bind_user}", "info");
+
+        // Attempt the secure bind with the correct UPN format
+        $bind = @ldap_bind($connection, $bind_user, $this->adminPassword);
+
+        if ($bind) {
+            $this->connection = $connection;
+            $this->write_log("Successfully bound to AD (secure)", "info");
+            return true;
+        }
+
+        // Fallback to insecure if secure bind failed
+        $this->write_log("Secure bind failed: " . ldap_error($connection) . " | Retrying with insecure mode", "warning");
+
+        // Create a new connection for insecure binding
+        $connection = ldap_connect("ldap://{$this->host}", 389);
+        
+        if (!$connection) {
+            $this->write_log("Insecure connection failed. Could not create connection resource.", "error");
+            return false;
+        }
+
+        // Set options for the insecure connection
+        ldap_set_option($connection, LDAP_OPT_PROTOCOL_VERSION, 3);
+        ldap_set_option($connection, LDAP_OPT_REFERRALS, 0);
+        
+        $this->write_log("Attempting insecure bind for: {$bind_user}", "info");
+        
+        // Attempt insecure bind
+        $bind = @ldap_bind($connection, $bind_user, $this->adminPassword);
+
+        if ($bind) {
+            $this->connection = $connection;
+            $this->write_log("Successfully bound to AD (insecure)", "info");
+            return true;
+        } else {
+            $this->write_log("Authentication Failed (even in insecure mode): " . ldap_error($connection), "error");
+            return false;
+        }
+    }
+
+    private function bind($username, $password)
+    {
+        // This method is used for user authentication, not admin binding.
+        if (!$this->connection) {
+            $this->write_log("Connection resource not available for bind.", "error");
+            return false;
+        }
+
+        if (function_exists("ldap_bind")) {
+            $this->write_log("Authenticating " . $username);
+            $bind = @ldap_bind($this->connection, $username, $password);
+            if (!$bind) {
+                $this->write_log("Authentication Failed", ldap_error($this->connection), "ERROR");
+            }
+        } else {
+            $this->write_log("Function ldap_bind is not exists", "To get that function defined, you need to load a PHP extension called php_ldap.dll", "ERROR");
+            $bind = false;
+        }
+        return $bind;
+    }
+
+    public function authenticateUser($username, $password)
+    {
+        return $this->bind($username, $password);
+    }
+    
+    // ... all other methods remain the same
+    public function getAllUsers() {
+        if ($this->connection) {
+            $baseDn = $this->translateDomainName($this->domain);
+            $searchFilter = "(&(objectClass=user)(objectCategory=person))";
+            $this->write_log("Get all users", $searchFilter);
+            $result = ldap_search($this->connection, $baseDn, $searchFilter, ["userprincipalname"]);
+            if (!$result) {
+                $this->write_log("Error in retrieving all users", ldap_error($this->connection), "ERROR");
+            }
+            $entries = ldap_get_entries($this->connection, $result);
+            array_shift($entries);
+            return $entries;
+        }
+    }
+
+    public function disconnect() {
+        if ($this->connection) {
+            $close = @ldap_close($this->connection);
+            if (!$close) {
+                $this->write_log("Could not unbind LDAP", ldap_error($this->connection), "ERROR");
+            }
+            return $close;
+        }
+    }
+
+    public function searchUsers($term) {
+        $this->write_log("Starting LDAP search for: " . $term, "info");
+        if (strlen($term) < 2) {
+            $this->write_log("Search term too short: '$term'", "warning");
+            return ["error" => "Search term too short"];
+        }
+        $query = $this->escapeQuery($term);
+        $filter = "(&(objectClass=user)(objectCategory=person)(|(givenName=*{$query}*)(sn=*{$query}*)(displayName=*{$query}*)(userprincipalname=*{$query}*)(mail=*{$query}*)))";
+        $attributes = [
+            "userprincipalname", "department", "employeeID", "objectGUID",
+            "givenName", "sn", "cn", "mail", "title", "telephoneNumber",
+            "mobile", "postalAddress", "userAccountControl"
+        ];
+        $this->write_log("Using filter: " . $filter, "info");
+        $this->write_log("Base DN: " . $this->base_dn, "info");
+        $search = @ldap_search(
+            $this->connection,
+            $this->base_dn,
+            $filter,
+            $attributes,
+            0,
+            20,
+            5
+        );
+        if (!$search) {
+            $error = ldap_error($this->connection);
+            $this->write_log("LDAP search failed for term: $term | Error: $error", "error");
+            return ["error" => "LDAP search failed: $error"];
+        }
+        $entries = ldap_get_entries($this->connection, $search);
+        if (!is_array($entries) || !isset($entries["count"])) {
+            $this->write_log("LDAP search returned invalid format", "error");
+            return ["error" => "LDAP returned invalid result"];
+        }
+        $this->write_log("Found " . $entries["count"] . " entries", "info");
+        if ((int)$entries["count"] === 0) {
+            return ["noResults" => "No matching users found."];
+        }
+        unset($entries["count"]);
+        return $this->fix_returned_data($entries, false);
+    }
+
+    public function searchUsersByCode($objectGUID) {
+        if ($this->connection) {
+            $baseDn = $this->translateDomainName($this->domain);
+            $searchFilter = "(&(objectClass=user)(objectCategory=person)(|(ObjectGUID=*" . $objectGUID . "*)))";
+            $this->write_log("Search for User by code", $searchFilter);
+            $result = @ldap_search($this->connection, $baseDn, $searchFilter, ["userprincipalname", "department", "employeeID", "givenName", "sn", "cn", "mail"]);
+            if ($result) {
+                $entries = @ldap_get_entries($this->connection, $result);
+                array_shift($entries);
+                return $this->fix_returned_data($entries, true);
+            }
+            $this->write_log("Error in search user", ldap_error($this->connection), "ERROR");
+        }
+    }
+
+    public function fix_returned_data($data, $searchByCode) {
+        foreach ($data as $index => $user) {
+            if (!$searchByCode) {
+                if (!isset($user["userprincipalname"]) || !isset($user["objectguid"])) {
+                    unset($data[$index]);
+                } else {
+                    $data[$index]["objectguid"][0] = $this->binary2Hexadecimal($user["objectguid"][0]);
+                }
+            }
+            if (!isset($user["givenname"]) || !isset($user["sn"])) {
+                $fullName = $user["cn"][0];
+                $fullName = explode(" ", $fullName);
+                if (count($fullName) < 2) {
+                    unset($data[$index]);
+                } else {
+                    list($data[$index]["givenname"][0], $data[$index]["sn"][0]) = $fullName;
+                }
+            }
+            $str_length = strlen(",dc=");
+            $needle = ",dc=";
+            $last_pos = 0;
+            $positions = [];
+            while (($last_pos = strpos($data[$index]["userprincipalname"][0], $needle, $last_pos)) !== false) {
+                $positions[] = $last_pos;
+                $last_pos = $last_pos + strlen($needle);
+            }
+            $start = 0;
+            $fix_name = "";
+            foreach ($positions as $value) {
+                $length = $value - $start;
+                $fix_name .= mb_substr($data[$index]["userprincipalname"][0], $start, $length) . ".";
+                $start = $value + $str_length;
+            }
+            if (!empty($fix_name)) {
+                $fix_name .= mb_substr($data[$index]["userprincipalname"][0], $start, strlen($data[$index]["userprincipalname"][0]));
+                $data[$index]["userprincipalname"][0] = $fix_name;
+            }
+            if ($this->mail_option === "mail") {
+                $data[$index]["mail"][0] = $data[$index]["mail"][0] ?? $data[$index]["userprincipalname"][0];
+            } else {
+                $data[$index]["mail"][0] = $data[$index]["userprincipalname"][0];
+            }
+        }
+        return $data;
+    }
+
+    public function binary2Hexadecimal($objectGUID) {
+        return "\\" . strtoupper(implode("\\", str_split(bin2hex($objectGUID), 2)));
+    }
+
+    private function translateDomainName($domainName) {
+        $domain = explode(".", $domainName);
+        $translation = "";
+        for ($i = 0; $i < count($domain); $i++) {
+            if ($i == 0) {
+                $translation .= "dc=" . $domain[0];
+            } else {
+                $translation .= ",dc=" . $domain[$i];
+            }
+        }
+        return $translation;
+    }
+
+    private function escapeQuery($query) {
+        $returnString = "";
+        $stringArray = str_split($query);
+        foreach ($stringArray as $char) {
+            switch ($char) {
+                case "\\":
+                    $returnString .= "\\5c";
+                    break;
+                case "*":
+                    $returnString .= "\\2a";
+                    break;
+                case "(":
+                    $returnString .= "\\28";
+                    break;
+                case ")":
+                    $returnString .= "\\29";
+                    break;
+                case "\\u0000":
+                    $returnString .= "\\00";
+                    break;
+                default:
+                    $returnString .= $char;
+            }
+        }
+        return $returnString;
+    }
+
+    public function loadDepartmentsList() {
+        $departments = [];
+        if ($this->connection) {
+            $baseDn = $this->translateDomainName($this->domain);
+            $this->write_log("Get list of all departments", "department=*");
+            $result = ldap_search($this->connection, $baseDn, "department=*", ["department"]);
+            if ($result) {
+                $entries = ldap_get_entries($this->connection, $result);
+                for ($i = 0; $i < $entries["count"]; $i++) {
+                    $departments[] = $entries[$i]["department"][0];
+                }
+            } else {
+                $this->write_log("Error in load departments", ldap_error($this->connection), "ERROR");
+            }
+        }
+        return $departments;
+    }
+
+    public function searchUsersDetails() {
+        if ($this->connection) {
+            $baseDn = $this->translateDomainName($this->domain);
+            $searchFilter = "(&(objectClass=user)(objectCategory=person))";
+            $this->write_log("Get all users with detailed info", $searchFilter);
+            $result = @ldap_search($this->connection, $baseDn, $searchFilter, ["department", "userprincipalname", "employeeID", "givenName", "cn", "sn", "ObjectGUID", "title", "telephoneNumber", "mobile", "postalAddress", "mail"]);
+            if ($result) {
+                $entries = @ldap_get_entries($this->connection, $result);
+                array_shift($entries);
+                return $this->fix_returned_data($entries, true);
+            }
+            $this->write_log("Error in search users", ldap_error($this->connection), "ERROR");
+        }
+    }
+
+    public function searchUser($usernameQuery) {
+        if ($this->connection) {
+            $baseDn = $this->translateDomainName($this->domain);
+            $query = $this->escapeQuery($usernameQuery);
+            $searchFilter = "(&(objectClass=user)(objectCategory=person)(|(givenName=*" . $query . "*)(sn=*" . $query . "*)(displayName=*" . $query . "*)(userprincipalname=*" . $query . "*)(mail=*" . $query . "*)))";
+            $this->write_log("Search by user and return full data", $searchFilter);
+            $result = @ldap_search($this->connection, $baseDn, $searchFilter, ["department", "userprincipalname", "employeeID", "givenName", "cn", "sn", "ObjectGUID", "title", "telephoneNumber", "mobile", "postalAddress", "userAccountControl", "mail"]);
+            if ($result) {
+                $entries = @ldap_get_entries($this->connection, $result);
+                array_shift($entries);
+                return $this->fix_returned_data($entries, false);
+            }
+            $this->write_log("Error in search user", ldap_error($this->connection), "ERROR");
+        }
+    }
+
+    public function get_user_account_control_attributes($username) {
+        $user_account_control_flags = ["16777216" => "TRUSTED_TO_AUTH_FOR_DELEGATION", "8388608" => "PASSWORD_EXPIRED", "4194304" => "DONT_REQ_PREAUTH", "2097152" => "USE_DES_KEY_ONLY", "1048576" => "NOT_DELEGATED", "524288" => "TRUSTED_FOR_DELEGATION", "262144" => "SMARTCARD_REQUIRED", "131072" => "MNS_LOGON_ACCOUNT", "65536" => "DONT_EXPIRE_PASSWORD", "8192" => "SERVER_TRUST_ACCOUNT", "4096" => "WORKSTATION_TRUST_ACCOUNT", "2048" => "INTERDOMAIN_TRUST_ACCOUNT", "512" => "NORMAL_ACCOUNT", "256" => "TEMP_DUPLICATE_ACCOUNT", "128" => "ENCRYPTED_TEXT_PWD_ALLOWED", "64" => "PASSWD_CANT_CHANGE", "32" => "PASSWD_NOTREQD", "16" => "LOCKOUT", "8" => "HOMEDIR_REQUIRED", "2" => "ACCOUNTDISABLE", "1" => "SCRIPT"];
+        $attributes = NULL;
+        if ($this->bindAdmin()) {
+            $user_active_directory_properties = $this->searchUser($username);
+            $input_code = $user_active_directory_properties[0]["useraccountcontrol"][0];
+            while (0 < $input_code) {
+                foreach ($user_account_control_flags as $flag => $flag_name) {
+                    $temp = $input_code - $flag;
+                    if (0 < $temp) {
+                        $attributes[$user_account_control_flags[$flag]] = $flag;
+                        $input_code = $temp;
+                    }
+                    if ($temp == 0) {
+                        if (isset($user_account_control_flags[$input_code])) {
+                            $attributes[$user_account_control_flags[$input_code]] = $input_code;
+                        }
+                        $input_code = $temp;
+                    }
+                }
+            }
+            return $attributes;
+        }
+        return NULL;
+    }
+
+    public function check_user_login_capability($username) {
+        $this->write_log("Validate User Login Capabilities");
+        $attributes_check_list = ["ACCOUNTDISABLE", "LOCKOUT"];
+        $user_control_attributes = $this->get_user_account_control_attributes($username);
+        if (isset($user_control_attributes)) {
+            $this->write_log("Checking User Account Control Attributes", implode(", ", $user_control_attributes));
+            foreach ($attributes_check_list as $attribute) {
+                if (array_key_exists($attribute, $user_control_attributes)) {
+                    $this->write_log("User Account has the attribute " . $attribute, "User can't login because it is locked from Active Directory", "ERROR");
+                    return false;
+                }
+            }
+            $this->write_log("User Account is not Disabled or Lockedout");
+            return true;
+        } else {
+            $this->write_log("User has no Control Attributes");
+        }
+    }
+
+    public function get_user_groups($usernameQuery) {
+        if ($this->connection) {
+            $baseDn = $this->translateDomainName($this->domain);
+            $query = $this->escapeQuery($usernameQuery);
+            $searchFilter = "(&(objectClass=user)(objectCategory=person)(|(givenName=*" . $query . "*)(sn=*" . $query . "*)(displayName=*" . $query . "*)(userprincipalname=*" . $query . "*)(mail=*" . $query . "*)))";
+            $this->write_log("Get user groups", $searchFilter);
+            $result = ldap_search($this->connection, $baseDn, $searchFilter, ["memberof", "userprincipalname", "department", "employeeID", "objectGUID", "givenName", "sn", "cn", "mail", "member"]);
+            if ($result) {
+                $entries = ldap_get_entries($this->connection, $result);
+                array_shift($entries);
+                $userAd = $this->fix_returned_data($entries, false);
+                $groups = [];
+                for ($i = 0; $i < $userAd[0]["memberof"]["count"]; $i++) {
+                    preg_match("/[^cn=]([^,]*)/i", $userAd[0]["memberof"][$i], $matches);
+                    array_push($groups, $matches[0]);
+                }
+                $this->write_log("Logging to see user groups", json_encode($groups), "INFO");
+                return $groups;
+            }
+            $this->write_log("Error in search user groups", ldap_error($this->connection), "ERROR");
+            return false;
+        }
+    }
+
+}

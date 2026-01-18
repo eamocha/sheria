@@ -1,0 +1,285 @@
+/* CSS Selectors for only LTR direction*/
+.no-padding-right {
+  padding-right: 0px;
+}
+
+.margin-right {
+  margin-right: 6px;
+}
+
+#unarchivedButtonId.disabled {
+  pointer-events: none;
+}
+
+#archivedButtonId.disabled {
+  pointer-events: none;
+}
+
+.grid-main-container .grid-header .operations .opts-li span a {
+  display: block;
+  margin: 0;
+  padding: 3px 20px;
+  clear: both;
+  font-weight: 400;
+  line-height: 1.42857143;
+  color: #333;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+/* Home Page */
+.home-block-actions a {
+  margin-right: 5px;
+}
+
+.en-customer-feedback {
+  background-image: url("../../images/en_customer_feedback.png");
+  right: 0;
+}
+
+.fr-customer-feedback {
+  background-image: url("../../images/fr_customer_feedback.png");
+  right: 0;
+}
+
+/*Contact details */
+.button {
+  position: absolute;
+  top: 20px;
+  right: 25px;
+}
+
+.copyAddressFromLink {
+  margin-bottom: 16px;
+  margin-right: 27px;
+}
+
+#formContainer2 #companyDetailedForm .copyAddressFromLink {
+  margin-right: -10px;
+}
+
+.lookup, .search {
+  background-image: url("../../images/toolbar_find.png");
+  background-position: right 10px center;
+  background-repeat: no-repeat;
+  border-radius: 4px;
+}
+
+#notificationsPageList .notificationRow p.actions {
+  right: inherit;
+  position: inherit;
+  color: #CC0000;
+  display: none;
+  height: 13px;
+  margin: 1px;
+  padding: 0;
+  position: absolute;
+  right: 1px;
+  text-align: center;
+  width: 12px;
+  z-index: 1101;
+}
+
+/*Boards*/
+#notificationsListLatest .notificationRow p.actions {
+  color: #CC0000;
+  display: none;
+  height: 13px;
+  margin: 1px;
+  padding: 0;
+  position: absolute;
+  right: 1px;
+  text-align: center;
+  width: 12px;
+  z-index: 1101;
+}
+
+#planningBoardContainer .board-column-case {
+  border: 1px solid #ccc;
+  border-left: 10px solid;
+  border-right: 0px;
+  color: #000000;
+  font-size: 11px;
+  height: 75px;
+  overflow: hidden;
+  margin: 0px;
+  padding: 10px;
+}
+#planningBoardContainer .board-column-case.critical {
+  border-left-color: #D30809;
+}
+#planningBoardContainer .board-column-case.high {
+  border-left-color: #FF6A15;
+}
+#planningBoardContainer .board-column-case.medium {
+  border-left-color: #589CDF;
+}
+#planningBoardContainer .board-column-case.low {
+  border-left-color: #6CD248;
+}
+
+span#pendingReminders, span#pendingNotifications {
+  background-color: rgba(255, 0, 0, 0.7);
+  border-radius: 2px;
+  color: #ffffff;
+  font-size: 10px;
+  line-height: 15px;
+  min-width: 18px;
+  position: absolute;
+  text-align: center;
+  top: 0px;
+  left: auto;
+  right: 0;
+}
+
+/*Reports tab */
+.portlet-header {
+  margin: 0.3em;
+  padding-bottom: 4px;
+  padding-left: 0.2em;
+  border-radius: 3px 3px 3px 3px;
+  height: 30px;
+  padding-top: 5px;
+}
+.portlet-header .ui-icon {
+  float: right;
+}
+
+.button.small {
+  border-radius: 15px;
+  float: right;
+  margin: 22px 5px 0;
+  padding: 6px 15px;
+}
+.button.b-close, .button.bClose {
+  border-radius: 7px 7px 7px 7px;
+  box-shadow: none;
+  font: bold 131% sans-serif;
+  padding: 0 6px 2px;
+  position: absolute;
+  right: -7px;
+  top: -7px;
+}
+
+.no-padding-left {
+  padding-left: 0px;
+}
+
+.ar-customer-feedback {
+  background-image: url("../../../images/ar_customer_feedback.png");
+  left: 0;
+}
+
+.smLogo {
+  padding-left: 5px;
+}
+
+#contacts_search_filter div.form-group label {
+  padding-left: 3px;
+}
+#contacts_search_filter div.form-group > div.col-md-5, #contacts_search_filter div.form-group > div.col-md-4 {
+  padding-left: 3px;
+}
+
+.export-to-excel {
+  background-image: url("../../images/icons/excel_32.png");
+  background-repeat: no-repeat;
+  display: inline-block;
+  height: 32px;
+  margin-left: 5px;
+  vertical-align: text-top;
+  width: 32px;
+}
+
+/* Tree View*/
+.treeview .hitarea {
+  background: url(../../images/icons/treeview-default.gif) -64px -25px no-repeat;
+  height: 16px;
+  width: 16px;
+  margin-left: -16px;
+  float: left;
+  cursor: pointer;
+}
+
+/* Reminders / Notification rules*/
+#remindersListLatest .reminderRow p.reminderRowSummary, #notificationsListLatest .notificationRow p.notificationRowSummary, #notificationsPageList .notificationRow p.notificationRowSummary {
+  display: block;
+  height: 53px;
+  line-height: 21px;
+  position: relative;
+  text-align: left;
+  z-index: 1001;
+  direction: rtl;
+  margin-left: 7px;
+}
+
+.cell-left {
+  position: absolute;
+  bottom: 0px;
+  left: 12px;
+}
+
+.cell-right {
+  position: absolute;
+  top: 0px;
+  right: 12px;
+}
+
+.fixed-table .header-copy {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.fixed-table th {
+  padding: 8px;
+  line-height: 18px;
+  text-align: left;
+}
+
+.margin-left20 {
+  margin-left: 20px;
+}
+
+@media (min-width: 1000px) {
+  .border-line {
+    border-right: 1px solid #c1c1c1;
+  }
+}
+.case-report .scroll {
+  padding-right: 0px;
+  width: 98%;
+}
+
+.modal-container .input-group-addon {
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important;
+  border-left: 0px;
+}
+
+.margin-1 {
+  margin-left: 25px;
+}
+
+.margin-2 {
+  margin-left: 50px;
+}
+
+.margin-3 {
+  margin-left: 75px;
+}
+
+.text-align-left {
+  text-align: left;
+}
+
+.text-align-right {
+  text-align: right !important;
+}
+
+.margin-left-10 {
+  margin-left: 10px !important;
+}
+
+.primary-style .date-picker input {
+  border-right: 0 !important;
+}/*# sourceMappingURL=main.css.map */

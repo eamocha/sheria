@@ -1,0 +1,32 @@
+.advisor-task-attachments-container {
+    padding-top: 20px;
+    max-height: 575px;
+    overflow-y: auto;
+
+    .advisor-task-attachment-container {
+        display: inline-block;
+        margin-right:  20px;
+        margin-bottom: 20px;
+
+        .attachment-file-container {
+            height: 140px;
+
+            > * {
+                max-height: 100%;
+                scale: .9;
+            }
+        }
+
+        .attachment-footer-container {
+            min-height: 90px;
+            padding-bottom: 15px;
+
+            .attachment-name {
+                height: 60px;
+                width: 100%;
+                overflow: hidden;
+                display: block;
+            }
+        }
+    }
+}

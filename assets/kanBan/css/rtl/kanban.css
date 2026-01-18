@@ -1,0 +1,9 @@
+.webix_accordionitem_button{float: left !important;}
+.webix_accordionitem_label{ padding-left: 0;padding-right: 5px !important;}
+.webix_accordionitem_header.collapsed{transform: rotate(-90deg) translate(-465px, 466px)!important;}
+.webix_dataview_item{text-align: right !important;}
+.total-cases{padding-right:0px;padding-left: 20px}
+.border_color_critical{border-color: #e2e2e2 #DF1515 #e2e2e2 #e2e2e2  !important;}
+.border_color_high{border-color: #e2e2e2 #FF6A15 #e2e2e2 #e2e2e2  !important;}
+.border_color_medium{border-color: #e2e2e2 #388DDE #e2e2e2 #e2e2e2  !important;}
+.border_color_low{border-color: #e2e2e2 #64D23D #e2e2e2 #e2e2e2  !important;}

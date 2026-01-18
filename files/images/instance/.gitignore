@@ -1,0 +1,10 @@
+# Ignore everything in this directory
+/*
+# Except this file
+!app4legal-logo.png
+!a4l_logo_sign_in.png
+!favicon.ico
+!.gitignore
+!app4legal-footer-logo.png
+!/main_default_theme/
+!/themes/

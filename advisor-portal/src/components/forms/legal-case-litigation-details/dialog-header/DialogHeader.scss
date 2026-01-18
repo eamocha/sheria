@@ -1,0 +1,14 @@
+.legal-case-litigation-details-picker-form {
+
+    .MuiDialog-paper {
+
+        max-width: 900px;
+    }
+
+    .close-btn {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}

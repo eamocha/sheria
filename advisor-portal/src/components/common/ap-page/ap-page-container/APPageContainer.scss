@@ -1,0 +1,34 @@
+.AP-page-container {
+    position: relative;
+    overflow-x: hidden;
+    padding: 20px 30px 30px 210px;
+    height: auto;
+    height: 100vh;
+
+    &.rtl{
+        padding: 20px 210px 30px 30px;
+    }
+
+    .AP-page-title {
+        padding-right: 0px;
+        padding-left: 0px;
+        padding-bottom: 5px;
+    }
+
+    .AP-page-header {
+        padding-right: 0px;
+        padding-left: 0px;
+        padding-bottom: 20px;
+    }
+
+    .AP-page-body {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+
+    .AP-page-actions-toolbar {
+        padding-right: 0px;
+        padding-left: 0px;
+        margin-bottom: 30px;
+    }
+}

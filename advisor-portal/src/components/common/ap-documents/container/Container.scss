@@ -1,0 +1,32 @@
+.ap-documents-container {
+    padding-right: 0px;
+    padding-left: 0px;
+    margin-top: 0px;
+
+    .document-icon-name-container {
+        display: flex;
+        align-items: center;
+    
+        .document-icon-container {
+            display: flex;
+            align-items: center;
+        }
+    
+        .document-name-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+        }
+    }
+
+    .icon {
+        display: flex;
+        cursor: pointer;
+        width: 24px;
+    }
+
+    .folder-icon {
+        color: #3b7fc4;
+    }
+}

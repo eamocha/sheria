@@ -1,0 +1,54 @@
+.noprint {
+  display: none;
+}
+
+.onlyprint {
+  display: block;
+}
+
+#main {
+  padding: 6px;
+}
+
+.pagebreak {
+  page-break-after: always;
+}
+
+.btn {
+  display: none;
+}
+
+input {
+  &.form-control, &.search {
+    display: none;
+  }
+}
+
+#tabsSubnavItems .nav.tabrow li {
+  &:before, &:after {
+    border-style: none;
+    border-width: 0;
+    display: none;
+  }
+  border-style: none;
+  border-width: 0;
+  display: none;
+  &.selected {
+    display: block;
+    font-family: "Times New Roman";
+    font-size-adjust: 0.7;
+  }
+}
+
+#footer {
+  display: none;
+}
+
+#wrap > .container {
+  padding: 0px;
+}
+
+#main-container {
+  margin: 0px;
+  padding: 0px;
+}

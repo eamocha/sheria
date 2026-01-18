@@ -1,0 +1,2 @@
+alter table contract_status_language add responsible_user_roles nvarchar(100) null, step_icon nvarchar(50) null,activity nvarchar(max) null,step_input nvarchar(255) null,step_output nvarchar(250) null
+Go

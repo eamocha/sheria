@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="27.409" height="27.409" viewBox="0 0 27.409 27.409">
+    <defs>
+        <style>
+            .cls-2{fill:#fff}
+        </style>
+    </defs>
+    <g id="Group_1134" transform="translate(-1487 -343)">
+        <g id="Group_1124" transform="translate(1487 343)">
+            <g id="coin">
+                <ellipse id="Ellipse_358" cx="13.704" cy="13.705" fill="#e74c3c" rx="13.704" ry="13.705"/>
+            </g>
+        </g>
+        <g id="close_8_" transform="translate(1496 351)">
+            <path id="Path_809" d="M.577 10.46A.538.538 0 0 1 .2 9.541L9.58.157a.538.538 0 0 1 .761.761L.958 10.3a.54.54 0 0 1-.381.158zm0 0" class="cls-2" transform="translate(-.039 .001)"/>
+            <path id="Path_810" d="M9.961 10.46a.534.534 0 0 1-.38-.158L.2.918A.538.538 0 0 1 .958.157l9.384 9.384a.538.538 0 0 1-.38.919zm0 0" class="cls-2" transform="translate(-.039 .001)"/>
+        </g>
+    </g>
+</svg>

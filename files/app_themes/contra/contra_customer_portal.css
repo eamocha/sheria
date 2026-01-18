@@ -1,0 +1,39 @@
+.navbar.navbar-default {
+  background-color: #fff !important;
+  background: #fff !important; }
+  .navbar.navbar-default ul.navbar-nav > li > a {
+    color: #777 !important;
+    background-color: transparent !important;
+    background: transparent !important; }
+    .navbar.navbar-default ul.navbar-nav > li > a:hover {
+      color: #333 !important; }
+    .navbar.navbar-default ul.navbar-nav > li.active > a {
+      color: #333 !important;
+      background-color: #e7e7e7 !important;
+      background: #e7e7e7 !important; }
+  .navbar.navbar-default .btn:not(.btn-link) {
+    color: #777 !important;
+    background-color: #e7e7e7 !important;
+    background: #e7e7e7 !important; }
+    .navbar.navbar-default .btn:not(.btn-link):hover {
+      color: #777 !important;
+      background-color: #e7e7e7 !important;
+      background: #e7e7e7 !important; }
+
+.btn:not(.btn-link):not(.btn-sm):not(.cp-customizable-link):not(.dropdown-toggle), .btn.btn-default:not(#addMoreAttachment):not(.btn-sm):not(.cp-customizable-link):not(.dropdown-toggle), .dataTables_paginate ul.pagination li.active a:not(.cp-customizable-link) {
+  background-color: #3b7fc4 !important;
+  background: #3b7fc4 !important;
+  color: #fff !important; }
+  .btn:not(.btn-link):not(.btn-sm):not(.cp-customizable-link):not(.dropdown-toggle):hover, .btn.btn-default:not(#addMoreAttachment):not(.btn-sm):not(.cp-customizable-link):not(.dropdown-toggle):hover, .dataTables_paginate ul.pagination li.active a:not(.cp-customizable-link):hover {
+    background-color: #4796e6 !important;
+    background: #4796e6 !important;
+    color: #fff !important; }
+
+#files_attachment button.btn.btn-default.btn-sm {
+  background-color: inherit;
+  background: inherit; }
+
+.cp-customizable-link {
+  color: #428bca !important; }
+  .cp-customizable-link:hover, .cp-customizable-link:active {
+    color: #2a6496 !important; }

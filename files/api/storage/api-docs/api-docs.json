@@ -1,0 +1,1171 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "A4L Core API",
+        "description": "A4L Core API Documentation",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "2.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/app4legal/api/v2/money",
+            "description": "A4L API Server"
+        }
+    ],
+    "paths": {
+        "/case-rates": {
+            "get": {
+                "tags": [
+                    "Rates"
+                ],
+                "summary": "List case rates",
+                "description": "List all case(litigation/corporate) rates",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "case_id",
+                        "in": "query",
+                        "description": "Search case rates by case Id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "organization_id",
+                        "in": "query",
+                        "description": "Search case rates by organization Id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/clients": {
+            "get": {
+                "tags": [
+                    "Look Ups"
+                ],
+                "summary": "List clients",
+                "description": "List all clients",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Search clients by name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter invoices by the above query parameters. <br />\r\n              <b>Example:</b> { \"name[ct]\" : \"Ahmad\" } which will search for clients that their names contain Ahmad",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/cases": {
+            "get": {
+                "tags": [
+                    "Look Ups"
+                ],
+                "summary": "List cases",
+                "description": "List all cases(litigation & corporate)",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Search cases(litigation & corporate) by name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter invoices by the above query parameters. <br />\r\n              <b>Example:</b> { \"name[ct]\" : \"m1\" } which will search for cases that their names or IDs or clients' names contain M1",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/tasks": {
+            "get": {
+                "tags": [
+                    "Look Ups"
+                ],
+                "summary": "List tasks",
+                "description": "List all tasks",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Search tasks by name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter invoices by the above query parameters. <br />\r\n              <b>Example:</b> { \"name[ct]\" : \"t1\" } which will search for tasks that their descriptions or IDs contain t1",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/internalstatuses": {
+            "get": {
+                "tags": [
+                    "Internal Statuses"
+                ],
+                "summary": "List Internal Statuses",
+                "description": "List all Internal Statuses",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "description": "Search Internal Statuses by language",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Items"
+                ],
+                "summary": "Create Item",
+                "description": "Create Item",
+                "operationId": "create",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateItemRequestBody"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/timetypes": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "List Categories",
+                "description": "List all Categories",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "description": "Search Categories by language",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/mytimelogs": {
+            "get": {
+                "tags": [
+                    "Time Entries"
+                ],
+                "summary": "List my time logs",
+                "description": "List all my time logs",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "description": "Search my time logs by language",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "log_date",
+                        "in": "query",
+                        "description": "Search my time logs by log_date",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter time entries by the above query parameters. <br />\r\n              <b>Example:</b> { \"name[contains]\" : \"task\" } which will filter for Time Entries that their name contains task",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter time entries by the above query parameters. <br />\r\n              <b>Example:</b> { \"time_type[startswith]\" : \"hear\" } which will filter for Time Entries that their time_type starts with hear",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "sort[asc]",
+                        "in": "query",
+                        "description": "Sort time entries in ascending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "title",
+                                "name",
+                                "time_type",
+                                "time_status",
+                                "effective_effort",
+                                "rate",
+                                "total"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sort[desc]",
+                        "in": "query",
+                        "description": "Sort time entries in descending order",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "title",
+                                "name",
+                                "time_type",
+                                "time_status",
+                                "effective_effort",
+                                "rate",
+                                "total"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/mytimelogssummary": {
+            "get": {
+                "tags": [
+                    "Time Entries"
+                ],
+                "summary": "List my time logs summary",
+                "description": "List all my time logs summary",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter time entries summary by the above query parameters. <br />\r\n              <b>Example:</b> { \"log_date[gte]\" : \"2021-12-01\" } which will filter for Time Entries that their log date greater than or equal the mentioned date",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter time entries summary by the above query parameters. <br />\r\n              <b>Example:</b> { \"log_date[lt]\" : \"2021-12-31\" } which will filter for Time Entries that their log date less than or equal the mentioned date",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/timelog": {
+            "post": {
+                "tags": [
+                    "Time Entries"
+                ],
+                "summary": "Create Time Entry",
+                "description": "Create Time Entry",
+                "operationId": "create",
+                "parameters": [
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "description": "Search my time logs by language",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Create Invoice",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "example": {
+                                "user_id": 2,
+                                "legal_case_id": 2,
+                                "logDate": "2021-12-14",
+                                "effectiveEffort": "40m",
+                                "timeStatus": "billable",
+                                "istaskormatter": "matter",
+                                "client_id": 1,
+                                "rate_system": "system_rate",
+                                "rate": "170.00",
+                                "time_type_id": 5,
+                                "time_internal_status_id": 1,
+                                "comments": "my comment"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/timelog/{id}": {
+            "put": {
+                "tags": [
+                    "Time Entries"
+                ],
+                "summary": "Update Time Entry",
+                "description": "Update Time Entry",
+                "operationId": "update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Time Entry Id to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "description": "Search my time logs by language",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Update Invoice",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {},
+                            "example": {
+                                "client_id": "1",
+                                "comments": "my comment 1",
+                                "effectiveEffort": "40m",
+                                "istaskormatter": "matter",
+                                "legal_case_id": 1,
+                                "logDate": "2021-12-14",
+                                "rate": "30.00",
+                                "rate_system": "system_rate",
+                                "timeStatus": "billable",
+                                "time_internal_status_id": 3,
+                                "time_type_id": 11,
+                                "user_id": 2
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Time Entries"
+                ],
+                "summary": "Delete Time Entry",
+                "description": "Delete Time Entry",
+                "operationId": "delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Time Entry Id to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "Look Ups"
+                ],
+                "summary": "List users",
+                "description": "List all users",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Search users by name",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "filters",
+                        "in": "query",
+                        "description": "Filter invoices by the above query parameters. <br />\r\n              <b>Example:</b> { \"name[ct]\" : \"Fatima\" } which will search for users that their names contain Fatima",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Taxes"
+                ],
+                "summary": "Create Tax",
+                "description": "Create Tax",
+                "operationId": "create",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/CreateTaxRequestBody"
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/user-rates": {
+            "get": {
+                "tags": [
+                    "Rates"
+                ],
+                "summary": "List user rates",
+                "description": "List all user(litigation/corporate) rates",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "organization_id",
+                        "in": "query",
+                        "description": "Search user rates by organization Id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "Search user rates by user Id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        },
+        "/user-rates-per-case": {
+            "get": {
+                "tags": [
+                    "Rates"
+                ],
+                "summary": "List user rate per cases",
+                "description": "List all user rates per case(litigation/corporate)",
+                "operationId": "getList",
+                "parameters": [
+                    {
+                        "name": "case_id",
+                        "in": "query",
+                        "description": "Search user rate per cases by case Id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "organization_id",
+                        "in": "query",
+                        "description": "Search user rate per cases by organization Id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "Search user rate per cases by user Id",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "The particular page to return",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "The number of items to return per page Default: 50 Limit: 200",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Invoice": {
+                "title": "Invoice model",
+                "description": "Invoice model",
+                "properties": {
+                    "organization_id": {
+                        "title": "organization_id",
+                        "description": "organization_id",
+                        "type": "integer",
+                        "example": 1
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "requestBodies": {
+            "CreateInvoicePaymentRequestBody": {
+                "description": "Create Invoice Payment",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": {
+                            "organization_id": "1",
+                            "paid_on": "2021-11-02",
+                            "deposit_account_id": 31,
+                            "deposit_amount": 400,
+                            "payment_method": "Cash",
+                            "comments": "Cash",
+                            "payment_reference": "Cash",
+                            "deposit_other_account_id": 33,
+                            "deposit_other_amount": 50,
+                            "other_payment_method": "Bank Transfer"
+                        }
+                    }
+                }
+            },
+            "UpdateInvoicePaymentRequestBody": {
+                "description": "Update Invoice Payment",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": {
+                            "paid_on": "2021-11-02",
+                            "deposit_account_id": 31,
+                            "deposit_amount": 400,
+                            "payment_method": "Cash",
+                            "comments": "Cash",
+                            "payment_reference": "Cash",
+                            "deposit_other_account_id": 33,
+                            "deposit_other_amount": 20,
+                            "other_payment_method": "Bank Transfer"
+                        }
+                    }
+                }
+            },
+            "CreateInvoiceRequestBody": {
+                "description": "Create Invoice",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": {
+                            "organization_id": "1",
+                            "user_id": "1",
+                            "account_id": 22,
+                            "prefix": "INV-",
+                            "reference_number": "0000009",
+                            "suffix": "",
+                            "purchase_order": "1234",
+                            "invoice_reference": "9191",
+                            "bill_to": "App4Legal, Dubai",
+                            "invoice_date": "2021-06-15",
+                            "due_on": "2021-06-25",
+                            "term_id": 3,
+                            "notes": "",
+                            "paid_status": "open",
+                            "invoice_reminder": {
+                                "reminder_time": 5,
+                                "reminder_time_type": "day",
+                                "reminder_type": "popup"
+                            },
+                            "invoice_details": [
+                                {
+                                    "account_id": 14,
+                                    "item_id": 1,
+                                    "sub_item_id": null,
+                                    "tax_id": 1,
+                                    "discount_id": null,
+                                    "item": "Annual Legal Mgt.",
+                                    "unit_price": 6000,
+                                    "quantity": 2,
+                                    "discount_percentage": 5,
+                                    "tax_percentage": 11,
+                                    "item_description": "Annual Fees",
+                                    "item_date": null,
+                                    "partner_shares": [
+                                        {
+                                            "partner_account_id": 54,
+                                            "partner_name": "InfoSysta",
+                                            "partner_commission": 5
+                                        }
+                                    ]
+                                },
+                                {
+                                    "account_id": 15,
+                                    "item_id": 2,
+                                    "sub_item_id": null,
+                                    "tax_id": null,
+                                    "discount_id": null,
+                                    "item": "Consultancy",
+                                    "unit_price": 500,
+                                    "quantity": 2,
+                                    "discount_percentage": null,
+                                    "item_description": "Annual Fees",
+                                    "item_date": null
+                                }
+                            ],
+                            "invoice_expenses": [
+                                {
+                                    "account_id": 17,
+                                    "tax_id": null,
+                                    "discount_id": null,
+                                    "expense_id": 5,
+                                    "item": "BBA Fee",
+                                    "unit_price": 400,
+                                    "quantity": 1,
+                                    "discount_percentage": null,
+                                    "item_description": "2021-06-15",
+                                    "item_date": null,
+                                    "partner_shares": [
+                                        {
+                                            "partner_account_id": 54,
+                                            "partner_name": "InfoSysta",
+                                            "partner_commission": 6
+                                        }
+                                    ]
+                                }
+                            ],
+                            "invoice_time_logs": [
+                                {
+                                    "account_id": 14,
+                                    "tax_id": null,
+                                    "discount_id": null,
+                                    "time_log_id": 12,
+                                    "item": "UC0",
+                                    "user_id": "0000000001",
+                                    "unit_price": 300,
+                                    "quantity": 1,
+                                    "discount_amount": 25,
+                                    "item_description": "2021-06-02 - 1",
+                                    "item_date": null
+                                }
+                            ],
+                            "related_matters": [
+                                {
+                                    "matter_id": "00000001"
+                                },
+                                {
+                                    "matter_id": "00000020"
+                                }
+                            ]
+                        }
+                    }
+                }
+            },
+            "UpdateInvoiceRequestBody": {
+                "description": "Update Invoice",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {},
+                        "example": {
+                            "user_id": "1",
+                            "account_id": 22,
+                            "prefix": "INV-",
+                            "reference_number": "0000009",
+                            "suffix": "",
+                            "purchase_order": "1234",
+                            "invoice_reference": "9191",
+                            "bill_to": "App4Legal, Dubai",
+                            "invoice_date": "2021-06-15",
+                            "due_on": "2021-06-25",
+                            "term_id": 3,
+                            "notes": "",
+                            "paid_status": "open",
+                            "invoice_reminder": {
+                                "reminder_time": 5,
+                                "reminder_time_type": "day",
+                                "reminder_type": "popup"
+                            },
+                            "invoice_details": [
+                                {
+                                    "account_id": 14,
+                                    "item_id": 1,
+                                    "sub_item_id": null,
+                                    "tax_id": 1,
+                                    "discount_id": null,
+                                    "item": "Annual Legal Mgt.",
+                                    "unit_price": 6000,
+                                    "quantity": 2,
+                                    "discount_percentage": 5,
+                                    "tax_percentage": 11,
+                                    "item_description": "Annual Fees",
+                                    "item_date": null,
+                                    "partner_shares": [
+                                        {
+                                            "partner_account_id": 54,
+                                            "partner_name": "InfoSysta",
+                                            "partner_commission": 5
+                                        }
+                                    ]
+                                },
+                                {
+                                    "account_id": 15,
+                                    "item_id": 2,
+                                    "sub_item_id": null,
+                                    "tax_id": null,
+                                    "discount_id": null,
+                                    "item": "Consultancy",
+                                    "unit_price": 500,
+                                    "quantity": 2,
+                                    "discount_percentage": null,
+                                    "item_description": "Annual Fees",
+                                    "item_date": null
+                                }
+                            ],
+                            "invoice_expenses": [
+                                {
+                                    "account_id": 17,
+                                    "tax_id": null,
+                                    "discount_id": null,
+                                    "expense_id": 5,
+                                    "item": "BBA Fee",
+                                    "unit_price": 400,
+                                    "quantity": 1,
+                                    "discount_percentage": null,
+                                    "item_description": "2021-06-15",
+                                    "item_date": null,
+                                    "partner_shares": [
+                                        {
+                                            "partner_account_id": 54,
+                                            "partner_name": "InfoSysta",
+                                            "partner_commission": 6
+                                        }
+                                    ]
+                                }
+                            ],
+                            "invoice_time_logs": [
+                                {
+                                    "account_id": 14,
+                                    "tax_id": null,
+                                    "discount_id": null,
+                                    "time_log_id": 12,
+                                    "item": "UC0",
+                                    "user_id": "0000000001",
+                                    "unit_price": 300,
+                                    "quantity": 1,
+                                    "discount_amount": 25,
+                                    "item_description": "2021-06-02 - 1",
+                                    "item_date": null
+                                }
+                            ],
+                            "related_matters": [
+                                {
+                                    "matter_id": "00000001"
+                                },
+                                {
+                                    "matter_id": "00000020"
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "passport": {
+                "type": "oauth2",
+                "description": "Laravel passport oauth2 security.",
+                "in": "header",
+                "scheme": "https",
+                "flows": {
+                    "password": {
+                        "authorizationUrl": "http://localhost/app4legal/api/oauth/authorize",
+                        "tokenUrl": "http://localhost/app4legal/api/oauth/token",
+                        "refreshUrl": "http://localhost/app4legal/api/token/refresh",
+                        "scopes": []
+                    }
+                }
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}
