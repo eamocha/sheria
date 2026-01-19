@@ -5933,8 +5933,8 @@ $lang['opinion_updated_successfully'] = 'Legal opinion updated successfully';
 $lang['opinion_id_not_exists'] = 'Opinion ID does not exist';
 $lang['opinion_location'] = 'Opinion Location';
 
-$lang[""]="";
-$lang[""]="";
+$lang["contract_development"]="Contract Development";
+$lang["agreement_development"]="Agreement Development";
 $lang[""]="";
 
 

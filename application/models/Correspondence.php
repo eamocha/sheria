@@ -670,12 +670,10 @@ to search terms in the correspondence table.
 */
 public function lookup($search_term) {
     $_original_table = $this->_table; 
-    $this->_table = "correspondences as c"; 
-
-     
+    $this->_table = "correspondences as c";    
 
     $query = [];
-    $query["select"] = ["c.id", "c.subject", "c.reference_number"];
+    $query["select"] = ["c.id, c.subject, c.reference_number"];
     $query["join"] = [
         ["correspondence_types ct", "ct.id = c.correspondence_type_id", "left"],
         ["correspondence_statuses cs", "cs.id = c.status_id", "left"],
@@ -692,6 +690,7 @@ public function lookup($search_term) {
 
     $result = $this->load_all($query);
     $this->_table = $_original_table; 
+    
     return $result;
 }
     
@@ -957,8 +956,8 @@ public function lookup($search_term) {
         }
         // --- End Post-processing ---
 
-        $this->_table = $table; // Restore the original table name
-        return $result; // Return the fetched and processed data
+        $this->_table = $table; 
+        return $result; 
     }
 
 

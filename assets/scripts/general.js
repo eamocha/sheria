@@ -15508,7 +15508,60 @@ function relationshipFormSubmit(container) {
         error: defaultAjaxJSONErrorsHandler
     });
 }
-
+function unlinkrelationship(relationshipId,relationshipType) {
+    url = getBaseURL() + 'front_office/unlink_relationship';
+    if(!relationshipId){
+        pinesMessage({ ty: 'error', m: 'Invalid relationship ID.' });
+        return;
+    }
+    if(relationshipType === 'correspondence'){
+       url = getBaseURL() + 'front_office/unlink_relationship';
+    }
+    if (confirm("Are you sure you want to remove this link? The actual records will not be deleted.")) {
+        jQuery.ajax({
+            url: url,
+            type: 'POST',
+            data: { id: relationshipId },
+            dataType: 'JSON',
+            beforeSend: function () {
+                showLoader(true);
+            },
+            success: function (response) {
+                if (response.result) {
+                    pinesMessage({ ty: 'success', m: response.display_message });
+                    // Refresh the related items list
+                    if (typeof refreshRelatedItems === 'function') {
+                        refreshRelatedItems(); 
+                    } else {
+                        location.reload();  
+                    }
+                } else {
+                    pinesMessage({ ty: 'error', m: response.display_message });
+                }
+            },
+            complete: function () {
+                showLoader(false);
+            },
+            error: defaultAjaxJSONErrorsHandler
+        });
+    }
+}
+function refreshRelatedItems() {
+  
+    var baseId = jQuery('#id').val(); 
+    jQuery.ajax({
+        url: getBaseURL() + 'front_office/load_relationships/' + baseId,
+        type: 'GET',
+        dataType: 'JSON',
+        success: function(response) {
+            if (response.html) {
+                // Target the container where your list sits
+                jQuery('#relationship-list-container').html(response.html);
+            }
+        }
+    });
+}
+//contratt surety form
 function suretyForm(contractId, suretyId,mode,withinContract) {
    
     suretyId = suretyId || false;

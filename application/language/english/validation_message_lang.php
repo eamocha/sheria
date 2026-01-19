@@ -48,4 +48,7 @@ $lang['invalid_date_rule'] = 'The %s field must contain a valid date.'; // '%s' 
 $lang['expiry_date_must_be_after_effective_date'] = 'Expiry date must be after or equal to the effective date.';
 $lang['released_date_must_be_after_effective_date'] = 'Released date must be after or equal to the effective date.';
 $lang['variable_count_invalid'] = '%s is invalid';
+$lang['transition_already_exists'] = 'A transition with this name already exists between these steps.';
+$lang['cannot_transition_to_same_step'] = 'Cannot create a transition to the same step.';
+$lang['duplicate_transition_not_allowed'] = 'A transition between these steps already exists.';
 

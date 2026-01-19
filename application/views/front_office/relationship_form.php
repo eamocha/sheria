@@ -15,7 +15,21 @@
                     <div class="col-md-12 padding-10">
                         <?php echo form_input(['name' => 'base_id', 'id' => 'id', 'type' => 'hidden', 'value' => $base_id]); ?>
 
-                        <div class="form-group row">
+                       <div class="form-group row">
+    <label class="control-label col-md-4">Link To Module</label>
+    <div class="col-md-8">
+        <?php 
+            $modules = [
+                'correspondence' => 'Correspondence',
+                'cases'          => 'Legal Case',
+                'contracts'      => 'Contract',
+                'legal_opinions' => 'Legal Opinion',
+                'conveyancing'   => 'Conveyancing'
+            ];
+            echo form_dropdown('target_type', $modules, 'correspondence', 'id="target_type" class="form-control select-picker"'); 
+        ?>
+    </div>
+</div> <div class="form-group row">
                             <label class="control-label col-md-4 required">Related To</label>
                             <div class="col-md-8">
                                 <div class="input-group">

@@ -97,25 +97,30 @@ class mysql_Contract_workflow extends My_Model
         return ["result" => false, "validation_errors" => ["type_id" => $this->ci->lang->line("cannot_be_blank_rule")]];
     }
     public function edit_workflow($data)
-    {
-        $this->fetch($data["id"]);
-        $this->set_field("name", $data["name"]);
-        if ($this->update()) {
-            $error = false;
-            $this->ci->contract_workflow_per_type->delete(["where" => ["workflow_id", $data["id"]]]);
-            foreach ($data["type_id"] as $type_id) {
-                $this->ci->contract_workflow_per_type->reset_fields();
-                $this->ci->contract_workflow_per_type->set_field("workflow_id", $data["id"]);
-                $this->ci->contract_workflow_per_type->set_field("type_id", $type_id);
-                if (!$this->ci->contract_workflow_per_type->insert()) {
-                    $error = true;
-                    return $error ? false : true;
-                }
-            }
-        } else {
-            return false;
+{
+    $this->fetch($data["id"]);
+    $this->set_field("name", $data["name"]);
+    
+    if (!$this->update()) {
+        return false;
+    }
+    
+    // Delete existing type associations
+    $this->ci->contract_workflow_per_type->delete(["where" => ["workflow_id", $data["id"]]]);
+    
+    // Insert new type associations
+    foreach ($data["type_id"] as $type_id) {
+        $this->ci->contract_workflow_per_type->reset_fields();
+        $this->ci->contract_workflow_per_type->set_field("workflow_id", $data["id"]);
+        $this->ci->contract_workflow_per_type->set_field("type_id", $type_id);
+        
+        if (!$this->ci->contract_workflow_per_type->insert()) {
+            return false; // Failed to insert type
         }
     }
+    
+    return true; // All operations successful
+}
     public function load_contract_workflow_per_types($type_ids, $worflow_id = 0)
     {
         $ids = implode(",", $type_ids);
@@ -138,7 +143,7 @@ class mysql_Contract_workflow extends My_Model
         $query = [];
         $table = $this->_table;
         $this->_table = "contract_workflow_status_relation as relation";
-        $query["select"] = ["contract_status.id, relation.start_point, relation.approval_start_point, csl.name as step_name,csl.responsible_user_roles,csl.activity,csl.step_input,csl.step_output, contract_status.is_global", false];
+        $query["select"] = ["contract_status.id, relation.start_point, relation.approval_start_point, csl.name as step_name,csl.responsible_user_roles,csl.step_icon,csl.activity,csl.step_input,csl.step_output,contract_status.category_id, contract_status.is_global", false];
         $query["join"][] = ["contract_status", "contract_status.id = relation.status_id", "left"];
         $query["join"][] = ["contract_status_language csl", "csl.status_id = contract_status.id AND csl.language_id = " . $lang_id, "left"];
         $query["where"][] = ["relation.workflow_id", $workflow_id];

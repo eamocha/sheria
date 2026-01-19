@@ -247,17 +247,30 @@
                 </div>
             </div>
              <div class="card mb-4">
-                <div class="card-header">
-                    <i class="sprite fas fa-file-invoice"></i>  Related Correspondences
-                </div>
-                <div class="card-body">
-                    <div class="text-center ">
-                        <button class="btn btn-sm btn-primary" id="<?php echo $correspondence["id"]; ?>" onclick="loadRelationshipForm(<?php echo $correspondence['id']; ?>)">
-                            Link To Correspondence
-                        </button>
-                    </div>
-                </div>
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>
+            <i class="sprite fas fa-file-invoice"></i> Related Records
+        </span>
+        <button class="btn btn-xs btn-primary pull-right" onclick="loadRelationshipForm(<?php echo $correspondence['id']; ?>)">
+            <i class="fa fa-link"></i> <?php echo $this->lang->line("link_new"); ?>
+        </button>
+    </div>
+    
+    <div class="card-body no-padding">
+        <div id="relationship-list-container">
+            <div class="text-center padding-20">
+                <i class="fa fa-spinner fa-spin text-silver"></i>
+                <p class="small text-muted m-t-10">Fetching linked records...</p>
             </div>
+        </div>
+    </div>
+    
+    <div class="card-footer text-center hidden" id="empty-relationship-action">
+         <button class="btn btn-sm btn-primary" onclick="loadRelationshipForm(<?php echo $correspondence['id']; ?>)">
+            <i class="fa fa-plus"></i> Link To Correspondence
+        </button>
+    </div>
+</div>
             <div class="card mb-4">
                 <div class="card-header">
                     <i class="sprite sprite-task"></i>  Related Tasks
@@ -300,17 +313,17 @@
 </div>
 
 <script>
-   const correspondenceId = $('#item-id').val();
-   const correspondenceTypeId = $('#correspondence_type_id').val();
+   const correspondenceId = jQuery('#item-id').val();
+   const correspondenceTypeId = jQuery('#correspondence_type_id').val();
 
 
-           $(document).ready(function() {
+           jQuery(document).ready(function() {
                     load_workflow_steps()
-                 
+                  loadRelatedRecords(correspondenceId);
                      // Update file input label
-    $('.custom-file-input').on('change', function () {
-        let fileName = $(this).val().split('\\').pop();
-        $(this).next('.custom-file-label').addClass("selected").html(fileName || 'Choose file...');
+    jQuery('.custom-file-input').on('change', function () {
+        let fileName = jQuery(this).val().split('\\').pop();
+        jQuery(this).next('.custom-file-label').addClass("selected").html(fileName || 'Choose file...');
     });
     });
     fetchAndDisplayCorrespondenceDocuments(correspondenceId);
@@ -325,7 +338,7 @@
     }
     $docList.empty();
 
-    $.ajax({
+    jQuery.ajax({
         url: getBaseURL() + 'front_office/get_documents_per_correspondence_json/' + correspondenceId,
         method: 'GET',
         dataType: 'json',
@@ -371,7 +384,28 @@
     });
 }
 
- 
+ function loadRelatedRecords(baseId) {
+        var container = jQuery('#relationship-list-container');
+        
+        jQuery.ajax({
+            url: getBaseURL() + 'front_office/load_relationships/' + baseId,
+            type: 'GET',
+            dataType: 'JSON',
+            success: function(response) {
+                if (response.html) {
+                    container.html(response.html);
+                    
+                    // Logic to show/hide footer action based on content
+                    if (jQuery(response.html).find('tbody tr').length > 0) {
+                        jQuery('#empty-relationship-action').addClass('hidden');
+                    }
+                }
+            },
+            error: function() {
+                container.html('<div class="padding-20 text-danger text-center">Failed to load relationships.</div>');
+            }
+        });
+    }
 
 </script>
 

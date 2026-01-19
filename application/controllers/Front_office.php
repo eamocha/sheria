@@ -17,9 +17,8 @@ class Front_office extends Top_controller {
         $this->correspondence_status= $this->correspondence_statusfactory->get_instance();
            $this->load->model("correspondence_document_type","correspondence_document_typefactory");
         $this->correspondence_document_type= $this->correspondence_document_typefactory->get_instance();
-
-        //  $this->load->model('File_model');        // For file data
-     //   $this->load->model('Task_model');        // For task data
+        $this->load->model("System_relationship","system_relationshipfactory");
+        $this->system_relationship= $this->system_relationshipfactory->get_instance();
     }
     public function autocomplete()
     {
@@ -28,9 +27,7 @@ class Front_office extends Top_controller {
         }
         $search = $this->input->get('term');
         $data = $this->correspondence->lookup($search);
-        $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode($data));
+        $this->output->set_content_type('application/json')->set_output(json_encode($data));
     }
 
 public function dashboard()
@@ -430,7 +427,7 @@ public function dashboard()
         $logged_in_user = $this->is_auth->get_fullname();
         $response=array();
         $updateType = $this->input->post('updateType');
-        $params = $this->input->post('params'); // expects an array
+        $params = $this->input->post('params');  
 
         $document_attachment=false;
 
@@ -635,20 +632,111 @@ public function load_relationship_form($base_id) {
 }
 
 public function save_relationship() {
-    $this->form_validation->set_rules('target_id', 'Related Correspondence', 'required');
-    
-    if ($this->form_validation->run() == FALSE) {
-        echo json_encode(['result' => false, 'validationErrors' => $this->form_validation->error_array()]);
+    $response = ["result" => false];
+    $params = [
+        'base_id'     => $this->input->post('base_id'),
+        'base_type'   => 'correspondence', // Current module
+        'target_id'   => $this->input->post('target_id'),
+        'target_type' => $this->input->post('target_type'),  
+        'rel_type'    => $this->input->post('rel_type'),
+        'comments'    => $this->input->post('remarks')
+    ];
+
+    $exists = $this->system_relationship->load_all_records([
+        "where" => [
+            ["base_id", $params['base_id']],
+            ["base_type", $params['base_type']],
+            ["target_id", $params['target_id']],
+            ["target_type", $params['target_type']]
+        ]
+    ]);
+
+    if (empty($exists)) {
+        $this->system_relationship->set_field("base_id", $params['base_id']);
+        $this->system_relationship->set_field("base_type", $params['base_type']);
+        $this->system_relationship->set_field("target_id", $params['target_id']);
+        $this->system_relationship->set_field("target_type", $params['target_type']);
+        $this->system_relationship->set_field("relationship_type", $params['rel_type']);
+        $this->system_relationship->set_field("comments", $params['comments']);
+        $this->system_relationship->set_field("createdBy", $this->is_auth->get_user_id());
+        $this->system_relationship->set_field("createdOn", date('Y-m-d H:i:s'));
+       if($this->system_relationship->validate()){
+          if ($this->system_relationship->insert()) {
+            $response["result"] = true;
+            $response["display_message"] = "Record successfully linked to " . ucfirst($params['target_type']);
+         }
+         }else{
+                    $response["display_message"] = $this->lang->line("data_missing");
+                        $response["validationErrors"] = $this->system_relationship->get("validationErrors");
+         return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+}
     } else {
-        $saveData = [
-            'parent_id' => $this->input->post('base_id'),
-            'child_id'  => $this->input->post('target_id'),
-            'type'      => $this->input->post('rel_type'),
-            'remarks'   => $this->input->post('remarks')
-        ];
-        $this->db->insert('correspondence_links', $saveData);
-        echo json_encode(['result' => true]);
+        $response["display_message"] = "This link already exists.";
     }
+
+    return $this->output->set_content_type('application/json')->set_output(json_encode($response));
+}
+// public function load_relationships($base_id) {
+//     $relationships = $this->system_relationship->load_all_records([
+//         "where" => [
+//             ["base_id", $base_id],
+//             ["base_type", 'correspondence'] // Current module
+//         ]
+//     ]);
+
+//     $data['relationships'] = $relationships;
+//     $html = $this->load->view('front_office/relationship_list', $data, true);
+//      return $this->output->set_content_type('application/json')->set_output(json_encode(['html' => $html]));
+// }
+public function load_relationships($base_id) {
+    $rel_model = $this->system_relationship;
+
+    // $query = [
+    //     "where_custom" => "( (base_id = $base_id AND base_type = 'correspondence') OR (target_id = $base_id AND target_type = 'correspondence') )",
+    //     "order_by" => ["createdOn DESC"]
+    // ];
+
+    $raw_relationships = $rel_model->get_related_items($base_id, 'correspondence');
+    $resolved_list = [];
+
+    // 2. Loop through and fetch details from the actual module tables
+    foreach ($raw_relationships as $rel) {
+        // Determine which side is the "Other" record
+        if ($rel->base_id == $base_id && $rel->base_type == 'correspondence') {
+            $other_id = $rel->target_id;
+            $other_type = $rel->target_type;
+        } else {
+            $other_id = $rel->base_id;
+            $other_type = $rel->base_type;
+        }
+
+        $resolved_list[] = $this->system_relationship->resolve_relationship_data($rel, $other_id, $other_type);
+    }
+
+    $data['relationships'] = $resolved_list;
+    $data['base_id'] = $base_id; // Useful for the "Add New" button in the view
+
+    $html = $this->load->view('front_office/relationship_list', $data, true);
+    return $this->output->set_content_type('application/json')->set_output(json_encode(['html' => $html]));
+}
+public function unlink_relationship() {
+    $id = $this->input->post('id');
+    $response = ["result" => false];
+
+    if ($id) {
+
+        // Optional: Check permissions before deleting
+        if ($this->system_relationship->fetch($id)) {
+            if ($this->system_relationship->delete()) {
+                $response["result"] = true;
+                $response["display_message"] = "Relationship removed successfully.";
+            } else {
+                $response["display_message"] = "Unable to remove the link at this time.";
+            }
+        }
+    }
+
+    return $this->output->set_content_type('application/json')->set_output(json_encode($response));
 }
     /**
      * Send a notification email when the status of a correspondence is updated

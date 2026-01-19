@@ -1,16 +1,31 @@
 <div class="container-fluid mb-5">
+     <div class="col-md-12">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item" aria-current="page"><a href="dashboard/admin"><?php echo $this->lang->line("administration"); ?></a></li>
+                    <li class="breadcrumb-item" aria-current="page"><a href="<?php echo app_url("modules/contract/contract_workflows/index#").$workflow['id']; ?>"><?php echo $this->lang->line("workflows"); ?></a></li>
+                    <li class="breadcrumb-item" aria-current="page">
+                        <a href="<?php echo app_url("modules/contract/contract_statuses"); ?>">
+                            <?php echo $this->lang->line("contract_statuses"); ?>
+                        </a>
+                    </li>
+                </ol>
+            </nav>
+        </div>
     <input type="hidden" name="workflow_id"  id="workflow_id" value="<?php echo $workflow['id']?>" />
 
     <header class="bg-white shadow-sm mb-4">
         <div class="container-fluid py-3">
-            <h1 class="h3 mb-0  font-weight-bold">Workflow Builder for <?php echo $workflow['name']?></h1>
+            <h1 class="h3 mb-0  font-weight-bold">Workflow Builder for <b><?php echo $workflow['name']?></b></h1>
 
         </div>
     </header>
+    
     <div class="row">
+        
         <div class="col-lg-6">
             <div class="workflow-config-section">
-                <h4 class="mb-4 ">Add New Workflow Step</h4>
+                <h4 class="mb-4 ">Manage Steps </h4>
                 <form id="addStepForm">
                     <div class="form-row">
                         <div class="form-group col-md-6">

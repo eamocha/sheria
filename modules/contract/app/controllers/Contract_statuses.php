@@ -61,6 +61,24 @@ class Contract_statuses extends Contract_controller
         }
         $this->output->set_content_type("application/json")->set_output(json_encode($response));
     }
+    public function update_step($id)
+    {
+        if (!$this->input->is_ajax_request()) {
+            show_404();
+        }
+        $response = $data = [];
+        $data["title"] = $this->lang->line("edit");
+        if ($this->input->get("add_edit_form")) {
+            $data += $this->return_data();
+            $data["records"] = $this->contract_status_language->load_data($id);
+            $data["extra_html"] = $this->load->view("contract_statuses/extra_html", $data, true);
+            $response["html"] = $this->load->view("administration/form", $data, true);
+        }
+        if ($this->input->post(NULL)) {
+            $response = $this->contract_status_language->update_step($id);
+        }
+        $this->output->set_content_type("application/json")->set_output(json_encode($response));
+    }
     private function return_data()
     {
         $data["records"] = false;

@@ -1,10 +1,12 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); 
+$id = $contract["id"]?>
 <header class="bg-white shadow-sm mb-4" >
     <div class="container py-3">
         <div class="d-flex justify-content-between align-items-center">
             <span class="mb-0"><?php echo $contract["name"]?><div>  <small class="text-muted"  ><?php echo $contract["description"]; ?></small> </div></span>
 
             <div>
-               <a href="modules/contract/contracts/edit/<?php echo $contract["id"]?>" class="btn btn-primary" >Update</a>
+               <a href="javascript:void(0)" onclick="contractEditForm('<?php echo $id;?>', event);" class="btn btn-primary" >Update</a>
             </div>
         </div>
     </div>

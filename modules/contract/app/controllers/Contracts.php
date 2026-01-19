@@ -5453,7 +5453,7 @@ public function get_new_ref_number()
         $this->load->view("contracts/transitions/".$view, $data);
         $this->load->view("partial/footer");
     }
-    public function contract_development($contract_id=0)
+    public function development($contract_id=0)
     { 
         if (!$this->is_auth->is_logged_in()) {
             redirect("users/login");
@@ -5466,6 +5466,7 @@ public function get_new_ref_number()
         $this->includes("tests/contracts", "js");
         $this->includes("tests/contract_development", "css");
         $this->includes("contract/cp_contract_common", "js");
+         $this->includes("contract/view", "js");
         $this->load->view("partial/header");
         $this->load->view("contracts/development/contract_detail_view",$data);
         $this->load->view("partial/footer");

@@ -32,7 +32,7 @@ const predefinedFunctions = [
 /**
  * Fetches workflow data from the server using jQuery AJAX.
  */
-function fetchWorkflowData() {
+function fetchWorkflowData(callback = null) {
     const workflowId = jQuery('#workflow_id').val();
     const $displayContainer = jQuery('#configuredWorkflowDisplay');
 
@@ -59,6 +59,9 @@ function fetchWorkflowData() {
                 jQuery('#noStepsMessage').remove(); // Remove initial "no steps" message if present
             } else {
                  $displayContainer.html('<p class="text-muted text-center" id="noStepsMessage">No steps configured yet. Add a step using the form on the left.</p>');
+            }
+            if (typeof callback === 'function') {
+                callback();
             }
         },
          error: defaultAjaxJSONErrorsHandler,
@@ -206,29 +209,28 @@ function handleAddStepFormSubmit(event) {
     const stepIcon = jQuery('#stepIcon').val();
     const stepActivity = jQuery('#stepActivity').val();
     const stepOutput = jQuery('#stepOutput').val();
-    const stepInput = jQuery('#stepInput').val(); // Get input field value
+    const stepInput = jQuery('#stepInput').val();
     const stepContractLink = jQuery('#stepContractLink').val();
-    const stepCategoryId = jQuery('#category_id').val(); 
+    const stepCategoryId = jQuery('#category_id').val();
     const isStartPoint = jQuery('#isStartPoint').prop('checked') ? 1 : 0;
     const approvalStartPoint = jQuery('#approvalStartPoint').prop('checked') ? 1 : 0;
     const isSignaturePoint = jQuery('#isSignaturePoint').prop('checked') ? 1 : 0;
     const isGlobal = jQuery('#isGlobal').prop('checked') ? 1 : 0;
-    
+
     const checklistItems = [];
-jQuery('.checklist-item-row').each(function() {
-    const text = jQuery(this).find('.checklist-item-text').val();
-    const type = jQuery(this).find('.checklist-item-type').val();
-    const required = jQuery(this).find('.checklist-item-required').is(':checked') ? 1 : 0;
+    jQuery('.checklist-item-row').each(function() {
+        const text = jQuery(this).find('.checklist-item-text').val();
+        const type = jQuery(this).find('.checklist-item-type').val();
+        const required = jQuery(this).find('.checklist-item-required').is(':checked') ? 1 : 0;
 
-    if (text) {
-        checklistItems.push({
-            item_text: text,
-            input_type: type,
-            is_required: required
-        });
-    }
-});
-
+        if (text) {
+            checklistItems.push({
+                item_text: text,
+                input_type: type,
+                is_required: required
+            });
+        }
+    });
 
     const actionButtons = [];
     jQuery('.action-function').each(function(index) {
@@ -237,10 +239,10 @@ jQuery('.checklist-item-row').each(function() {
         const $iconSelect = jQuery('.action-icon').eq(index);
         if ($funcSelect.val() && $labelInput.val() && $iconSelect.val()) {
             actionButtons.push({
-                function_name: $funcSelect.val(), // Use function_name to match JSON
+                function_name: $funcSelect.val(),
                 label: $labelInput.val(),
                 icon_class: $iconSelect.val(),
-                data_action: $funcSelect.val() // Often data_action is the same as function_name
+                data_action: $funcSelect.val()
             });
         }
     });
@@ -248,45 +250,43 @@ jQuery('.checklist-item-row').each(function() {
     const newStep = {
         workflow_id: workflowId,
         name_en: stepTitle,
-         name_ar: stepTitle,
-          name_fr: stepTitle,
-           name_sp: stepTitle,
+        name_ar: stepTitle,
+        name_fr: stepTitle,
+        name_sp: stepTitle,
         category_id: stepCategoryId,
         responsible_user_roles: stepResponsibility,
-        step_icon: stepIcon, // Store the selected step icon
+        step_icon: stepIcon,
         activity: stepActivity,
         step_output: stepOutput,
-        step_input: stepInput, // Include step_input
+        step_input: stepInput,
         contract_link: stepContractLink,
         start_point: isStartPoint,
         approval_start_point: approvalStartPoint,
-        is_signature_point: isSignaturePoint, // Renamed for consistency with backend
+        is_signature_point: isSignaturePoint,
         is_global: isGlobal,
-        checklist: checklistItems, // Store checklist items
+        checklist: checklistItems,
         functions: actionButtons,
-        transitions: [] // Initialize transitions array for new steps
+        transitions: []
     };
 
     jQuery.ajax({
         url: getBaseURL('contract') + 'contract_statuses/add',
         method: 'POST',
-       // contentType: 'application/json', // Set content type for outgoing request
-        data: newStep,//JSON.stringify(newStep), // Send JSON string
-      //  dataType: 'json', // Expect JSON response
-       
+        data: newStep,
         beforeSend: function() {
-            jQuery('#loader-global').show(); // Show global loader before sending request
+            jQuery('#loader-global').show();
         },
-      complete: function() {
+        complete: function() {
             jQuery('#loader-global').hide();
         },
         success: function(response) {
-            if (response.result) { // Assuming backend sends {result: true/false}
-                fetchWorkflowData(); // Re-fetch all data to update the view
-                jQuery('#addStepForm')[0].reset(); // Clear the form
-                jQuery('#actionButtonsContainer').empty(); // Clear action button inputs
-                jQuery('#checklistItemsContainer').empty(); // Clear checklist inputs
-                // Reset checkboxes
+            console.log('Add response:', response); // Debug
+
+            if (response.result) {
+                fetchWorkflowData();
+                jQuery('#addStepForm')[0].reset();
+                jQuery('#actionButtonsContainer').empty();
+                jQuery('#checklistItemsContainer').empty();
                 jQuery('#isStartPoint').prop('checked', false);
                 jQuery('#approvalStartPoint').prop('checked', false);
                 jQuery('#isSignaturePoint').prop('checked', false);
@@ -295,16 +295,47 @@ jQuery('.checklist-item-row').each(function() {
                 pinesMessage({ ty: 'success', m: _lang.feedback_messages.newStepAddedSuccessfully });
             } else {
                 let errorMessage = _lang.feedback_messages.failedToAddStep;
-                if (response.validation_errors) {
-                    errorMessage += '\n' + Object.values(response.validation_errors).join('\n');
+
+                // Clear previous error messages
+                clearFormErrors();
+
+                if (response.validationErrors) {
+                    // Handle validation errors properly
+                    console.log('Validation errors:', response.validationErrors);
+
+                    // Special handling for duplicate name errors
+                    if (response.validationErrors.name_en ||
+                        response.validationErrors.name_ar ||
+                        response.validationErrors.name_fr ||
+                        response.validationErrors.name_sp) {
+
+                        // Show the error next to the step title field
+                        showFieldError('stepTitle', 'A step with this name already exists. Please choose a different name.');
+                        errorMessage = 'A step with this name already exists.';
+                    } else {
+                        // Handle other validation errors
+                        Object.keys(response.validationErrors).forEach(fieldName => {
+                            // Map field names to form field IDs
+                            let fieldId = mapFieldNameToId(fieldName);
+                            if (fieldId) {
+                                showFieldError(fieldId, response.validationErrors[fieldName]);
+                            }
+                        });
+
+                        // Build error message from all validation errors
+                        const errorMessages = Object.values(response.validationErrors);
+                        if (errorMessages.length > 0) {
+                            errorMessage = errorMessages.join('\n');
+                        }
+                    }
                 } else if (response.display_error) {
                     errorMessage += '\n' + response.display_error;
                 }
-                  pinesMessage({ ty: 'error', m:  errorMessage });
-                console.error("Backend validation/logic error:", response);
+
+                pinesMessage({ ty: 'error', m: errorMessage });
             }
         },
-         error: defaultAjaxJSONErrorsHandler
+        error: defaultAjaxJSONErrorsHandler
     });
 }
 
@@ -458,6 +489,85 @@ function renderWorkflowConfig() {
 
 // Function to edit a step
 function editStep(stepId) {
+    const stepToEdit = workflowData.steps.find(step => step.id == stepId);
+    if (!stepToEdit) {
+        pinesMessage({ ty: 'error', m: _lang.feedback_messages.stepNotFoundForEditing });
+        return;
+    }
+
+    console.log('Editing step:', stepToEdit); // Debug log
+
+    // Populate the form with current step data
+    jQuery('#stepTitle').val(stepToEdit.step_name || '');
+    jQuery('#stepResponsibility').val(stepToEdit.responsible_user_roles || '');
+    jQuery('#stepActivity').val(stepToEdit.activity || '');
+    jQuery('#stepOutput').val(stepToEdit.step_output || '');
+    jQuery('#stepInput').val(stepToEdit.step_input || '');
+    jQuery('#stepContractLink').val(stepToEdit.contract_link || '');
+
+    // FIX 1: Populate step icon dropdown
+    if (stepToEdit.step_icon) {
+        jQuery('#stepIcon').val(stepToEdit.step_icon);
+    } else {
+        jQuery('#stepIcon').val(''); // Reset if no icon
+    }
+
+    // FIX 2: Populate category dropdown
+    if (stepToEdit.category_id) {
+        jQuery('#category_id').val(stepToEdit.category_id);
+    } else {
+        jQuery('#category_id').val(''); // Reset if no category
+    }
+
+    // Populate checkboxes
+    jQuery('#isStartPoint').prop('checked', stepToEdit.start_point == 1);
+    jQuery('#approvalStartPoint').prop('checked', stepToEdit.approval_start_point == 1);
+    jQuery('#isSignaturePoint').prop('checked', stepToEdit.is_signature_point == 1);
+    jQuery('#isGlobal').prop('checked', stepToEdit.is_global == 1);
+
+    // Populate language fields (using same value for all if you don't have separate inputs)
+    // Make sure these hidden fields exist in your HTML
+    jQuery('#name_en').val(stepToEdit.step_name || '');
+    jQuery('#name_ar').val(stepToEdit.step_name || '');
+    jQuery('#name_fr').val(stepToEdit.step_name || '');
+    jQuery('#name_sp').val(stepToEdit.step_name || '');
+
+    // Clear existing checklist inputs and add current ones
+    const $checklistItemsContainer = jQuery('#checklistItemsContainer');
+    $checklistItemsContainer.empty();
+    if (stepToEdit.checklist) {
+        stepToEdit.checklist.forEach(item => {
+            addChecklistItemInput(item.item_text, item.input_type || 'yesno', item.is_required == 1);
+        });
+    }
+
+    // Clear existing action button inputs and add current ones
+    const $actionButtonsContainer = jQuery('#actionButtonsContainer');
+    $actionButtonsContainer.empty();
+    if (stepToEdit.functions) {
+        stepToEdit.functions.forEach(action => {
+            addActionButtonInput(action.label, action.icon_class, action.function_name);
+        });
+    }
+
+    // Change form submit button to "Update Step"
+    const $addStepForm = jQuery('#addStepForm');
+    const $submitButton = $addStepForm.find('button[type="submit"]');
+    $submitButton.text('Update Step');
+
+    // Remove old event listener and add new one
+    const onUpdateSubmit = function(event) {
+        event.preventDefault();
+        updateStep(stepId);
+    };
+
+    $addStepForm.off('submit', handleAddStepFormSubmit);
+    $addStepForm.on('submit', onUpdateSubmit);
+
+    // Scroll to form
+    jQuery('html, body').animate({ scrollTop: 0 }, 'slow');
+}
+function editStepold(stepId) {
     const stepToEdit = workflowData.steps.find(step => step.id == stepId); // Use == for loose comparison as ID might be string
     if (!stepToEdit) {
           pinesMessage({ ty: 'error', m:  _lang.feedback_messages.stepNotFoundForEditing });
@@ -528,6 +638,142 @@ function editStep(stepId) {
 
 // Function to update an existing step using jQuery AJAX.
 function updateStep(stepId) {
+    const workflowId = jQuery('#workflow_id').val();
+    const stepTitle = jQuery('#stepTitle').val();
+
+    // Get current system language (add this to your page: <input type="hidden" id="system_lang" value="en">)
+    const systemLang = jQuery('#system_lang').val() || 'en';
+
+    const updatedStepData = {
+        id: stepId,
+        workflow_id: workflowId,
+        category_id: jQuery('#category_id').val(), // IMPORTANT: Add this field
+        responsible_user_roles: jQuery('#stepResponsibility').val(),
+        step_icon: jQuery('#stepIcon').val(),
+        activity: jQuery('#stepActivity').val(),
+        step_output: jQuery('#stepOutput').val(),
+        step_input: jQuery('#stepInput').val(),
+        contract_link: jQuery('#stepContractLink').val(),
+        start_point: jQuery('#isStartPoint').prop('checked') ? 1 : 0,
+        approval_start_point: jQuery('#approvalStartPoint').prop('checked') ? 1 : 0,
+        is_signature_point: jQuery('#isSignaturePoint').prop('checked') ? 1 : 0,
+        is_global: jQuery('#isGlobal').prop('checked') ? 1 : 0,
+        checklist: [],
+        functions: [],
+    };
+
+    // Add language-specific name fields (PHP model expects these)
+    // If you have separate inputs for each language, use those
+    // Otherwise, use the same value for all languages
+    updatedStepData['name_' + systemLang] = stepTitle;
+    updatedStepData.name_en = stepTitle;
+    updatedStepData.name_ar = stepTitle;
+    updatedStepData.name_fr = stepTitle;
+    updatedStepData.name_sp = stepTitle;
+
+    // Collect checklist items
+    jQuery('.checklist-item-row').each(function() {
+        const text = jQuery(this).find('.checklist-item-text').val();
+        const type = jQuery(this).find('.checklist-item-type').val();
+        const required = jQuery(this).find('.checklist-item-required').is(':checked') ? 1 : 0;
+
+        if (text) {
+            updatedStepData.checklist.push({
+                item_text: text,
+                input_type: type,
+                is_required: required
+            });
+        }
+    });
+
+    // Collect functions
+    jQuery('.action-function').each(function(index) {
+        const $funcSelect = jQuery(this);
+        const $labelInput = jQuery('.action-label').eq(index);
+        const $iconSelect = jQuery('.action-icon').eq(index);
+        if ($funcSelect.val() && $labelInput.val() && $iconSelect.val()) {
+            updatedStepData.functions.push({
+                function_name: $funcSelect.val(),
+                label: $labelInput.val(),
+                icon_class: $iconSelect.val(),
+                data_action: $funcSelect.val()
+            });
+        }
+    });
+
+    console.log('Sending update data:', updatedStepData); // Debug
+
+    jQuery.ajax({
+        url: getBaseURL('contract') + 'contract_statuses/update_step/' + stepId,
+        method: 'POST',
+        // Don't use contentType: 'application/json' - PHP expects form data
+        // Remove these two lines:
+        // contentType: 'application/json',
+        // data: JSON.stringify(updatedStepData),
+        // Use regular form data instead:
+        data: updatedStepData,
+        dataType: 'json',
+        beforeSend: function() {
+            jQuery('#loader-global').show();
+        },
+        complete: function() {
+            jQuery('#loader-global').hide();
+        },
+        success: function(response) {
+            console.log('Update response:', response); // Debug
+
+            if (response.result) {
+                fetchWorkflowData();
+
+                // Reset form
+                jQuery('#addStepForm')[0].reset();
+                jQuery('#actionButtonsContainer').empty();
+                jQuery('#checklistItemsContainer').empty();
+                jQuery('#isStartPoint, #approvalStartPoint, #isSignaturePoint, #isGlobal').prop('checked', false);
+
+                // Revert to "Add Step" mode
+                const $submitButton = jQuery('#addStepForm').find('button[type="submit"]');
+                $submitButton.text('Add Step');
+                jQuery('#addStepForm').off('submit').on('submit', handleAddStepFormSubmit);
+
+                pinesMessage({ ty: 'success', m: _lang.feedback_messages.stepUpdatedSuccessfully });
+            } else { let errorMessage = _lang.feedback_messages.failedToUpdateStep;
+
+                // Clear previous errors
+                clearFormErrors();
+
+                if (response.validationErrors) {
+                    // Check for duplicate name errors
+                    if (response.validationErrors.name_en ||
+                        response.validationErrors.name_ar ||
+                        response.validationErrors.name_fr ||
+                        response.validationErrors.name_sp) {
+
+                        showFieldError('stepTitle', 'A step with this name already exists. Please choose a different name.');
+                        errorMessage = 'A step with this name already exists.';
+                    } else {
+                        // Handle other validation errors
+                        Object.keys(response.validationErrors).forEach(fieldName => {
+                            let fieldId = mapFieldNameToId(fieldName);
+                            if (fieldId) {
+                                showFieldError(fieldId, response.validationErrors[fieldName]);
+                            }
+                        });
+
+                        const errorMessages = Object.values(response.validationErrors);
+                        if (errorMessages.length > 0) {
+                            errorMessage = errorMessages.join('\n');
+                        }
+                    }
+                }
+
+                pinesMessage({ ty: 'error', m: errorMessage });
+            }
+        },
+        error: defaultAjaxJSONErrorsHandler
+    });
+}
+function updateStepold(stepId) {
     const stepToUpdateIndex = workflowData.steps.findIndex(step => step.id == stepId);
     if (stepToUpdateIndex === -1) {
           pinesMessage({ ty: 'error', m:  _lang.feedback_messages.stepNotFoundForUpdate });
@@ -589,7 +835,7 @@ jQuery('.checklist-item-row').each(function() {
     });
 
     jQuery.ajax({
-        url: getBaseURL('contract') + 'contract_workflows/update_step/' + stepId,
+        url: getBaseURL('contract') + 'contract_statuses/update_step/' + stepId,
         method: 'POST', // or 'PUT' depending on your API
         contentType: 'application/json',
         data: JSON.stringify(updatedStepData),
@@ -633,7 +879,7 @@ jQuery('.checklist-item-row').each(function() {
 function deleteStep(stepId) {
     if (confirm('Are you sure you want to delete this step? This action cannot be undone.')) {
         jQuery.ajax({
-            url: getBaseURL('contract') + 'contract_workflows/delete_step/' + stepId,
+            url: getBaseURL('contract') + 'contract_statuses/delete_step/' + stepId,
             method: 'POST', // or 'DELETE' depending on your API
             dataType: 'json', // Assuming backend sends JSON response
             success: function(response) {
@@ -820,37 +1066,30 @@ function saveTransition(transitionId) {
         name: transitionLabel,
         comment: description,
         // Convert boolean to 'yes' or 'no' string for PHP's $_POST handling
-        approval_needed: approvalNeeded ? 'yes' : 'no'
+        // approval_needed: approvalNeeded ? 'yes' : 'no'
+        approval_needed: approvalNeeded ? 1 : 0
     };
 
     const url = transitionId ?
         getBaseURL('contract') + 'contract_workflows/update_transition/' + transitionId :
         getBaseURL('contract') + 'contract_workflows/add_transition';
 
-    // Convert payload to application/x-www-form-urlencoded format
-    const formBody = new URLSearchParams();
-    for (const key in transitionPayload) {
-        formBody.append(key, transitionPayload[key]);
-    }
-
     jQuery.ajax({
         url: url,
         method: 'POST',
-        contentType: 'application/x-www-form-urlencoded',
-        data: formBody.toString(), // URLSearchParams needs to be converted to string for jQuery.ajax data
+        data: transitionPayload, // jQuery handles the encoding automatically
         dataType: 'json',
         success: function(jsonResponse) {
             if (jsonResponse.result) {
-                fetchWorkflowData(); // Re-fetch data to update the view
-                renderTransitionsInModal(); // Re-render the list of transitions in the modal
+                // IMPORTANT: Pass a callback to fetchWorkflowData
+                fetchWorkflowData(function() {
+                    renderTransitionsInModal();
+                });
                 pinesMessage({ ty: 'success', m: _lang.feedback_messages.transitionSavedSuccessfully });
             } else {
-                
-                  pinesMessage({ ty: 'error', m:  _lang.feedback_messages.failedToSaveTransition });
-                console.error("Backend validation/logic error:", jsonResponse);
+                pinesMessage({ ty: 'error', m: jsonResponse.display_error || "Update failed" });
             }
-        },
-         error: defaultAjaxJSONErrorsHandler
+        }
     });
 }
 
@@ -891,6 +1130,48 @@ function deleteTransition(transitionId) {
             error: defaultAjaxJSONErrorsHandler
         });
     }
+}
+function clearFormErrors() {
+    jQuery('.form-error').remove();
+    jQuery('.has-error').removeClass('has-error');
+    jQuery('.is-invalid').removeClass('is-invalid');
+}
+
+// Helper function to show field error
+function showFieldError(fieldId, errorMessage) {
+    const $field = jQuery('#' + fieldId);
+    if ($field.length) {
+        // Add error class to the field
+        $field.addClass('is-invalid');
+
+        // Add error message below the field
+        const $errorDiv = jQuery('<div class="form-error invalid-feedback d-block"></div>');
+        $errorDiv.text(errorMessage);
+
+        // Insert after the field
+        $field.after($errorDiv);
+
+        // Also add to the form group
+        $field.closest('.form-group').addClass('has-error');
+    }
+}
+
+// Helper function to map field names to form IDs
+function mapFieldNameToId(fieldName) {
+    const fieldMap = {
+        'name_en': 'stepTitle',
+        'name_ar': 'stepTitle',
+        'name_fr': 'stepTitle',
+        'name_sp': 'stepTitle',
+        'responsible_user_roles': 'stepResponsibility',
+        'step_icon': 'stepIcon',
+        'activity': 'stepActivity',
+        'step_input': 'stepInput',
+        'step_output': 'stepOutput',
+        'category_id': 'category_id'
+    };
+
+    return fieldMap[fieldName] || null;
 }
 
 // Initial setup when DOM is loaded using jQuery's ready
