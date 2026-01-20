@@ -3,7 +3,7 @@ $id = $contract["id"]?>
 <header class="bg-white shadow-sm mb-4" >
     <div class="container py-3">
         <div class="d-flex justify-content-between align-items-center">
-            <span class="mb-0"><?php echo $contract["name"]?><div>  <small class="text-muted"  ><?php echo $contract["description"]; ?></small> </div></span>
+            <span class="mb-0"><a href="<?php echo base_url('contracts/view/'.$id); ?>"><?php echo $contract["name"]?></a><div>  <small class="text-muted"  ><?php echo $contract["description"]; ?></small> </div></span>
 
             <div>
                <a href="javascript:void(0)" onclick="contractEditForm('<?php echo $id;?>', event);" class="btn btn-primary" >Update</a>
@@ -75,7 +75,7 @@ $id = $contract["id"]?>
                     </div>
                     <div class="row summary-item">
                         <div class="col-6 label">Workflow Name:</div>
-                        <div class="col-6 value" id="contract-workflow-name"><?php echo $contract["workflow_name"]; ?></div>
+                        <div class="col-6 value" id="contract-workflow-name"><a href="<?php echo base_url("contract_workflows/configure/".$contract["workflow_id"]); ?>"><?php echo $contract["workflow_name"]; ?></a></div>
                     </div>
                     <div class="row summary-item">
                         <div class="col-6 label">Archived:</div>

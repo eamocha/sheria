@@ -82,12 +82,12 @@ function deleteTaskSelectedRow(id) {
         });
     }
 }
-function contractTaskAddForm() {
+function contractTaskAddForm(contract_Id=null) {
     if (contractLicenseHasExpired) {
         alertLicenseExpirationMsg();
         return false;
     }
-    var contractId = jQuery('#contractIdInPage', '#gridFormContent').val();
+    var contractId =contract_Id?? jQuery('#contractIdInPage', '#gridFormContent').val();
     jQuery.ajax({
         dataType: 'JSON',
         url: getBaseURL() + 'tasks/add/0/0/0/' + contractId,

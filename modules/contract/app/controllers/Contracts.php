@@ -5466,7 +5466,11 @@ public function get_new_ref_number()
         $this->includes("tests/contracts", "js");
         $this->includes("tests/contract_development", "css");
         $this->includes("contract/cp_contract_common", "js");
+               $this->includes("contract/related_documents", "js");
+               $this->includes("scripts/documents_general", "js");
+               $this->includes("contract/related_tasks", "js");
          $this->includes("contract/view", "js");
+       
         $this->load->view("partial/header");
         $this->load->view("contracts/development/contract_detail_view",$data);
         $this->load->view("partial/footer");
@@ -5531,7 +5535,7 @@ public function get_new_ref_number()
          $step_id_frmlangs =(int) $step['id']; // from contract_status_language table
 
         // 2. Get actions/functions for the step
-        $functions = $this->contract_workflow_step_function->load_all(["where" => ['step_id' , $step_id_frmlangs]]);
+        $functions = $this->contract_workflow_step_function->load_all(["where" => ['step_id' , $step_id]]);
       
         $actions = [];
         foreach ($functions as $func) {
@@ -5542,37 +5546,35 @@ public function get_new_ref_number()
             ];
         }
         // 2. Get actions/functions for the step
-$functions = $this->contract_workflow_step_function->load_all([
-    "where" => ['step_id', $step_id_frmlangs]
-]);
-
-// Default actions (always included)
-$defaultActions = [
-     [
-        'action'        => 'Add Task',
-        'function_name' => 'addTask',
-        'icon'          => 'fa fa-tasks'
-    ],
-    [
-        'action'        => 'Add Reminder',
-        'function_name' => 'addReminder',
-        'icon'          => 'fa fa-bell'
-    ],
-    [
-        'action'        => 'Notify',
-        'function_name' => 'notify',
-        'icon'          => 'fa fa-envelope'
-    ],
-    [
-        'action'        => 'Cancel',
-        'function_name' => 'cancel',
-        'icon'          => 'fa fa-times-circle'
-    ],
-       [
-        'divider'        => true
-    ]
-];
-$actions = [];
+            $functions = $this->contract_workflow_step_function->load_all(["where" => ['step_id', $step_id]]);
+          
+            // Default actions (always included)
+            $defaultActions = [
+                [
+                    'action'        => 'Add Task',
+                    'function_name' => 'addTask',
+                    'icon'          => 'fa fa-tasks'
+                ],
+                [
+                    'action'        => 'Add Reminder',
+                    'function_name' => 'addReminder',
+                    'icon'          => 'fa fa-bell'
+                ],
+                [
+                    'action'        => 'Notify',
+                    'function_name' => 'notify',
+                    'icon'          => 'fa fa-envelope'
+                ],
+                [
+                    'action'        => 'Cancel',
+                    'function_name' => 'cancel',
+                    'icon'          => 'fa fa-times-circle'
+                ],
+                [
+                    'divider'        => true
+                ]
+            ];
+            $actions = [];
 
 // Actions coming from DB
 foreach ($functions as $func) {
@@ -5612,7 +5614,10 @@ $actions = array_merge($actions, $defaultActions);
                 'icon'    => !empty($t['icon_class']) ? "fa " . $t['icon_class'] :""
             ];
         }
-        // 6. Build step structure
+            // Load attachments for the contract
+        $docs = $this->dmsnew->load_documents(["module" => "contract", "module_record_id" =>$contract_id, "lineage" => "", "term" =>""]);
+      
+        // 7. Final response
         $workflow_steps[] = [
             'step_id'       => (int)$step_id,
             'title'         => $counter . '. ' . $step['step_name'], // from contract_status_language
@@ -5622,7 +5627,7 @@ $actions = array_merge($actions, $defaultActions);
             'activity'      => $step['activity'] ?? null,
             'output'        => $step['step_output'] ?? null,
             'description'   => $step['description'] ?? null,
-            'document_link' => "document_link", // placeholder
+            'document_link' => $docs["data"]??[],  
             'actions'       => $actions,
             'checklist'     => $checklist,
             'main_actions'  => $main_actions
@@ -5632,18 +5637,15 @@ $actions = array_merge($actions, $defaultActions);
         $counter++;
     }
 
-    // 7. Final response
- $docs = $this->dmsnew->load_documents(["module" => "contract", "module_record_id" =>$contract_id, "lineage" => "", "term" =>""]);
-       
+ 
  
     $object1 = [   
     'workflow_steps'   => $workflow_steps,   
     'last_updated'     => date('F d, Y H:i:s'),
     'system_status'    => 'OK',
-    'attachments'      => $docs["data"]??[]  // you’ll handle
-];
-
-return array_merge($object1, $contract);
+    'attachments'      => $docs["data"]??[]
+    ];
+    return array_merge($object1, $contract);
 
 }
 

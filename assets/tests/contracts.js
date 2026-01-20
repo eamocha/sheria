@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     loadContractData(contract_id);
 });
 
+  //  var viewableExtensions = <?php echo json_encode($this->document_management_system->viewable_documents_extensions);?>
+    var viewableExtensions = [ { extension: 'pdf' }, { extension: 'doc' }, { extension: 'docx' },    { extension: 'xls' },    { extension: 'xlsx' },    { extension: 'png' },    { extension: 'jpg' },    { extension: 'jpeg' },    { extension: 'txt' }];
+
 // Status to badge class mapping
 const statusToBadgeClass = {
     'not_started': 'secondary',  
@@ -25,7 +28,7 @@ function loadContractData(contract_id) {
         url: getBaseURL('contract') + 'contracts/test/'+contract_id,
         type: 'GET',
         dataType: 'json',
-        beforesend: function() {      
+        beforeSend: function() {      
            jQuery('#loader-global').show();
         },
         success: function(response) {
@@ -94,7 +97,24 @@ function createStepElement(step, hasConnector) {
         </div>
     `);
     
-    // Create card
+
+    // Render documents (may be multiple)
+    const docs = Array.isArray(step.document_link) ? step.document_link : [];
+
+const docsHtml = docs.length > 0 ? docs.map(doc => `
+    <div class="document-item d-flex align-items-center mb-2">
+        <i class="fa ${getFileIconClass(doc.extension)} mr-2" aria-hidden="true"></i>
+        <span class="document-name mr-3">${doc.full_name || doc.name}</span>
+        
+       
+
+        <button type="button" class="btn btn-sm btn-outline-secondary" title="Edit"
+                onclick="editDocument(${doc.id}, '${doc.module}', ${doc.module_record_id}, '${doc.parent_lineage}', '${doc.extension}')">
+            <i class="fa fa-edit"></i>
+        </button>
+    </div>
+`).join('') : '<div class="text-muted small">No documents</div>';
+
     const card = jQuery(`
         <div class="card step-card">
             <div class="card-header d-flex justify-content-between align-items-center">
@@ -105,13 +125,11 @@ function createStepElement(step, hasConnector) {
                 <p><strong>Responsibility:</strong> ${step.responsibility}</p>
                 <p><strong>Activity:</strong> ${step.activity}</p>
                 <p><strong>Output:</strong> ${step.output}</p>
-                <p class="text-muted small mt-2">${step.description}</p>
-                <p class="mt-3 mb-0">
-                    <i class="fa fa-link mr-2 text-muted"></i>
-                    <a href="#" class="text-primary" onclick="console.log('Opening Contract: ${step.document_link}'); return false;">
-                        Contract Link: ${step.document_link}
-                    </a>
-                </p>
+                ${step.description ? `<p class="text-muted small mt-2">${step.description}</p>` : ''}
+                <div class="mt-3">
+                    <h6 class="mb-2">Documents</h6>
+                    ${docsHtml}
+                </div>
             </div>
             <div class="card-footer text-right"></div>
         </div>
@@ -228,22 +246,40 @@ function showError(contract_id,message) {
 }
 
 // Event Handlers
-function attachEventHandlers(contractId) {
-    jQuery('.dropdown-item').off('click').on('click', handleDropdownItemClick(contractId,event));
+function attachEventHandlers() {
+    jQuery('.dropdown-item').off('click').on('click', function(event) {
+        handleDropdownItemClick.call(this, event);
+    });
+
+    // Open contract links safely without inline onclick
+    jQuery('.open-contract-link').off('click').on('click', function(e) {
+        e.preventDefault();
+        const link = jQuery(this).data('link');
+        console.log('Opening Contract:', link);
+        if (link) {
+            window.open(link, '_blank');
+        }
+    });
 }
 
-function handleDropdownItemClick(contractId,event) {
+function handleDropdownItemClick(event) {
     event.preventDefault();
-    const action = jQuery(this).data('action');
-    const function_name = jQuery(this).data('function');
-    const stepId = jQuery(this).closest('.workflow-step').data('step-id');
+    const $el = jQuery(event.currentTarget);
+    const action = $el.data('action');
+    const function_name = $el.data('function');
+    const stepId = $el.closest('.workflow-step').data('step-id');
+    const contractId = jQuery('#contract-detail-view').data('contractid');
     console.log(`Action "${action}" clicked for step ${stepId}`);
+
+    const callback = () => loadContractData(contractId);
     // Implement specific action handlers here
     switch(function_name) {
         case 'addTask':
-            taskForm(contractId,stepId, false, false, callback) ;
+            contractTaskAddForm(contractId,stepId, false, callback) ;
+          //  taskForm(contractId,stepId, false, false, callback) ;
             break;
         case 'addReminder':
+        //    reminderForm(false, false, false, contractId);
             reminderForm(contractId,stepId, false, contractId, callback);
             break;
         case 'addNote':
