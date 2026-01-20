@@ -5,8 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadContractData(contract_id);
 });
 
-  //  var viewableExtensions = <?php echo json_encode($this->document_management_system->viewable_documents_extensions);?>
-    var viewableExtensions = [ { extension: 'pdf' }, { extension: 'doc' }, { extension: 'docx' },    { extension: 'xls' },    { extension: 'xlsx' },    { extension: 'png' },    { extension: 'jpg' },    { extension: 'jpeg' },    { extension: 'txt' }];
+  //   // var viewableExtensions = [ { extension: 'pdf' }, { extension: 'doc' }, { extension: 'docx' },    { extension: 'xls' },    { extension: 'xlsx' },    { extension: 'png' },    { extension: 'jpg' },    { extension: 'jpeg' },    { extension: 'txt' }];
 
 // Status to badge class mapping
 const statusToBadgeClass = {
@@ -52,13 +51,22 @@ function updateContractUI(data) {
     //jQuery('#last-updated').text('Last updated: ' + formatDate(data.last_updated));
     
     // Render workflow steps
-    renderWorkflowSteps(data.workflow_steps);
+       const steps = data.workflow_steps || [];
+    const numberOfSteps = data.number_of_steps ?? steps.length;
+       
+    // NO WORKFLOW STEPS → SHOW ACTION BUTTONS
+    if (numberOfSteps === 0) {
+        renderNoWorkflowActions(data.contract);
+        updateAttachments(data.attachments || []);
+        return;
+    }
+     renderWorkflowSteps(data.workflow_steps);
     
     
     // Update progress
    // updateProgressBar(data.contract_summary.progress, data.workflow_steps);
     // Update attachments
-    
+  
      updateAttachments(data.attachments || []);
 }
 
@@ -104,13 +112,13 @@ function createStepElement(step, hasConnector) {
 const docsHtml = docs.length > 0 ? docs.map(doc => `
     <div class="document-item d-flex align-items-center mb-2">
         <i class="fa ${getFileIconClass(doc.extension)} mr-2" aria-hidden="true"></i>
-        <span class="document-name mr-3">${doc.full_name || doc.name}</span>
+        <span class="document-name mr-3"><a href="javascript:downloadFile(${doc.id}, true, 'contract');">${doc.full_name || doc.name}</a></span>
         
        
 
         <button type="button" class="btn btn-sm btn-outline-secondary" title="Edit"
                 onclick="editDocument(${doc.id}, '${doc.module}', ${doc.module_record_id}, '${doc.parent_lineage}', '${doc.extension}')">
-            <i class="fa fa-edit"></i>
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
         </button>
     </div>
 `).join('') : '<div class="text-muted small">No documents</div>';
@@ -279,8 +287,8 @@ function handleDropdownItemClick(event) {
           //  taskForm(contractId,stepId, false, false, callback) ;
             break;
         case 'addReminder':
-        //    reminderForm(false, false, false, contractId);
-            reminderForm(contractId,stepId, false, contractId, callback);
+        reminderForm(false, false, false, contractId);
+           // reminderForm(contractId,stepId, false, contractId, callback);
             break;
         case 'addNote':
             commentForm(stepId,contractId,callback);
@@ -292,7 +300,8 @@ function handleDropdownItemClick(event) {
             completeStep(stepId,contractId);
             break;
         case 'notify':
-            notifyStep(stepId,contractId);
+           // notifyStep(stepId,contractId);
+           window.alert('Notify functionality not yet implemented');
             break;
         case 'returnToPrevious':
             const targetStepId = prompt('Enter the step ID to return to:');
@@ -301,7 +310,8 @@ function handleDropdownItemClick(event) {
             }
             break;
             case 'requestClarification':
-            requestClarification(stepId,contractId);
+           // requestClarification(stepId,contractId);
+              window.alert('Request Clarification functionality not yet implemented');
             break;
             case 'addSurety':
             addSurety(stepId,contractId);
@@ -314,6 +324,11 @@ function handleDropdownItemClick(event) {
             break;
             case 'uploadFile':
             uploadFile(stepId,contractId);
+            break;
+            case 'cancel':
+          //  cancelStep(stepId,contractId);
+         
+            window.alert('Cancel not permitted at this time');
             break;
         case 'viewHistory':
             viewHistory(stepId,contractId);
@@ -359,7 +374,7 @@ function updateAttachments(attachments) {
                 </td>
              
                 <td class="attachment-actions">
-                    <button class="btn btn-sm btn-outline-primary mr-1" onclick="downloadAttachment('${attachment.name}')">
+                    <button class="btn btn-sm btn-outline-primary mr-1" onclick="downloadFile(${attachment.id}, true, 'contract'); return false;">
                         <i class="fa fa-download"></i>
                     </button>
                     <button class="btn btn-sm btn-outline-secondary mr-1" onclick="previewAttachment('${attachment.name}')">
@@ -426,3 +441,32 @@ jQuery(document).on('click', '#upload-new-btn', function() {
 });
 
 
+function renderNoWorkflowActions(contract) {
+    const container = jQuery('#workflow-steps-container');
+    container.empty();
+
+    const contractId = contract.id;
+
+    const html = `
+        <div class="card border-info text-center">
+            <div class="card-body">
+                <h5 class="card-title">No active workflow</h5>
+                <p class="text-muted mb-4">
+                    This contract has no workflow steps. Choose an action to proceed.
+                </p>
+
+                <button class="btn btn-primary mr-2"
+                    onclick="contractAmendmentForm(${contractId}, event); ">
+                    <i class="fa fa-edit mr-1"></i> Create Amendment
+                </button>
+
+                <button class="btn btn-success"
+                    onclick="contractRenewForm('${contractId}', event); ">
+                    <i class="fa fa-refresh mr-1"></i> Renew Contract
+                </button>
+            </div>
+        </div>
+    `;
+
+    container.append(html);
+}

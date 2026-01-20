@@ -21,7 +21,7 @@ function renderStatusLink($contract, $status_id, $status_name, $step, $isDropdow
         onclick="moveStatus('<?php echo  $contract['id'] ?>',     '<?php echo  $status_id ?>', <?php echo  $stepId === 'false' ? 'false' : "'" . $stepId . "'" ?>,
             event
         );"
-    >1
+    >
         <?php echo  htmlspecialchars($stepName) ?>
     </a>
     <?php

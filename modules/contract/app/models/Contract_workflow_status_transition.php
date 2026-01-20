@@ -22,15 +22,19 @@ class mysql_Contract_workflow_status_transition extends My_Model
     {
         $user_group_id = $this->ci->session->userdata("AUTH_user_group_id");
         $user_id = $this->ci->session->userdata("AUTH_user_id");
+        
+
         $this->ci->load->model("contract_status");
         $this->ci->contract_status->fetch($status);
         $status_transitions = [];
+        $global_statuses = [];
         if ($this->ci->contract_status->get_field("is_global") == 1) {
             $available_statuses = $this->ci->contract_status->load_list_workflow_statuses($workflow);
             unset($available_statuses[$status]);
         } else {
             $transitions = $this->load_available_statuses_per_workflow($status, $workflow, $lang);
             $global_statuses = $this->load_global_statuses_per_workflow($workflow, $lang);
+            
             $available_statuses = $transitions + $global_statuses;
             $status_transitions = $this->load_available_transitions($status, $workflow);
             $transition_permissions = $this->load_transitions_permissions($workflow);
@@ -53,7 +57,7 @@ class mysql_Contract_workflow_status_transition extends My_Model
                 }
             }
         }
-        return ["status_transitions" => $status_transitions, "available_statuses" => $available_statuses];
+        return ["status_transitions" => $status_transitions, "available_statuses" => $available_statuses,"global_statuses"=>$global_statuses];
     }
     public function load_available_statuses_per_workflow($status, $workflow, $lang = 0)
     { //for possible next steps from a certain step

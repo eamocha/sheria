@@ -45,7 +45,7 @@ function moveStatus(contractId, statusId, transitionId, e) {
             if (response.result && 'undefined' !== typeof response.html) {
                 jQuery('#statuses-section', '.contract-container').html(response.html);
             }
-            if('undefined' !== response.overall_status){
+            if (typeof response.overall_status !== 'undefined'){
                 jQuery('#approval-status-icon', '.side-menu').attr('src', "assets/images/contract/" + response.overall_status + ".svg");
                 jQuery('#approval-status-icon', '.side-menu').tooltipster("destroy");
                 jQuery('#approval-status-icon', '.side-menu').attr('title', _lang[response.overall_status]);
@@ -59,6 +59,9 @@ function moveStatus(contractId, statusId, transitionId, e) {
             }
             if (response.result && 'undefined' !== typeof response.screen_html) {
                 screenTransitionFormEvents(contractId, transitionId, response.screen_html, 'contracts', false, false, getBaseURL('contract') + 'contracts/save_transition_screen_fields/');
+            }
+            if (response.result) {
+                loadContractData(contractId);
             }
             if ('undefined' !== typeof response.message) {
                 pinesMessage({ty: response.result ? 'success' : 'error', m: response.message});

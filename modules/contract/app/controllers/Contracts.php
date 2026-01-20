@@ -598,6 +598,7 @@ class Contracts extends Contract_controller
             $transitions_accessible = $this->contract_workflow_status_transition->load_available_steps($data["contract"]["status_id"], $data["contract"]["workflow_id"]);
             $data["available_statuses"] = $transitions_accessible["available_statuses"];
             $data["status_transitions"] = $transitions_accessible["status_transitions"];
+            $data["global_statuses"] = $transitions_accessible["global_statuses"];//not used currntly
             $data["hide_show_notification"] = $this->email_notification_scheme->get_hide_show_send_email_notification_by_trigger_action("add_contract_comment");
             $data["visible_to_cp"] = !strcmp($this->contract->get_field("channel"), $this->cp_channel) || $this->contract->get_field("visible_to_cp") == "1";
             $sysPref = $this->system_preference->get_key_groups();
@@ -5463,6 +5464,7 @@ public function get_new_ref_number()
         }
        $data=[];
        $data=$this->get_contract_workflow_data($contract_id);
+
         $this->includes("tests/contracts", "js");
         $this->includes("tests/contract_development", "css");
         $this->includes("contract/cp_contract_common", "js");
@@ -5518,14 +5520,9 @@ public function get_new_ref_number()
     
 
  //  $steps=$this->contract_workflow_status_relation->get_progressed_steps_in_workflow($workflow_id,$contract_id);
-   $steps=$this->contract_workflow_status_relation->get_all_steps_in_workflow($workflow_id,$contract_id);
+  // $steps=$this->contract_workflow_status_relation->get_all_steps_in_workflow($workflow_id,$contract_id);
+      $steps=$this->contract_workflow_status_relation->get_available_steps_in_workflow($workflow_id,$contract_id,$currest_workflow_step);
 
-    if (empty($steps)) {
-        return [
-            'success' => false,
-            'message' => 'No steps found for the associated workflow.'
-        ];
-    }
   
     $workflow_steps = [];
     $counter = 1;
@@ -5609,7 +5606,7 @@ $actions = array_merge($actions, $defaultActions);
             $main_actions[] = [
                 'label'   => $t['name'],
                 'comment'   => $t['comment'],
-                'class'   => $t['id'] == 1 ?  'btn-secondary':'btn-primary', // Example: primary for first transition
+                'class'   => $t['id'] == 1 ?  'btn-secondary':'btn-primary', 
                 'onclick' => "moveStatus({$contract_id},{$step_id}, {$t['to_step']},event)",//moveStatus(contractId, statusId, transitionId, e)
                 'icon'    => !empty($t['icon_class']) ? "fa " . $t['icon_class'] :""
             ];
@@ -5642,7 +5639,7 @@ $actions = array_merge($actions, $defaultActions);
     $object1 = [   
     'workflow_steps'   => $workflow_steps,   
     'last_updated'     => date('F d, Y H:i:s'),
-    'system_status'    => 'OK',
+    'number_of_steps'    => count($workflow_steps),
     'attachments'      => $docs["data"]??[]
     ];
     return array_merge($object1, $contract);

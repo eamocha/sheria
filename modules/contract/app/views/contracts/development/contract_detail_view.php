@@ -1,5 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed'); 
-$id = $contract["id"]?>
+$id = $contract["id"];
+
+?>
 <header class="bg-white shadow-sm mb-4" >
     <div class="container py-3">
         <div class="d-flex justify-content-between align-items-center">
@@ -162,7 +164,7 @@ $id = $contract["id"]?>
                     </div>
                 </div>
             </div>
-            <div class="contract-attachments-box mt-4">
+            <div class="contract-attachments-box mt-4" id="contract-docs-container">
                 <div class="card">
                     <div class="card-header bg-light">
                         <h5 class="mb-0">Attachments</h5>
@@ -186,7 +188,7 @@ $id = $contract["id"]?>
                             </table>
                         </div>
                         <div class="text-right mt-3">
-                            <a class="btn btn-sm btn-primary" id="upload-new-btn">
+                            <a class="btn btn-sm btn-primary" id="upload-new-btn" onclick="uploadFileForm();">
                                 <i class="fa fa-upload mr-1"></i> Upload New
                             </a>
                         </div>
@@ -198,3 +200,6 @@ $id = $contract["id"]?>
         </div>
     </div>
 </div>
+<script>
+    var viewableExtensions = <?php echo json_encode($this->document_management_system->viewable_documents_extensions);?>
+</script>

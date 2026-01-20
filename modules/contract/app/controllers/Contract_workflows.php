@@ -476,6 +476,29 @@ public function fetch_workflow_data($workflow_id)
                 } else {
                     $this->contract_workflow_status_transition_screen_field->delete(["where" => [["transition_id", $transition_id]]]);
                 }
+                $notifications = $this->input->post("notifications");
+if ($notifications) {
+    $trigger_action = "contract_transition_" . $transition_id;
+    
+    // 1. Prepare data
+    $notifications["trigger_action"] = $trigger_action;
+    $notifications["notify_to"] = isset($notifications["notify_to"]) ? implode(";", $notifications["notify_to"]) : "";
+    $notifications["notify_cc"] = isset($notifications["notify_cc"]) ? implode(";", $notifications["notify_cc"]) : "";
+    
+    // 2. Check if a notification scheme already exists for this transition
+    $scheme_exists = $this->email_notification_scheme->fetch(["trigger_action" => $trigger_action]);
+    
+    $this->email_notification_scheme->set_field("hide_show_send_email_notification", "1");
+    $this->email_notification_scheme->set_fields($notifications);
+    
+    // 3. Update if exists, otherwise insert
+    $notif_result = $scheme_exists ? $this->email_notification_scheme->update() : $this->email_notification_scheme->insert();
+    
+    if (!$notif_result) {
+        $response["result"] = false;
+        $response["display_error"] = $this->lang->line("permissions_not_saved"); // Or a specific notification error
+    }
+}
             } else {
                 $response["validation_errors"] = $this->contract_workflow_status_transition->get("validationErrors");
                 $response["result"] = false;

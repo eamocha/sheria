@@ -200,6 +200,7 @@ function editDocument(id, module, moduleId, lineage, extension) {
         pinesMessage({ty: 'warning', m: planFeatureWarningMsgsObj['In-line-Word-Editor'] ? planFeatureWarningMsgsObj['In-line-Word-Editor'] : _lang.noAccessToPlanFeature});
         return;
     }
+
     if (extensionIsViewable(extension)) {
         jQuery.ajax({
             url: url ,
@@ -283,6 +284,7 @@ function denyAccessToFeature(feature) {
  * @returns {Boolean}
  */
 function extensionIsViewable(extension) {
+
     for (var i = 0; i < viewableExtensions.length; i++) {
         var viewableExt = viewableExtensions[i];
 
