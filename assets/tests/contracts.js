@@ -84,6 +84,7 @@ function renderWorkflowSteps(steps) {
 }
 
 function createStepElement(step, hasConnector) {
+    console.log('Rendering step:', JSON.stringify(step));
     const stepId = step.step_id;
     const status = step.status.toLowerCase();
     const badgeClass = statusToBadgeClass[status] || 'secondary';
@@ -283,8 +284,8 @@ function handleDropdownItemClick(event) {
     // Implement specific action handlers here
     switch(function_name) {
         case 'addTask':
-            contractTaskAddForm(contractId,stepId, false, callback) ;
-          //  taskForm(contractId,stepId, false, false, callback) ;
+           // contractTaskAddForm(contractId,stepId, false, callback) ;
+            taskForm( ) ;
             break;
         case 'addReminder':
         reminderForm(false, false, false, contractId);

@@ -213,25 +213,14 @@ public function get_available_steps_in_workflow($workflow_id, $contract_id, $cur
     return $this->load_all($query);
 }
 
-public function get_available_steps_in_workflowmovedtostatustransitionsfile($workflow_id, $contract_id, $current_status_id)
+ public function get_current_step_details($workflow_id, $contract_id, $current_status_id)
 {
-    // 1. Get the permitted status IDs using your existing logic
-     $this->ci->load->model("contract_workflow_status_transition", "contract_workflow_status_transitionfactory");
-        $this->ci->contract_workflow_status_transition = $this->ci->contract_workflow_status_transitionfactory->get_instance();
-    $availability = $this->ci->contract_workflow_status_transition->load_available_steps($current_status_id, $workflow_id);
-    $allowed_ids = array_keys($availability['available_statuses']);
-
-    // If no moves are allowed, return an empty array to match the result format
-    if (empty($allowed_ids)) {
-        return [];
-    }
-
     $this->ci->load->model("language");
     $lang_id = $this->ci->language->get_id_by_session_lang();
 
     $query = [];
 
-    // Keep exactly the same select fields as your original method
+    // SELECT - Identical to get_all_steps_in_workflow
     $query["select"] = ["
         csl.status_id AS step_id,
         csl.id,
@@ -249,22 +238,20 @@ public function get_available_steps_in_workflowmovedtostatustransitionsfile($wor
         MAX(log.status) AS step_status
     "];
 
+    // JOIN - Identical to get_all_steps_in_workflow
     $query["join"] = [
         ["contract_status_language csl", "csl.status_id = contract_workflow_status_relation.status_id AND csl.language_id = " . $lang_id, "left"],
         ["contract_workflow_status_transition t", "t.from_step = contract_workflow_status_relation.status_id AND t.workflow_id = contract_workflow_status_relation.workflow_id", "left"],
         ["contract_workflow_status_transition_log log", "log.transition_id = t.id" . ($contract_id ? " AND log.contract_id = " . intval($contract_id) : ""), "left"]
     ];
 
-    // 2. Filter by Workflow AND by Allowed Status IDs
+    // WHERE - Modified to target only the specific status ID
     $query["where"] = [
-        ["contract_workflow_status_relation.workflow_id", $workflow_id]
-    ];
-    
-    // Add the specific ID filter
-    $query["where_in"] = [
-        ["contract_workflow_status_relation.status_id", $allowed_ids]
+        ["contract_workflow_status_relation.workflow_id", $workflow_id],
+        ["contract_workflow_status_relation.status_id", $current_status_id]
     ];
 
+    // GROUP BY - Identical to get_all_steps_in_workflow
     $query["group_by"] = ["
         csl.status_id,
         csl.id,
@@ -280,9 +267,9 @@ public function get_available_steps_in_workflowmovedtostatustransitionsfile($wor
         csl.step_input
     "];
 
+    // Returns a result array, maintaining the exact structure of the original method
     return $this->load_all($query);
 }
- 
     
     //get the combined workflow steps, functions and checklists
     public function get_combined_workflow_steps($workflow_id)

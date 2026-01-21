@@ -1071,7 +1071,7 @@ function saveTransition(transitionId) {
     };
 
     const url = transitionId ?
-        getBaseURL('contract') + 'contract_workflows/update_transition/' + transitionId :
+        getBaseURL('contract') + 'contract_workflows/edit_transition/' + transitionId :
         getBaseURL('contract') + 'contract_workflows/add_transition';
 
     jQuery.ajax({

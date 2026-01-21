@@ -698,7 +698,7 @@ class Contracts extends Contract_controller
         $this->output->set_output(json_encode($response));
     }
     public function move_status()
-    {
+    {  
         if (!$this->input->is_ajax_request()) {
             redirect("index");
         }
@@ -5464,7 +5464,7 @@ public function get_new_ref_number()
         }
        $data=[];
        $data=$this->get_contract_workflow_data($contract_id);
-
+//  exit(json_encode($data));
         $this->includes("tests/contracts", "js");
         $this->includes("tests/contract_development", "css");
         $this->includes("contract/cp_contract_common", "js");
@@ -5521,7 +5521,7 @@ public function get_new_ref_number()
 
  //  $steps=$this->contract_workflow_status_relation->get_progressed_steps_in_workflow($workflow_id,$contract_id);
   // $steps=$this->contract_workflow_status_relation->get_all_steps_in_workflow($workflow_id,$contract_id);
-      $steps=$this->contract_workflow_status_relation->get_available_steps_in_workflow($workflow_id,$contract_id,$currest_workflow_step);
+      $steps=$this->contract_workflow_status_relation->get_current_step_details($workflow_id,$contract_id,$currest_workflow_step);
 
   
     $workflow_steps = [];
@@ -5594,12 +5594,10 @@ $actions = array_merge($actions, $defaultActions);
         //   $where[] = ["step_id", $step_id];
                             
      //   $log = $this->contract_workflow_steps_log->load_all(["where" => $where]); 
-
-        
        
         // 5. Get transitions → main_actions
         $transitions = $this->contract_workflow_status_transition->load_all(["where" => ['from_step' , $step_id, 'workflow_id', $workflow_id]]);
-                       
+                      
         $main_actions = [];
         foreach ($transitions as $t) {
           
@@ -5607,7 +5605,7 @@ $actions = array_merge($actions, $defaultActions);
                 'label'   => $t['name'],
                 'comment'   => $t['comment'],
                 'class'   => $t['id'] == 1 ?  'btn-secondary':'btn-primary', 
-                'onclick' => "moveStatus({$contract_id},{$step_id}, {$t['to_step']},event)",//moveStatus(contractId, statusId, transitionId, e)
+                'onclick' => "moveStatus({$contract_id}, {$t['to_step']},{$t['id']},event)",//moveStatus(contractId, statusId, transitionId, e)
                 'icon'    => !empty($t['icon_class']) ? "fa " . $t['icon_class'] :""
             ];
         }

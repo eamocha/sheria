@@ -1,12 +1,13 @@
 <div id="sub-menu-sidebar" class="resp-main-body-width-10 no-margin col-md-2 side-menu">
     <ul class="left-menu w-100 nav nav-tabs  navbar-nav no-margin pt-0 box-shadow-panel">
-        <li role="presentation" class="sub-menu">
-            <a class="nav-link panel-text-nav-style active" href="modules/contract/contracts/development/<?php echo $contract["id"];?>">
-            <img src="assets/images/contract/edit.svg" height="25" width="25" class="filter-color mr-2"><?php echo (strtolower($contract["category"])=="mou") ? $this->lang->line("mou_development") : $this->lang->line("contract_development"); ?> </a>
-        </li>
+
            <li role="presentation" class="sub-menu">
             <a class="nav-link panel-text-nav-style active" href="modules/contract/contracts/view/<?php echo $contract["id"];?>">
                 <img src="assets/images/contract/contract.svg" height="25" width="25" class="filter-color mr-2"><?php  echo strtolower($contract["category"])=="mou"?$this->lang->line("mou_details"):$this->lang->line("contract_details_in_menu"); ?> </a>
+        </li>
+        <li role="presentation" class="sub-menu">
+            <a class="nav-link panel-text-nav-style  " href="modules/contract/contracts/development/<?php echo $contract["id"];?>">
+                <img src="assets/images/contract/edit.svg" height="25" width="25" class="filter-color mr-2"><?php echo (strtolower($contract["category"])=="mou") ? $this->lang->line("mou_development") : $this->lang->line("contract_development"); ?> </a>
         </li>
         <li role="presentation" class="sub-menu">
             <a class="nav-link panel-text-nav-style" href="javascript:;" id="docs-tab" onclick='docsTab("<?php echo $contract["id"];?>")'>

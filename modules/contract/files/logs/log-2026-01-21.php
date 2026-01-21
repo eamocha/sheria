@@ -334,3 +334,52 @@ ERROR - 2026-01-21 02:49:37 --> Severity: Notice --> Undefined variable: permiss
 ERROR - 2026-01-21 02:49:37 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\application\views\workflows\transition\permissions.php 0
 ERROR - 2026-01-21 02:49:37 --> Severity: Notice --> Undefined variable: permissions E:\apps\sheria\application\views\workflows\transition\permissions.php 0
 ERROR - 2026-01-21 02:49:37 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\application\views\workflows\transition\permissions.php 0
+ERROR - 2026-01-21 03:36:11 --> Severity: Warning --> Illegal string offset 'step_id' E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5531
+ERROR - 2026-01-21 03:36:11 --> Severity: Warning --> Illegal string offset 'id' E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5532
+ERROR - 2026-01-21 03:36:11 --> Severity: Warning --> Illegal string offset 'step_name' E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5620
+ERROR - 2026-01-21 03:36:11 --> Severity: Warning --> Illegal string offset 'step_id' E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5531
+ERROR - 2026-01-21 03:36:11 --> Severity: Warning --> Illegal string offset 'id' E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5532
+ERROR - 2026-01-21 03:36:11 --> Severity: Warning --> Illegal string offset 'step_name' E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5620
+ERROR - 2026-01-21 03:36:11 --> Severity: Warning --> Illegal string offset 'step_id' E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5531
+ERROR - 2026-01-21 03:36:11 --> Severity: Warning --> Illegal string offset 'id' E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5532
+ERROR - 2026-01-21 03:36:11 --> Severity: Warning --> Illegal string offset 'step_name' E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5620
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type int E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5531
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type int E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5532
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type int E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5620
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type int E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5531
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type int E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5532
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type int E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5620
+ERROR - 2026-01-21 03:36:11 --> Severity: Warning --> Illegal string offset 'step_id' E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5531
+ERROR - 2026-01-21 03:36:11 --> Severity: Warning --> Illegal string offset 'id' E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5532
+ERROR - 2026-01-21 03:36:11 --> Severity: Warning --> Illegal string offset 'step_name' E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5620
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5531
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5532
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5620
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5531
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5532
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5620
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5531
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5532
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5620
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5531
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5532
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5620
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5531
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5532
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5620
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5531
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5532
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5620
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5531
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5532
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5620
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5531
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5532
+ERROR - 2026-01-21 03:36:11 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5620
+ERROR - 2026-01-21 03:38:06 --> Severity: error --> Exception: Call to undefined method sqlsrv_Contract_workflow_status_relation::get_current_step_details() E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5524
+ERROR - 2026-01-21 03:38:10 --> Severity: error --> Exception: Call to undefined method sqlsrv_Contract_workflow_status_relation::get_current_step_details() E:\apps\sheria\modules\contract\app\controllers\Contracts.php 5524
+ERROR - 2026-01-21 00:01:33 --> 404 Page Not Found: Contract_workflows/update_transition
+ERROR - 2026-01-21 00:05:33 --> 404 Page Not Found: Contract_workflows/update_transition
+ERROR - 2026-01-21 11:28:52 --> Severity: Notice --> Undefined variable: role_name E:\apps\sheria\modules\contract\app\views\contracts\view\approval_signature_row_form.php 0
+ERROR - 2026-01-21 11:29:18 --> Severity: Notice --> Trying to access array offset on value of type int E:\apps\sheria\application\libraries\My_model.php 0
+ERROR - 2026-01-21 07:38:01 --> 404 Page Not Found: Modules/contract
