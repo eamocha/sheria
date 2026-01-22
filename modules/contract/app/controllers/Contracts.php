@@ -4671,7 +4671,6 @@ public function get_new_ref_number()
         $data["docs"] = $this->dmsnew->load_documents_for_collaboration($this->contract->get("modelName"), $contract_id);
         $data["document_id"] = $document_id;
 
-
         if (!$this->input->is_ajax_request()) {
             $data["show_toolbar"]=true;
             $this->document_management_system->fetch(["id" => $document_id]);//to get the parent_lineage
@@ -5631,14 +5630,21 @@ $actions = array_merge($actions, $defaultActions);
 
         $counter++;
     }
+//check contracts overall approval and signature status
+            $this->contract_approval_submission->fetch(["contract_id" => $contract_id]);
+            $data["overall_approval_status"] = $this->contract_approval_submission->get_field("status");
+            $this->contract_signature_submission->fetch(["contract_id" => $contract_id]);
+            $data["overall_signature_status"] = $this->contract_signature_submission->get_field("status");
+            $this->contract->update_recent_ids($contract_id, "contracts");
 
- 
  
     $object1 = [   
     'workflow_steps'   => $workflow_steps,   
     'last_updated'     => date('F d, Y H:i:s'),
     'number_of_steps'    => count($workflow_steps),
-    'attachments'      => $docs["data"]??[]
+    'attachments'      => $docs["data"]??[],
+    'overall_approval_status' => $data["overall_approval_status"],
+    'overall_signature_status' => $data["overall_signature_status"]
     ];
     return array_merge($object1, $contract);
 

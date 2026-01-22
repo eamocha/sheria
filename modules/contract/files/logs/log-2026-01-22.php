@@ -1,0 +1,32 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2026-01-22 03:00:55 --> Could not find the language line "contract_helper_workflow_screen"
+ERROR - 2026-01-22 03:00:55 --> Severity: Notice --> Undefined variable: permissions E:\apps\sheria\application\views\workflows\transition\permissions.php 0
+ERROR - 2026-01-22 03:00:55 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\application\views\workflows\transition\permissions.php 0
+ERROR - 2026-01-22 03:00:55 --> Severity: Notice --> Undefined variable: permissions E:\apps\sheria\application\views\workflows\transition\permissions.php 0
+ERROR - 2026-01-22 03:00:55 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\application\views\workflows\transition\permissions.php 0
+ERROR - 2026-01-22 03:00:56 --> Could not find the language line "contract_helper_workflow_screen"
+ERROR - 2026-01-22 03:00:56 --> Severity: Notice --> Undefined variable: permissions E:\apps\sheria\application\views\workflows\transition\permissions.php 0
+ERROR - 2026-01-22 03:00:56 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\application\views\workflows\transition\permissions.php 0
+ERROR - 2026-01-22 03:00:56 --> Severity: Notice --> Undefined variable: permissions E:\apps\sheria\application\views\workflows\transition\permissions.php 0
+ERROR - 2026-01-22 03:00:56 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\application\views\workflows\transition\permissions.php 0
+ERROR - 2026-01-22 03:01:20 --> Could not find the language line "contract_helper_workflow_screen"
+ERROR - 2026-01-22 03:01:20 --> Severity: Notice --> Undefined variable: permissions E:\apps\sheria\application\views\workflows\transition\permissions.php 0
+ERROR - 2026-01-22 03:01:20 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\application\views\workflows\transition\permissions.php 0
+ERROR - 2026-01-22 03:01:20 --> Severity: Notice --> Undefined variable: permissions E:\apps\sheria\application\views\workflows\transition\permissions.php 0
+ERROR - 2026-01-22 03:01:20 --> Severity: Notice --> Trying to access array offset on value of type null E:\apps\sheria\application\views\workflows\transition\permissions.php 0
+ERROR - 2026-01-22 03:52:02 --> Query error: [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Cannot insert explicit value for identity column in table 'contract_status_language' when IDENTITY_INSERT is set to OFF. - Invalid query: INSERT INTO "contract_status_language" ("id", "status_id", "language_id", "name", "responsible_user_roles", "step_icon", "activity", "step_input", "step_output") VALUES ('58', '27', '2', 'Testing signature center', 'responsible users', 'fa-user', 'Draftinh', 'dsdsd', 'created')
+ERROR - 2026-01-22 03:52:43 --> Query error: [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Cannot insert explicit value for identity column in table 'contract_status_language' when IDENTITY_INSERT is set to OFF. - Invalid query: INSERT INTO "contract_status_language" ("id", "status_id", "language_id", "name", "responsible_user_roles", "step_icon", "activity", "step_input", "step_output") VALUES ('58', '27', '2', 'Testing signature center', 'responsible users', 'fa-user', 'Draftinh', 'dsdsd', 'created')
+ERROR - 2026-01-22 03:53:23 --> Query error: [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Cannot insert explicit value for identity column in table 'contract_status_language' when IDENTITY_INSERT is set to OFF. - Invalid query: INSERT INTO "contract_status_language" ("id", "status_id", "language_id", "name", "responsible_user_roles", "step_icon", "activity", "step_input", "step_output") VALUES ('58', '27', '2', 'Testing signature center', 'responsible users', 'fa-user', 'Draftinh', 'dsdsd', 'created')
+ERROR - 2026-01-22 03:53:58 --> Query error: [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Cannot insert explicit value for identity column in table 'contract_status_language' when IDENTITY_INSERT is set to OFF. - Invalid query: INSERT INTO "contract_status_language" ("id", "status_id", "language_id", "name", "responsible_user_roles", "step_icon", "activity", "step_input", "step_output") VALUES ('58', '27', '2', 'Testing signature center', 'responsible users', 'fa-user', 'Draftinh', 'dsdsd', 'created')
+ERROR - 2026-01-22 03:54:09 --> Query error: [Microsoft][ODBC Driver 17 for SQL Server][SQL Server]Cannot insert explicit value for identity column in table 'contract_status_language' when IDENTITY_INSERT is set to OFF. - Invalid query: INSERT INTO "contract_status_language" ("id", "status_id", "language_id", "name", "responsible_user_roles", "step_icon", "activity", "step_input", "step_output") VALUES ('58', '27', '2', 'Ndw stepw', 'eric ad other', 'fa-gavel', 'wewew', 'aaasa', 'ewwe')
+ERROR - 2026-01-22 04:26:55 --> Severity: Warning --> file_get_contents(E:\apps\sheria\filesattachments\contracts\\12\13): failed to open stream: No such file or directory E:\apps\sheria\application\libraries\Dmsnew.php 649
+ERROR - 2026-01-22 04:26:55 --> Could not find the language line "download_failed"
+ERROR - 2026-01-22 04:27:49 --> Severity: Warning --> file_get_contents(E:\apps\sheria\filesattachments\contracts\\12\13): failed to open stream: No such file or directory E:\apps\sheria\application\libraries\Dmsnew.php 649
+ERROR - 2026-01-22 04:27:49 --> Could not find the language line "download_failed"
+ERROR - 2026-01-22 04:30:41 --> Severity: Notice --> Undefined variable: role_name E:\apps\sheria\modules\contract\app\views\contracts\view\approval_signature_row_form.php 0
+ERROR - 2026-01-22 04:30:55 --> Severity: Notice --> Trying to access array offset on value of type int E:\apps\sheria\application\libraries\My_model.php 0
+ERROR - 2026-01-22 04:31:23 --> Severity: Notice --> Trying to access array offset on value of type int E:\apps\sheria\application\libraries\My_model.php 0
+ERROR - 2026-01-22 04:31:28 --> Severity: Notice --> Trying to access array offset on value of type int E:\apps\sheria\application\libraries\My_model.php 0
+ERROR - 2026-01-22 04:31:35 --> Severity: Notice --> Trying to access array offset on value of type int E:\apps\sheria\application\libraries\My_model.php 0
+ERROR - 2026-01-22 04:32:29 --> Severity: Notice --> Trying to access array offset on value of type int E:\apps\sheria\application\libraries\My_model.php 0

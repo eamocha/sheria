@@ -6,7 +6,7 @@
                 <img src="assets/images/contract/contract.svg" height="25" width="25" class="filter-color mr-2"><?php  echo strtolower($contract["category"])=="mou"?$this->lang->line("mou_details"):$this->lang->line("contract_details_in_menu"); ?> </a>
         </li>
         <li role="presentation" class="sub-menu">
-            <a class="nav-link panel-text-nav-style  " href="modules/contract/contracts/development/<?php echo $contract["id"];?>">
+            <a class="nav-link panel-text-nav-style  " target="_blank" href="modules/contract/contracts/development/<?php echo $contract["id"];?>">
                 <img src="assets/images/contract/edit.svg" height="25" width="25" class="filter-color mr-2"><?php echo (strtolower($contract["category"])=="mou") ? $this->lang->line("mou_development") : $this->lang->line("contract_development"); ?> </a>
         </li>
         <li role="presentation" class="sub-menu">

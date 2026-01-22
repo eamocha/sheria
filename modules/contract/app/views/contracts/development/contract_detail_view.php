@@ -8,7 +8,7 @@ $id = $contract["id"];
             <span class="mb-0"><a href="<?php echo base_url('contracts/view/'.$id); ?>"><?php echo $contract["name"]?></a><div>  <small class="text-muted"  ><?php echo $contract["description"]; ?></small> </div></span>
 
             <div>
-               <a href="javascript:void(0)" onclick="contractEditForm('<?php echo $id;?>', event);" class="btn btn-primary" >Update</a>
+               <a  href="<?php echo base_url('contracts/view/'.$id); ?>"  class="btn btn-primary" >Update</a>
             </div>
         </div>
     </div>
