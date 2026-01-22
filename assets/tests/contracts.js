@@ -1,3 +1,5 @@
+const approvalStatuses = ['awaiting_approval', 'awaiting_revision'];
+const signatureStatuses = ['awaiting_signature', 'partially_signed'];
 
 document.addEventListener('DOMContentLoaded', () => {
     const dataContainer = document.getElementById('contract-detail-view');
